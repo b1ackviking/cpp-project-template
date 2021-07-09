@@ -1,5 +1,5 @@
 ---
-Checks: "*,clang-diagnostic-*,clang-analyzer-*,-abseil-*,abseil-no-namespace,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-type-vararg,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-build-using-namespace,-google-readability-braces-around-statements,-google-runtime-references,-hicpp-braces-around-statements,-hicpp-vararg,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-braces-around-statements,-readability-named-parameter,-hicpp-named-parameter"
+Checks: "*,clang-diagnostic-*,clang-analyzer-*,-abseil-*,abseil-no-namespace,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-type-vararg,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-build-using-namespace,-google-readability-braces-around-statements,-google-readability-todo,-google-runtime-references,-hicpp-braces-around-statements,-hicpp-vararg,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-braces-around-statements,-readability-named-parameter,-hicpp-named-parameter"
 WarningsAsErrors: ""
 HeaderFilterRegex: ""
 AnalyzeTemporaryDtors: false
