@@ -10,6 +10,7 @@ on:
 
 jobs:
   codeql:
+    name: CodeQL
     runs-on: ubuntu-latest
 
     strategy:
