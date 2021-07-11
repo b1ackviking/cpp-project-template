@@ -27,16 +27,9 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
-          sudo apt remove clang-12 -y
-          sudo apt install gcc-11 g++-11 clang-12 clang-tools-12 cppcheck iwyu -y
+          sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
           sudo update-alternatives --set gcc /usr/bin/gcc-11
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100
-          sudo update-alternatives --set clang /usr/bin/clang-12
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
-          sudo update-alternatives --set clang++ /usr/bin/clang++-12
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 100
-          sudo update-alternatives --set clang-tidy /usr/bin/clang-tidy-12
 
       - name: Create build environment
         run: cmake -E make_directory ${{ github.workspace }}/build
@@ -45,7 +38,7 @@ jobs:
         run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} \
                -DCMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} \
                -DENABLE_CPPCHECK:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
-               -DENABLE_CLANG_TIDY:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
+               -DENABLE_CLANG_TIDY:BOOL=FALSE \
                -DENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.os == 'ubuntu-latest' }}
 
       - name: Build
