@@ -11,6 +11,7 @@ on:
 
 jobs:
   build:
+    name: Build
     env:
       BUILD_TYPE: Release
     strategy:
@@ -19,20 +20,29 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Switch to gcc-11 on Linux
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install compilers and analyzers on Linux
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt install gcc-11 g++-11 -y
+          sudo apt update
+          sudo apt install gcc-11 g++-11 clang-12 cppcheck iwyu -y
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
           sudo update-alternatives --set gcc /usr/bin/gcc-11
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-12
+          sudo update-alternatives --set clang /usr/bin/clang-12
+          clang-tidy --version
 
-      - name: Create Build Environment
+      - name: Create build environment
         run: cmake -E make_directory ${{ github.workspace }}/build
 
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} \
+               -DCMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} \
+               -DENABLE_CPPCHEK:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
+               -DENABLE_CLANG_TIDY:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
+               -DENABLE_ICLUDE_WHAT_YOU_USE:BOOL=${{ matrix.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
