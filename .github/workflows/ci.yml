@@ -42,9 +42,9 @@ jobs:
       - name: Configure
         run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} \
                -DCMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} \
-               -DENABLE_CPPCHEK:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
+               -DENABLE_CPPCHECK:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
                -DENABLE_CLANG_TIDY:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
-               -DENABLE_ICLUDE_WHAT_YOU_USE:BOOL=${{ matrix.os == 'ubuntu-latest' }}
+               -DENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
