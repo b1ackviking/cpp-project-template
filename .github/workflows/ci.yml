@@ -35,12 +35,13 @@ jobs:
         run: cmake -E make_directory ${{ github.workspace }}/build
 
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build \
-                   -S ${{ github.workspace }} \
-                   -D CMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} \
-                   -D ENABLE_CPPCHECK:BOOL=${{ matrix.os == 'ubuntu-latest' }} \
-                   -D ENABLE_CLANG_TIDY:BOOL=FALSE \
-                   -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake -B ${{ github.workspace }}/build
+                -S ${{ github.workspace }}
+                -D CMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }}
+                -D ENABLE_CPPCHECK:BOOL=${{ matrix.os == 'ubuntu-latest' }}
+                -D ENABLE_CLANG_TIDY:BOOL=FALSE
+                -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
