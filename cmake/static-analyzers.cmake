@@ -6,8 +6,10 @@ option(ENABLE_INCLUDE_WHAT_YOU_USE
 if(ENABLE_CPPCHECK)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
-    set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --enable=all --inline-suppr
-                           --error-exitcode=42 --suppress=missingIncludeSystem)
+    set(CMAKE_CXX_CPPCHECK
+        ${CPPCHECK} --enable=all --inline-suppr --error-exitcode=42
+        --suppress=missingIncludeSystem --suppress=unmatchedSuppression)
+    set(CMAKE_C_CPPCHECK ${CMAKE_CXX_CPPCHECK})
   else()
     message(SEND_ERROR "Cppcheck requested but executable not found")
   endif()
@@ -18,6 +20,7 @@ if(ENABLE_CLANG_TIDY)
   if(CLANGTIDY)
     set(CMAKE_CXX_CLANG_TIDY ${CLANGTIDY}
                              -extra-arg=-Wno-unknown-warning-option)
+    set(CMAKE_C_CLANG_TIDY ${CMAKE_CXX_CLANG_TIDY})
   else()
     message(SEND_ERROR "clang-tidy requested but executable not found")
   endif()
@@ -27,6 +30,7 @@ if(ENABLE_INCLUDE_WHAT_YOU_USE)
   find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
   if(INCLUDE_WHAT_YOU_USE)
     set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE})
+    set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${CMAKE_CXX_INCLUDE_WHAT_YOU_USE})
   else()
     message(
       SEND_ERROR "include-what-you-use requested but executable not found")
