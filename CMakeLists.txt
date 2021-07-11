@@ -10,10 +10,13 @@ project(
 include(cmake/defaults.cmake)
 include(cmake/cache.cmake)
 include(cmake/static-analyzers.cmake)
+include(cmake/warnings.cmake)
 # TODO: add sanitizers support
 
-# TODO: add warnings and options
 add_library(warnings INTERFACE)
+set_target_warnings(warnings)
+
+# TODO: add options
 add_library(options INTERFACE)
 target_compile_features(options INTERFACE cxx_std_20)
 
