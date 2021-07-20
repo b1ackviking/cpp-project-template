@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 
 project(
   cpp-project-template
@@ -18,7 +18,7 @@ set_target_warnings(warnings)
 
 # TODO: add options
 add_library(options INTERFACE)
-target_compile_features(options INTERFACE cxx_std_20)
+target_compile_features(options INTERFACE cxx_std_23)
 
 add_executable(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PRIVATE warnings options)
