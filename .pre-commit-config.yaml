@@ -8,11 +8,15 @@ repos:
     - id: check-case-conflict
     - id: check-json
     - id: check-merge-conflict
+    - id: check-symlinks
     - id: check-toml
     - id: check-yaml
     - id: check-xml
     - id: detect-private-key
     - id: end-of-file-fixer
+    - id: fix-byte-order-marker
+    - id: mixed-line-ending
+      args: [--fix=lf]
     - id: trailing-whitespace
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.13
