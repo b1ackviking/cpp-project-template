@@ -1,6 +1,8 @@
 name: Pre-commit
 
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,9 +12,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
+
       - name: Install pre-commit
         run: sudo pip3 install pre-commit
-      
+
       - name: Run hooks
         run: pre-commit run -a
