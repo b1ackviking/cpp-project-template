@@ -3,7 +3,7 @@ name: Pre-commit
 on: [push, workflow_dispatch]
 
 jobs:
-  build:
+  pre-commit:
     name: Check hooks
     runs-on: ubuntu-latest
 
