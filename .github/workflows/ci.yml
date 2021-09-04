@@ -30,8 +30,12 @@ jobs:
           sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
           sudo update-alternatives --set gcc /usr/bin/gcc-11
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-12 --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-12
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100
           sudo update-alternatives --set clang /usr/bin/clang-12
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
+          sudo update-alternatives --set clang++ /usr/bin/clang++-12
+          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100
+          sudo update-alternatives --set clang-format /usr/bin/clang-format-12
 
       - name: Create build environment
         run: cmake -E make_directory ${{ github.workspace }}/build
