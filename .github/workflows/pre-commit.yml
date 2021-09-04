@@ -1,0 +1,21 @@
+name: Pre-commit
+
+on: [push]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Check hooks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Install pre-commit
+        run: sudo pip3 install pre-commit
+      
+      - name: Run hooks
+        run: pre-commit run -a
