@@ -17,7 +17,9 @@ jobs:
           fetch-depth: 0
 
       - name: Create bump and changelog
-        run: cz bump --changelog
+        run: |
+          sudo pip install commitizen
+          cz bump --changelog
 
       - name: Push updated version
         uses: CasperWA/push-protected@v2
