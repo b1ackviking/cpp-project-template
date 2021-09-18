@@ -6,18 +6,23 @@ on:
 
 jobs:
   bump-version:
-    if: ${{ !startsWith(github.event.head_commit.message, 'bump:') }}
-    runs-on: ubuntu-latest
     name: Bump version and create changelog with commitizen
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.head_commit.message, 'bump:') }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Create bump and changelog
-        uses: commitizen-tools/commitizen-action@master
+        run: cz bump --changelog
+
+      - name: Push updated version
+        uses: CasperWA/push-protected@v2
         with:
-          github_token: ${{ github.token }}
+          token: ${{ github.token }}
           branch: main
-      - name: Print Version
-        run: echo Bumped to version ${{ steps.cz.outputs.version }}
+          tags: true
+          unprotect_reviews: true
