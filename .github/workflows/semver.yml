@@ -16,20 +16,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Configure git
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-
       - name: Create bump and changelog
-        run: |
-          sudo pip install commitizen
-          cz bump --changelog
-
-      - name: Push updated version
-        uses: CasperWA/push-protected@v2
+        uses: commitizen-tools/commitizen-action@master
         with:
-          token: ${{ github.token }}
+          github_token: ${{ github.token }}
           branch: main
-          tags: true
-          unprotect_reviews: true
