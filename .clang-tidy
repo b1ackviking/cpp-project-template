@@ -1,34 +1,34 @@
 ---
-Checks: "*,clang-diagnostic-*,clang-analyzer-*,-abseil-*,abseil-no-namespace,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-type-vararg,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-build-using-namespace,-google-readability-braces-around-statements,-google-readability-todo,-google-runtime-references,-hicpp-braces-around-statements,-hicpp-vararg,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-braces-around-statements,-readability-named-parameter,-hicpp-named-parameter"
-WarningsAsErrors: ""
-HeaderFilterRegex: ""
+Checks: '*,-abseil-*,abseil-no-namespace,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-type-vararg,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-build-using-namespace,-google-readability-braces-around-statements,-google-readability-todo,-google-runtime-references,-hicpp-braces-around-statements,-hicpp-vararg,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-braces-around-statements,-readability-named-parameter,-hicpp-named-parameter'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 FormatStyle: none
 CheckOptions:
   - key: bugprone-exception-escape.FunctionsThatShouldNotThrow
-    value: "WinMain;wWinMain"
+    value: 'WinMain;wWinMain'
   - key: bugprone-misplaced-widening-cast.CheckImplicitCasts
-    value: "true"
+    value: 'true'
   - key: bugprone-suspicious-enum-usage.StrictMode
-    value: "true"
+    value: 'true'
   - key: cppcoreguidelines-narrowing-conversions.PedanticMode
-    value: "true"
+    value: 'true'
   - key: google-runtime-int.TypeSuffix
-    value: "_t"
+    value: '_t'
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
-    value: "true"
+    value: 'true'
   - key: cert-dcl16-c.NewSuffixes
-    value: "L;LL;LU;LLU"
+    value: 'L;LL;LU;LLU'
   - key: readability-identifier-naming.AbstractClassCase
     value: CamelCase
   - key: readability-identifier-naming.AbstractClassPrefix
-    value: "I"
+    value: 'I'
   - key: readability-identifier-naming.AggressiveDependentMemberLookup
-    value: "true"
+    value: 'true'
   - key: readability-identifier-naming.ClassCase
     value: CamelCase
   - key: readability-identifier-naming.ClassConstantCase
-    value: UPPER_CASE
+    value: camelBack
   - key: readability-identifier-naming.ClassMemberCase
     value: camelBack
   - key: readability-identifier-naming.ClassMethodCase
@@ -40,9 +40,9 @@ CheckOptions:
   - key: readability-identifier-naming.ConstantParameterCase
     value: camelBack
   - key: readability-identifier-naming.ConstantPointerParameterCase
-    value: CamelCase
+    value: camelBack
   - key: readability-identifier-naming.ConstantPointerParameterPrefix
-    value: "p"
+    value: ''
   - key: readability-identifier-naming.ConstexprFunctionCase
     value: CamelCase
   - key: readability-identifier-naming.ConstexprMethodCase
@@ -54,31 +54,31 @@ CheckOptions:
   - key: readability-identifier-naming.EnumConstantCase
     value: CamelCase
   - key: readability-identifier-naming.EnumConstantPrefix
-    value: "e"
+    value: ''
   - key: readability-identifier-naming.FunctionCase
     value: CamelCase
   - key: readability-identifier-naming.GlobalConstantCase
-    value: UPPER_CASE
+    value: camelBack
   - key: readability-identifier-naming.GlobalConstantPointerCase
-    value: UPPER_CASE
+    value: camelBack
   - key: readability-identifier-naming.GlobalFunctionCase
     value: CamelCase
   - key: readability-identifier-naming.GlobalPointerCase
-    value: CamelCase
+    value: camelBack
   - key: readability-identifier-naming.GlobalPointerPrefix
-    value: "p"
+    value: ''
   - key: readability-identifier-naming.GlobalVariableCase
     value: camelBack
   - key: readability-identifier-naming.LocalConstantCase
     value: camelBack
   - key: readability-identifier-naming.LocalConstantPointerCase
-    value: CamelCase
+    value: camelBack
   - key: readability-identifier-naming.LocalConstantPointerPrefix
-    value: "p"
+    value: ''
   - key: readability-identifier-naming.LocalPointerCase
-    value: CamelCase
+    value: camelBack
   - key: readability-identifier-naming.LocalPointerPrefix
-    value: "p"
+    value: ''
   - key: readability-identifier-naming.LocalVariableCase
     value: camelBack
   - key: readability-identifier-naming.MacroDefinitionCase
@@ -92,25 +92,25 @@ CheckOptions:
   - key: readability-identifier-naming.ParameterPackCase
     value: camelBack
   - key: readability-identifier-naming.PointerParameterCase
-    value: CamelCase
+    value: camelBack
   - key: readability-identifier-naming.PointerParameterPrefix
-    value: "p"
+    value: ''
   - key: readability-identifier-naming.PrivateMemberCase
     value: camelBack
   - key: readability-identifier-naming.PrivateMemberPrefix
-    value: "m_"
+    value: 'm_'
   - key: readability-identifier-naming.PrivateMethodCase
     value: CamelCase
   - key: readability-identifier-naming.PrivateMethodPrefix
-    value: "m_"
+    value: 'm_'
   - key: readability-identifier-naming.ProtectedMemberCase
     value: camelBack
   - key: readability-identifier-naming.ProtectedMemberPrefix
-    value: "m_"
+    value: 'm_'
   - key: readability-identifier-naming.ProtectedMethodCase
     value: CamelCase
   - key: readability-identifier-naming.ProtectedMethodPrefix
-    value: "m_"
+    value: 'm_'
   - key: readability-identifier-naming.PublicMemberCase
     value: camelBack
   - key: readability-identifier-naming.PublicMethodCase
@@ -118,9 +118,9 @@ CheckOptions:
   - key: readability-identifier-naming.ScopedEnumConstantCase
     value: CamelCase
   - key: readability-identifier-naming.ScopedEnumConstantPrefix
-    value: "e"
+    value: ''
   - key: readability-identifier-naming.StaticConstantCase
-    value: UPPER_CASE
+    value: camelBack
   - key: readability-identifier-naming.StaticVariableCase
     value: camelBack
   - key: readability-identifier-naming.StructCase
