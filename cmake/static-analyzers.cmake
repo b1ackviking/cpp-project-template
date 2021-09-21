@@ -29,7 +29,8 @@ endif()
 if(ENABLE_INCLUDE_WHAT_YOU_USE)
   find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
   if(INCLUDE_WHAT_YOU_USE)
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE})
+    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE}
+                                       -Wno-unknown-warning-option)
     set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${CMAKE_CXX_INCLUDE_WHAT_YOU_USE})
   else()
     message(
