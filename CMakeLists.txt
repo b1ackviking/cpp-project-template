@@ -20,6 +20,9 @@ set_target_warnings(warnings)
 add_library(options INTERFACE)
 target_compile_features(options INTERFACE cxx_std_23)
 
+include(FindThreads)
+
 add_executable(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} PRIVATE warnings options)
+target_link_libraries(${PROJECT_NAME} PRIVATE warnings options
+                                              ${CMAKE_THREAD_LIBS_INIT})
 target_sources(${PROJECT_NAME} PRIVATE main.cpp)
