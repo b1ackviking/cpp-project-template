@@ -18,7 +18,7 @@ set_target_warnings(warnings)
 
 # TODO: add options
 add_library(options INTERFACE)
-target_compile_features(options INTERFACE cxx_std_23)
+target_compile_features(options INTERFACE cxx_std_20)
 
 include(FindThreads)
 
