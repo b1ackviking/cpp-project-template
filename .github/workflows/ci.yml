@@ -3,9 +3,6 @@ name: CI
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - CHANGELOG.md
-      - .cz.yaml
   pull_request:
     branches: [main]
 
