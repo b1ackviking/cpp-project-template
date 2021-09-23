@@ -1,3 +1,23 @@
+## 0.2.0 (2021-09-24)
+
+### Feat
+
+- **cmake**: add gcc toolchain
+- **cmake**: add clang toolchain
+- **pre-commit**: add a cmake-format configuration
+- **pre-commit**: add cmake-lint hook
+
+### Fix
+
+- **cmake**: gcc warnings
+- **pre-commit**: disable cmake-lint
+
+### Refactor
+
+- **cmake**: style changes in the warnings
+- **cmake**: cmake-lint errors in the cache.cmake
+- **cmake**: cmake-lint errors in the defaults
+
 ## 0.1.0 (2021-09-22)
 
 ### Fix
