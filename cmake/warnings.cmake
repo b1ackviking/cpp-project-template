@@ -64,7 +64,7 @@ function(set_target_warnings target_name)
   endif()
 
   set(gcc_warnings
-      ${clang_warningS}
+      ${clang_warnings}
       -Wmisleading-indentation # warn if indentation implies blocks where blocks
                                # do not exist
       -Wduplicated-cond # warn if if / else chain has duplicated conditions
