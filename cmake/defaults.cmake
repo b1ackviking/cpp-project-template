@@ -26,19 +26,15 @@ if(ENABLE_IPO)
     message(SEND_ERROR "IPO is not supported: ${output}")
   endif()
 endif()
+
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
   add_compile_options(-fcolor-diagnostics)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   add_compile_options(-fdiagnostics-color=always)
-else()
-  message(
-    STATUS
-      "No colored compiler diagnostic set for '${CMAKE_CXX_COMPILER_ID}' compiler."
-  )
 endif()
 
 # This function will prevent in-source builds
-function(AssureOutOfSourceBuilds)
+function(assure_out_of_source_builds)
   # make sure the user doesn't play dirty with symlinks
   get_filename_component(srcdir "${CMAKE_SOURCE_DIR}" REALPATH)
   get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
@@ -52,4 +48,4 @@ function(AssureOutOfSourceBuilds)
     message(FATAL_ERROR "Quitting configuration")
   endif()
 endfunction()
-assureoutofsourcebuilds()
+assure_out_of_source_builds()
