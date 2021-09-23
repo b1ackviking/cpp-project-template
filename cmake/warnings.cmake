@@ -1,10 +1,8 @@
-# see:
-# https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
-
+# Apply the default set of warnings to the target
 function(set_target_warnings target_name)
   option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 
-  set(MSVC_WARNINGS
+  set(msvc_warnings
       /W4 # Baseline reasonable warnings
       /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss
               # of data
@@ -38,7 +36,7 @@ function(set_target_warnings target_name)
       /permissive- # standards conformance mode for MSVC compiler.
   )
 
-  set(CLANG_WARNINGS
+  set(clang_warnings
       -Wall
       -Wextra # reasonable and standard
       -Wshadow # warn the user if a variable declaration shadows one from a
@@ -61,12 +59,12 @@ function(set_target_warnings target_name)
   )
 
   if(WARNINGS_AS_ERRORS)
-    set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
-    set(MSVC_WARNINGS ${MSVC_WARNINGS} /WX)
+    list(APPEND clang_warnings -Werror)
+    list(APPEND msvc_warnings /WX)
   endif()
 
-  set(GCC_WARNINGS
-      ${CLANG_WARNINGS}
+  set(gcc_warnings
+      ${clang_warningS}
       -Wmisleading-indentation # warn if indentation implies blocks where blocks
                                # do not exist
       -Wduplicated-cond # warn if if / else chain has duplicated conditions
@@ -77,17 +75,16 @@ function(set_target_warnings target_name)
   )
 
   if(MSVC)
-    set(PROJECT_WARNINGS ${MSVC_WARNINGS})
+    set(warnings ${msvc_warnings})
   elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    set(PROJECT_WARNINGS ${CLANG_WARNINGS})
+    set(warnings ${clang_warnings})
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(PROJECT_WARNINGS ${GCC_WARNINGS})
+    set(warnings ${gcc_warnings})
   else()
     message(
       AUTHOR_WARNING
         "No compiler warnings set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
   endif()
 
-  target_compile_options(${target_name} INTERFACE ${PROJECT_WARNINGS})
-
+  target_compile_options(${target_name} INTERFACE ${warnings})
 endfunction()
