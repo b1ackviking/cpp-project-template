@@ -1,3 +1,9 @@
+## 0.2.1 (2021-09-28)
+
+### Fix
+
+- **clang-tidy**: google-runtime-int use std::(u)int
+
 ## 0.2.0 (2021-09-24)
 
 ### Feat
