@@ -58,7 +58,7 @@ CheckOptions:
   - key: readability-identifier-naming.EnumConstantCase
     value: CamelCase
   - key: readability-identifier-naming.EnumConstantPrefix
-    value: ''
+    value: 'e'
   - key: readability-identifier-naming.FunctionCase
     value: CamelCase
   - key: readability-identifier-naming.GlobalConstantCase
@@ -122,7 +122,7 @@ CheckOptions:
   - key: readability-identifier-naming.ScopedEnumConstantCase
     value: CamelCase
   - key: readability-identifier-naming.ScopedEnumConstantPrefix
-    value: ''
+    value: 'e'
   - key: readability-identifier-naming.StaticConstantCase
     value: camelBack
   - key: readability-identifier-naming.StaticVariableCase
