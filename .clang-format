@@ -74,11 +74,11 @@ ForEachMacros:
   - RANGES_FOR
 IncludeBlocks: Regroup
 IncludeCategories: # the order of declaration matters!
-  - Regex:           '^([<|"](gtest|gmock)/).*'
+  - Regex:           '.(gtest|gmock)\/.+'
     Priority:        2
-  - Regex:           '<[[:alnum:].]+>'
+  - Regex:           '<.+>'
     Priority:        3
-  - Regex:           '.*'
+  - Regex:           '".*"'
     Priority:        1
 IncludeIsMainRegex: '(Test|-test|_test)?$'
 IncludeIsMainSourceRegex: '(Impl\.hpp)$'
