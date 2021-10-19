@@ -66,12 +66,7 @@ DisableFormat: false
 EmptyLineBeforeAccessModifier: LogicalBlock
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
-ForEachMacros:
-  - foreach
-  - FOREACH
-  - Q_FOREACH
-  - BOOST_FOREACH
-  - RANGES_FOR
+ForEachMacros: []
 IncludeBlocks: Regroup
 IncludeCategories: # the order of declaration matters!
   - Regex:           '.(gtest|gmock)\/.+'
@@ -154,9 +149,7 @@ SpacesInParentheses: false
 SpacesInSquareBrackets: false
 Standard: Latest
 StatementAttributeLikeMacros: []
-StatementMacros:
-  - Q_UNUSED
-  - QT_REQUIRE_VERSION
+StatementMacros: []
 TabWidth: 2
 TypenameMacros: []
 UseCRLF: false
