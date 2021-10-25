@@ -13,12 +13,16 @@ CheckOptions:
     value: 'true'
   - key: cppcoreguidelines-narrowing-conversions.PedanticMode
     value: 'true'
+  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value: 'true'
   - key: google-runtime-int.UnsignedTypePrefix
     value: 'std::uint'
   - key: google-runtime-int.SignedTypePrefix
     value: 'std::int'
   - key: google-runtime-int.TypeSuffix
     value: '_t'
+  - key: hicpp-special-member-functions.AllowSoleDefaultDtor
+    value: 'true'
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value: 'true'
   - key: cert-dcl16-c.NewSuffixes
