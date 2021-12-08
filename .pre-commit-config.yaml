@@ -27,11 +27,10 @@ repos:
     rev: v0.6.13
     hooks:
     - id: cmake-format
-  - repo: https://github.com/pocc/pre-commit-hooks.git
-    rev: v1.3.4
+  - repo: https://github.com/doublify/pre-commit-clang-format
+    rev: 62302476d0da01515660132d76902359bed0f782
     hooks:
     - id: clang-format
-      args: [-i]
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v2.20.0
     hooks:
