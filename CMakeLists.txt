@@ -8,19 +8,14 @@ project(
   LANGUAGES CXX)
 
 include(cmake/defaults.cmake)
-include(cmake/cache.cmake)
-include(cmake/static-analyzers.cmake)
-include(cmake/warnings.cmake)
-# TODO: add sanitizers support
+include(FindThreads)
 
 add_library(warnings INTERFACE)
 set_target_warnings(warnings)
 
-# TODO: add options
 add_library(options INTERFACE)
 target_compile_features(options INTERFACE cxx_std_23)
-
-include(FindThreads)
+enable_sanitizers(options)
 
 add_executable(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PRIVATE warnings options
