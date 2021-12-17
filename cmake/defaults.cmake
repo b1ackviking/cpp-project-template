@@ -26,7 +26,7 @@ function(assure_out_of_source_builds)
   get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
 
   # disallow in-source builds
-  if("${srcdir}" STREQUAL "${bindir}")
+  if(srcdir STREQUAL bindir)
     message("######################################################")
     message("Warning: in-source builds are disabled")
     message("Please create a separate build directory and run cmake from there")
@@ -271,7 +271,7 @@ function(enable_sanitizers target_name)
 
   list(JOIN sanitizers "," list_of_sanitizers)
   if(list_of_sanitizers)
-    if(NOT "${list_of_sanitizers}" STREQUAL "")
+    if(NOT list_of_sanitizers STREQUAL "")
       target_compile_options(${target_name}
                              INTERFACE -fsanitize=${list_of_sanitizers})
       target_link_options(${target_name} INTERFACE
