@@ -36,10 +36,6 @@ function(assure_out_of_source_builds)
 endfunction()
 assure_out_of_source_builds()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
-                                           ".*Clang")
-  option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
-endif()
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck" OFF)
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy" OFF)
 option(ENABLE_INCLUDE_WHAT_YOU_USE
@@ -51,11 +47,17 @@ option(ENABLE_CACHE "Enable cache if available" OFF)
 option(ENABLE_DOXYGEN "Enable doxygen doc builds of source" OFF)
 option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 option(ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF)
-option(ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
-option(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-       "Enable undefined behavior sanitizer" OFF)
-option(ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
-option(ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
+                                           ".*Clang")
+  option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
+  option(ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
+  option(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+         "Enable undefined behavior sanitizer" OFF)
+  option(ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
+  if(MAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    option(ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
+  endif()
+endif()
 
 if(ENABLE_COVERAGE)
   target_compile_options(${project_name} INTERFACE --coverage -O0 -g)
@@ -235,37 +237,34 @@ function(enable_sanitizers target_name)
     list(APPEND sanitizers "address")
   endif()
 
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
-                                             ".*Clang")
-    if(ENABLE_SANITIZER_LEAK)
-      list(APPEND sanitizers "leak")
-    endif()
+  if(ENABLE_SANITIZER_LEAK)
+    list(APPEND sanitizers "leak")
+  endif()
 
-    if(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
-      list(APPEND sanitizers "undefined")
-    endif()
+  if(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
+    list(APPEND sanitizers "undefined")
+  endif()
 
-    if(ENABLE_SANITIZER_THREAD)
-      if("address" IN_LIST sanitizers OR "leak" IN_LIST sanitizers)
-        message(WARNING "Thread sanitizer does not work with Address"
-                        "and Leak sanitizer enabled")
-      else()
-        list(APPEND sanitizers "thread")
-      endif()
+  if(ENABLE_SANITIZER_THREAD)
+    if("address" IN_LIST sanitizers OR "leak" IN_LIST sanitizers)
+      message(WARNING "Thread sanitizer does not work with Address"
+                      "and Leak sanitizer enabled")
+    else()
+      list(APPEND sanitizers "thread")
     endif()
+  endif()
 
-    if(ENABLE_SANITIZER_MEMORY AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-      message(
-        WARNING "Memory sanitizer requires all the code (including libc++)"
-                "to be MSan-instrumented otherwise it reports false positives")
-      if("address" IN_LIST sanitizers
-         OR "thread" IN_LIST sanitizers
-         OR "leak" IN_LIST sanitizers)
-        message(WARNING "Memory sanitizer does not work with Address,"
-                        "Thread and Leak sanitizer enabled")
-      else()
-        list(APPEND sanitizers "memory")
-      endif()
+  if(ENABLE_SANITIZER_MEMORY)
+    message(
+      WARNING "Memory sanitizer requires all the code (including libc++)"
+              "to be MSan-instrumented otherwise it reports false positives")
+    if("address" IN_LIST sanitizers
+       OR "thread" IN_LIST sanitizers
+       OR "leak" IN_LIST sanitizers)
+      message(WARNING "Memory sanitizer does not work with Address,"
+                      "Thread and Leak sanitizer enabled")
+    else()
+      list(APPEND sanitizers "memory")
     endif()
   endif()
 
