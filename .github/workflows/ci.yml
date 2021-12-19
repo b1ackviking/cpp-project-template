@@ -21,17 +21,17 @@ jobs:
           - {
               name: "Build: Windows MSVC",
               os: windows-2022,
-              cc: "cl", cxx: "cl"
+              toolchain: cmake/msvc.cmake
             }
           - {
               name: "Build: Linux GCC",
               os: ubuntu-latest,
-              cc: "gcc", cxx: "g++"
+              toolchain: cmake/gcc.cmake
             }
           - {
               name: "Build: Linux Clang",
               os: ubuntu-latest,
-              cc: "clang", cxx: "clang++"
+              toolchain: cmake/clang.cmake
             }
 
     steps:
@@ -56,7 +56,7 @@ jobs:
         run: cmake -E make_directory ${{ github.workspace }}/build
 
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} -D CMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} -D CMAKE_C_COMPILER=${{ matrix.config.cc }} -D CMAKE_CXX_COMPILER=${{ matrix.config.cxx }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
