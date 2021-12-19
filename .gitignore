@@ -3,3 +3,5 @@
 .vs/
 .vscode/
 build/
+CMakeSettings.json
+CMakeUserPresets.json
