@@ -1,0 +1,20 @@
+name: Check commit history
+
+on: [pull_request]
+
+jobs:
+  check-history:
+    name: Check commit history
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install commitizen
+        run: sudo pip3 install commitizen
+
+      - name: Check history
+        run: cz check --rev-range origin/${{ github.base_ref }}..origin/${{ github.head_ref }}

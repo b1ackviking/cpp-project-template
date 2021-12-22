@@ -19,17 +19,17 @@ jobs:
       matrix:
         config:
           - {
-              name: "Build: Windows MSVC",
+              name: 'Build: Windows MSVC',
               os: windows-2022,
               toolchain: cmake/msvc.cmake
             }
           - {
-              name: "Build: Linux GCC",
+              name: 'Build: Linux GCC',
               os: ubuntu-latest,
               toolchain: cmake/gcc.cmake
             }
           - {
-              name: "Build: Linux Clang",
+              name: 'Build: Linux Clang',
               os: ubuntu-latest,
               toolchain: cmake/clang.cmake
             }
