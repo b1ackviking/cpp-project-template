@@ -94,5 +94,4 @@ jobs:
         run: sudo pip3 install commitizen
 
       - name: Check history
-        # run: cz check --rev-range origin/${{ github.base_ref }}..origin/${{ github.head_ref }}
-        run: cz check --rev-range $(git merge-base --fork-point HEAD origin/main)..HEAD
+        run: cz check --rev-range origin/${{ github.base_ref }}..origin/${{ github.head_ref }}
