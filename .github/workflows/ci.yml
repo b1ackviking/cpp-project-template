@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ['*']
   pull_request:
-    branches: [main]
+    branches: ['*']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -13,10 +13,9 @@ jobs:
   build:
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
-    env:
-      BUILD_TYPE: Release
     strategy:
       matrix:
+        build-type: [Release]
         config:
           - {
               name: 'Build: Windows MSVC',
@@ -56,7 +55,43 @@ jobs:
         run: cmake -E make_directory ${{ github.workspace }}/build
 
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ matrix.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
-        run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
+        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build-type }}
+
+  pre-commit:
+    name: Check hooks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set clang-format version
+        run: |
+          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100
+          sudo update-alternatives --set clang-format /usr/bin/clang-format-12
+
+      - name: Install pre-commit
+        run: sudo pip3 install pre-commit
+
+      - name: Run hooks
+        run: pre-commit run -a
+
+  check-history:
+    if: github.event_name == 'pull_request'
+    name: Check commit history
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install commitizen
+        run: sudo pip3 install commitizen
+
+      - name: Check history
+        run: cz check --rev-range origin/${{ github.base_ref }}..origin/${{ github.head_ref }}
