@@ -1,3 +1,10 @@
+# [1.0.0](https://github.com/b1ackviking/cpp-project-template/compare/0.2.1...1.0.0) (2022-01-13)
+
+
+### Reverts
+
+* "ci: use clang-format pre-commit hook from pocc" ([b32c261](https://github.com/b1ackviking/cpp-project-template/commit/b32c26159520afcc70b3768b463abbc6a4411767))
+
 ## 0.2.1 (2021-09-28)
 
 ### Fix
