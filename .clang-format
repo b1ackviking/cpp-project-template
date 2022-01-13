@@ -1,4 +1,6 @@
 ---
+BasedOnStyle: LLVM
+---
 Language: Cpp
 AccessModifierOffset: -2
 AlignAfterOpenBracket: Align
@@ -86,20 +88,12 @@ IndentRequires: true
 IndentWidth: 2
 IndentWrappedFunctionNames: false
 InsertTrailingCommas: None
-JavaImportGroups: []
-JavaScriptQuotes: Leave
-JavaScriptWrapImports: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 NamespaceMacros: []
-ObjCBinPackProtocolList: Auto
-ObjCBlockIndentWidth: 2
-ObjCBreakBeforeNestedBlockParam: false
-ObjCSpaceAfterProperty: false
-ObjCSpaceBeforeProtocolList: false
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakComment: 300
@@ -155,4 +149,9 @@ TypenameMacros: []
 UseCRLF: false
 UseTab: Never
 WhitespaceSensitiveMacros: []
+---
+Language: JavaScript
+SpacesInContainerLiterals: false
+JavaScriptQuotes: Double
+JavaScriptWrapImports: true
 ...

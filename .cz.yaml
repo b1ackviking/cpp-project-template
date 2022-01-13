@@ -1,5 +1,0 @@
-commitizen:
-  name: cz_conventional_commits
-  tag_format: $version
-  version: 0.2.1
-  bump_message: 'bump: version $current_version → $new_version [skip ci]'

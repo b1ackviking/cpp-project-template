@@ -12,6 +12,7 @@ repos:
     - id: check-toml
     - id: check-vcs-permalinks
     - id: check-yaml
+      exclude: .clang-format
     - id: check-xml
     - id: destroyed-symlinks
     - id: detect-private-key
@@ -31,8 +32,9 @@ repos:
     rev: 62302476d0da01515660132d76902359bed0f782
     hooks:
     - id: clang-format
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v2.20.2
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v6.0.0
     hooks:
-    - id: commitizen
-      stages: [commit-msg]
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']
