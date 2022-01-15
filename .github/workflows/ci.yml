@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        build-type: [Release]
+        config:
+          - {
+              name: 'Build: Windows MSVC',
+              os: windows-2022,
+              toolchain: cmake/msvc.cmake
+            }
+          - {
+              name: 'Build: Linux GCC',
+              os: ubuntu-latest,
+              toolchain: cmake/gcc.cmake
+            }
+          - {
+              name: 'Build: Linux Clang',
+              os: ubuntu-latest,
+              toolchain: cmake/clang.cmake
+            }
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install compilers and analyzers on Linux
+        if: matrix.config.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
+          sudo update-alternatives --set gcc /usr/bin/gcc-11
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100
+          sudo update-alternatives --set clang /usr/bin/clang-12
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
+          sudo update-alternatives --set clang++ /usr/bin/clang++-12
+
+      - name: Create build environment
+        run: cmake -E make_directory ${{ github.workspace }}/build
+
+      - name: Configure
+        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ matrix.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+
+      - name: Build
+        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build-type }}
+
+  release:
+    name: Semantic release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: Install semantic-release
+        run: npm i
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: npx semantic-release
+
+  codeql:
+    name: CodeQL
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: cpp
+
+      - name: Switch to gcc-11
+        run: |
+          sudo apt install gcc-11 g++-11 -y
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
+          sudo update-alternatives --set gcc /usr/bin/gcc-11
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1

@@ -1,0 +1,19 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# When opening a file, EditorConfig plugins look for a file named .editorconfig
+# in the directory of the opened file and in every parent directory.
+# A search for .editorconfig files will stop if the root filepath is reached
+# or an EditorConfig file with root=true is found.
+root = true
+
+[**]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = true
+
+# Tab indentation (no size specified)
+[Makefile]
+indent_style = tab
