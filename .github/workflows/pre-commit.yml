@@ -2,8 +2,7 @@ name: Pre-commit
 
 on:
   push:
-    branches: ['*']
-  workflow_dispatch:
+    branches:
 
 jobs:
   pre-commit:
