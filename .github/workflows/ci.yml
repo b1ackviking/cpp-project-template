@@ -5,18 +5,15 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   build:
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
-    env:
-      BUILD_TYPE: Release
     strategy:
       matrix:
+        build-type: [Release]
         config:
           - {
               name: 'Build: Windows MSVC',
@@ -49,14 +46,12 @@ jobs:
           sudo update-alternatives --set clang /usr/bin/clang-12
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
           sudo update-alternatives --set clang++ /usr/bin/clang++-12
-          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100
-          sudo update-alternatives --set clang-format /usr/bin/clang-format-12
 
       - name: Create build environment
         run: cmake -E make_directory ${{ github.workspace }}/build
 
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.BUILD_TYPE }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ matrix.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
-        run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }}
+        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build-type }}

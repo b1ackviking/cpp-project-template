@@ -18,10 +18,9 @@ jobs:
         with:
           node-version: 16
           cache: npm
-          cache-dependency-path: package.json
 
       - name: Install commitlint
-        run: npm install
+        run: npm ci
 
       - name: Check history
         run: npx commitlint --from origin/${{ github.base_ref }} --to origin/${{ github.head_ref }}
