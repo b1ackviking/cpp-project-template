@@ -6,3 +6,4 @@ build/
 node_modules/
 CMakeSettings.json
 CMakeUserPresets.json
+package-lock.json
