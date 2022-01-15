@@ -1,0 +1,25 @@
+name: Commitlint
+
+on: [pull_request]
+
+jobs:
+  check-history:
+    name: Check commit history
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+          cache-dependency-path: package.json
+        run: npm install
+
+      - name: Check history
+        run: npx commitlint --from origin/${{ github.base_ref }} --to origin/${{ github.head_ref }}
