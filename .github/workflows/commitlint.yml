@@ -13,12 +13,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup nodejs
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 16
           cache: npm
           cache-dependency-path: package.json
+
+      - name: Install commitlint
         run: npm install
 
       - name: Check history
