@@ -11,9 +11,12 @@ jobs:
   build:
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
+    env:
+      build-dir: ${{ github.workspace }}/build
+      source-dir: ${{ github.workspace }}
+      build-type: Release
     strategy:
       matrix:
-        build-type: [Release]
         config:
           - {
               name: 'Build: Windows MSVC',
@@ -47,14 +50,11 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
           sudo update-alternatives --set clang++ /usr/bin/clang++-12
 
-      - name: Create build environment
-        run: cmake -E make_directory ${{ github.workspace }}/build
-
       - name: Configure
-        run: cmake -B ${{ github.workspace }}/build -S ${{ github.workspace }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ matrix.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
-        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.build-type }}
+        run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
 
   release:
     name: Semantic release
