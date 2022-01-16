@@ -108,3 +108,31 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+
+  analyze:
+    name: Analyze
+    runs-on: windows-latest
+    env:
+      build-dir: ${{ github.workspace }}/build
+      source-dir: ${{ github.workspace }}
+      build-type: Release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure
+        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain cmake/msvc.cmake -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+
+      - name: Run MSVC Code Analysis
+        uses: microsoft/msvc-code-analysis-action@main
+        id: run-analysis
+        with:
+          cmakeBuildDirectory: ${{ env.build-dir }}
+          buildConfiguration: ${{ env.build-type }}
+          ruleset: NativeRecommendedRules.ruleset
+
+      - name: Upload SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ${{ steps.run-analysis.outputs.sarif }}
