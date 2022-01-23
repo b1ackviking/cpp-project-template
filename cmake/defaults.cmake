@@ -44,6 +44,8 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
   add_compile_options(-fcolor-diagnostics)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   add_compile_options(-fdiagnostics-color=always)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND MSVC_VERSION GREATER 1900)
+  add_compile_options(/diagnostics:column)
 endif()
 
 # This function will prevent in-source builds
@@ -62,8 +64,6 @@ function(assure_out_of_source_builds)
   endif()
 endfunction()
 assure_out_of_source_builds()
-
-endif()
 
 if(ENABLE_CPPCHECK)
   find_program(CPPCHECK cppcheck)
