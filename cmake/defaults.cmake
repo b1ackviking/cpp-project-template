@@ -59,11 +59,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
   endif()
 endif()
 
-if(ENABLE_COVERAGE)
-  target_compile_options(${project_name} INTERFACE --coverage -O0 -g)
-  target_link_libraries(${project_name} INTERFACE --coverage)
-endif()
-
 if(ENABLE_CPPCHECK)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
@@ -228,6 +223,13 @@ function(set_target_warnings target_name)
         "No compiler warnings set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
   endif()
   target_compile_options(${target_name} INTERFACE ${warnings})
+endfunction()
+
+function(enable_coverage target_name)
+  if(ENABLE_COVERAGE)
+    target_compile_options(${target_name} INTERFACE --coverage -O0 -g)
+    target_link_libraries(${target_name} INTERFACE --coverage)
+  endif()
 endfunction()
 
 function(enable_sanitizers target_name)
