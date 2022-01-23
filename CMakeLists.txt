@@ -9,6 +9,7 @@ project(
 
 include(cmake/defaults.cmake)
 include(FindThreads)
+include(CTest)
 
 add_library(warnings INTERFACE)
 set_target_warnings(warnings)
@@ -19,3 +20,6 @@ enable_sanitizers(options)
 enable_coverage(options)
 
 add_subdirectory(src)
+if(BUILD_TESTING)
+  add_subdirectory(test)
+endif()
