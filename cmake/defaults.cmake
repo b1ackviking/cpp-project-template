@@ -24,6 +24,10 @@ endif()
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Tell find_package() to try "Config" mode before "Module" mode if no mode was
+# specified.
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
+
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(
