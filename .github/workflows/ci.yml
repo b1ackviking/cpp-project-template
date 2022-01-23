@@ -24,14 +24,14 @@ jobs:
               toolchain: cmake/msvc.cmake
             }
           - {
-              name: 'Build: Linux GCC',
+              name: 'Build: Linux GCC 11',
               os: ubuntu-latest,
-              toolchain: cmake/gcc.cmake
+              toolchain: cmake/gcc-11.cmake
             }
           - {
-              name: 'Build: Linux Clang',
+              name: 'Build: Linux Clang 12',
               os: ubuntu-latest,
-              toolchain: cmake/clang.cmake
+              toolchain: cmake/clang-12.cmake
             }
 
     steps:
