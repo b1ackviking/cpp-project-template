@@ -92,6 +92,11 @@ jobs:
   codeql:
     name: CodeQL
     runs-on: ubuntu-latest
+    env:
+      build-dir: ${{ github.workspace }}/build
+      source-dir: ${{ github.workspace }}
+      toolchain: cmake/gcc-11.cmake
+      build-type: Release
 
     steps:
       - name: Checkout repository
@@ -102,14 +107,18 @@ jobs:
         with:
           languages: cpp
 
-      - name: Switch to gcc-11
+      - name: Install dependencies
         run: |
           sudo apt install gcc-11 g++-11 -y
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
-          sudo update-alternatives --set gcc /usr/bin/gcc-11
+          sudo pip3 install conan # TODO: use cache
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
+      - name: Configure
+        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+
+      - name: Build
+        run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
@@ -125,6 +134,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      # TODO: use cache
+      - name: Install dependencies
+        run: |
+          pip install conan
+          conan profile new default --detect
 
       - name: Configure
         run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain cmake/msvc.cmake -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
