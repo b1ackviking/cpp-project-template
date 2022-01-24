@@ -20,35 +20,40 @@ jobs:
         config:
           - {
               name: 'Build: Windows MSVC',
-              os: windows-2022,
+              os: windows-latest,
               toolchain: cmake/msvc.cmake
             }
           - {
-              name: 'Build: Linux GCC',
+              name: 'Build: Linux GCC 11',
               os: ubuntu-latest,
-              toolchain: cmake/gcc.cmake
+              toolchain: cmake/gcc-11.cmake
             }
           - {
-              name: 'Build: Linux Clang',
+              name: 'Build: Linux Clang 12',
               os: ubuntu-latest,
-              toolchain: cmake/clang.cmake
+              toolchain: cmake/clang-12.cmake
             }
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install compilers and analyzers on Linux
+      # TODO: use cache for Conan packages
+
+      - name: Install dependencies on Linux
         if: matrix.config.os == 'ubuntu-latest'
         run: |
           sudo apt update
           sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
-          sudo update-alternatives --set gcc /usr/bin/gcc-11
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100
-          sudo update-alternatives --set clang /usr/bin/clang-12
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100
-          sudo update-alternatives --set clang++ /usr/bin/clang++-12
+          sudo pip3 install conan
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Install dependencies on Windows
+        if: matrix.config.os == 'windows-latest'
+        run: |
+          pip install conan
+          conan profile new default --detect
 
       - name: Configure
         run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
@@ -87,6 +92,11 @@ jobs:
   codeql:
     name: CodeQL
     runs-on: ubuntu-latest
+    env:
+      build-dir: ${{ github.workspace }}/build
+      source-dir: ${{ github.workspace }}
+      toolchain: cmake/gcc-11.cmake
+      build-type: Release
 
     steps:
       - name: Checkout repository
@@ -97,14 +107,18 @@ jobs:
         with:
           languages: cpp
 
-      - name: Switch to gcc-11
+      - name: Install dependencies
         run: |
           sudo apt install gcc-11 g++-11 -y
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
-          sudo update-alternatives --set gcc /usr/bin/gcc-11
+          sudo pip3 install conan # TODO: use cache
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
+      - name: Configure
+        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+
+      - name: Build
+        run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
@@ -120,6 +134,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      # TODO: use cache
+      - name: Install dependencies
+        run: |
+          pip install conan
+          conan profile new default --detect
 
       - name: Configure
         run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain cmake/msvc.cmake -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
