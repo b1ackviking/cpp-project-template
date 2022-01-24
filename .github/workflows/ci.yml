@@ -20,7 +20,7 @@ jobs:
         config:
           - {
               name: 'Build: Windows MSVC',
-              os: windows-2022,
+              os: windows-latest,
               toolchain: cmake/msvc.cmake
             }
           - {
@@ -50,7 +50,7 @@ jobs:
           conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Install dependencies on Windows
-        if: matrix.config.os == 'windows-2022'
+        if: matrix.config.os == 'windows-latest'
         run: |
           pip install conan
           conan profile new default --detect
