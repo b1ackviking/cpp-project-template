@@ -40,23 +40,29 @@ jobs:
 
       # TODO: use cache for Conan packages
 
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          cache: pipenv
+
+      - name: Install Python dependencies
+        run: |
+          pipx install pipenv
+          pipenv install --dev
+          pipenv run conan profile new default --detect
+
+      - name: Update the default Conan profile on Linux
+        if: matrix.config.os == 'ubuntu-latest'
+        run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
+
       - name: Install dependencies on Linux
         if: matrix.config.os == 'ubuntu-latest'
         run: |
           sudo apt update
           sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
-          sudo pip3 install conan
-          conan profile new default --detect
-          conan profile update settings.compiler.libcxx=libstdc++11 default
-
-      - name: Install dependencies on Windows
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          pip install conan
-          conan profile new default --detect
 
       - name: Configure
-        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ matrix.config.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
@@ -106,15 +112,23 @@ jobs:
         with:
           languages: cpp
 
-      - name: Install dependencies
+      - name: Install GCC 11
+        run: sudo apt install gcc-11 g++-11 -y
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          cache: pipenv
+
+      - name: Install Python dependencies
         run: |
-          sudo apt install gcc-11 g++-11 -y
-          sudo pip3 install conan # TODO: use cache
-          conan profile new default --detect
-          conan profile update settings.compiler.libcxx=libstdc++11 default
+          pipx install pipenv
+          pipenv install --dev
+          pipenv run conan profile new default --detect
+          pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Configure
-        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
@@ -134,14 +148,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # TODO: use cache
-      - name: Install dependencies
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          cache: pipenv
+
+      - name: Install Python dependencies
         run: |
-          pip install conan
-          conan profile new default --detect
+          pipx install pipenv
+          pipenv install --dev
+          pipenv run conan profile new default --detect
 
       - name: Configure
-        run: cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain cmake/msvc.cmake -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain cmake/msvc.cmake -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
