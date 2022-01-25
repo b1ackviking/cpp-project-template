@@ -79,10 +79,9 @@ jobs:
         with:
           node-version: 16
           cache: npm
-          cache-dependency-path: package.json
 
       - name: Install semantic-release
-        run: npm i
+        run: npm ci
 
       - name: Run semantic-release
         env:
