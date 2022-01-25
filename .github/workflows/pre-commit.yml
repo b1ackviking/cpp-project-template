@@ -18,8 +18,15 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100
           sudo update-alternatives --set clang-format /usr/bin/clang-format-12
 
-      - name: Install pre-commit
-        run: sudo pip3 install pre-commit
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          cache: pipenv
+
+      - name: Install Python dependencies
+        run: |
+          pipx install pipenv
+          pipenv install --dev
 
       - name: Run hooks
-        run: pre-commit run -a
+        run: pipenv run pre-commit run -a
