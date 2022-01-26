@@ -38,7 +38,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # TODO: use cache for Conan packages
+      - name: Set environment variables
+        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
+
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          key: conandata-${{ runner.os }}-${{ matrix.config.toolchain }}-${{ hashFiles('conanfile.txt') }}
+          restore-keys: |
+            conandata-${{ runner.os }}-${{ matrix.config.toolchain }}-
+            conandata-${{ runner.os }}-
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -107,6 +117,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set environment variables
+        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
+
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          key: conandata-${{ runner.os }}-${{ env.toolchain }}-${{ hashFiles('conanfile.txt') }}
+          restore-keys: |
+            conandata-${{ runner.os }}-${{ env.toolchain }}-
+            conandata-${{ runner.os }}-
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
@@ -142,11 +164,24 @@ jobs:
     env:
       build-dir: ${{ github.workspace }}/build
       source-dir: ${{ github.workspace }}
+      toolchain: cmake/msvc.cmake
       build-type: Release
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set environment variables
+        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
+
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          key: conandata-${{ runner.os }}-${{ env.toolchain }}-${{ hashFiles('conanfile.txt') }}
+          restore-keys: |
+            conandata-${{ runner.os }}-${{ env.toolchain }}-
+            conandata-${{ runner.os }}-
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -160,7 +195,7 @@ jobs:
           pipenv run conan profile new default --detect
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain cmake/msvc.cmake -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
