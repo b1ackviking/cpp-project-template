@@ -9,6 +9,7 @@ name = "pypi"
 pre-commit = "*"
 cmakelang = "*"
 conan = "*"
+ninja = "*"
 
 [requires]
 python_version = "3.10"
