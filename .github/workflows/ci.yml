@@ -74,6 +74,10 @@ jobs:
           sudo apt update
           sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
 
+      - name: Set up Visual Studio shell
+        if: matrix.config.os == 'windows-latest'
+        uses: egor-tensin/vs-shell@v2
+
       - name: Configure
         run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ matrix.config.toolchain }} -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
@@ -194,6 +198,9 @@ jobs:
           pipx install pipenv
           pipenv install --dev
           pipenv run conan profile new default --detect
+
+      - name: Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v2
 
       - name: Configure
         run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
