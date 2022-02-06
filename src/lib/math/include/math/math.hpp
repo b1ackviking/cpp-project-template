@@ -5,7 +5,7 @@ namespace math {
 inline
 #endif
   namespace v1 {
-constexpr auto fib(unsigned n) {
+constexpr auto fib(unsigned long long n) {
   if (n < 2)
     return n;
   return fib(n - 1) + fib(n - 2);
@@ -16,12 +16,12 @@ constexpr auto fib(unsigned n) {
 inline
 #endif
   namespace v2 {
-constexpr auto fib(unsigned n) {
+constexpr auto fib(unsigned long long n) {
   struct V {
-    unsigned v[2]{};
+    unsigned long long v[2]{};
   };
   struct M {
-    unsigned m[2][2]{};
+    unsigned long long m[2][2]{};
     constexpr M operator*(const M& r) const noexcept {
       return M{{
         {m[0][0] * r.m[0][0] + m[0][1] * r.m[1][0],

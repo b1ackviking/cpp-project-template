@@ -2,7 +2,7 @@
 
 #include <math/math.hpp>
 
-TEST(Math, Fibonacci) {
+TEST(Math, FibonacciWorks) {
   using math::fib;
   EXPECT_EQ(fib(0), 0u);
   EXPECT_EQ(fib(1), 1u);
@@ -52,4 +52,12 @@ TEST(Math, Fibonacci) {
   EXPECT_EQ(fib(45), 1134903170u);
   EXPECT_EQ(fib(46), 1836311903u);
   EXPECT_EQ(fib(47), 2971215073u);
+  EXPECT_EQ(fib(48), 4807526976u);
+  EXPECT_EQ(fib(49), 7778742049u);
+}
+
+TEST(Math, DifferentFibonacciVersionsProduceEqualResults) {
+  using namespace math;
+  for (unsigned long long i{}; i < 50; ++i)
+    EXPECT_EQ(v1::fib(i), v2::fib(i));
 }
