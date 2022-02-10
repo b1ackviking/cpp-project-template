@@ -1,5 +1,5 @@
 ---
-Checks: '*,-abseil-*,abseil-no-namespace,-altera-struct-pack-align,-altera-unroll-loops,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-type-vararg,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-build-using-namespace,-google-readability-braces-around-statements,-google-readability-todo,-google-runtime-references,-hicpp-braces-around-statements,-hicpp-vararg,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-braces-around-statements,-readability-named-parameter,-hicpp-named-parameter'
+Checks: '*,-abseil-*,abseil-no-namespace,-altera-struct-pack-align,-altera-unroll-loops,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-readability-todo,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-named-parameter,-hicpp-named-parameter'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -25,7 +25,7 @@ CheckOptions:
     value: 'true'
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value: 'true'
-  - key: cert-dcl16-c.NewSuffixes
+  - key: readability-uppercase-literal-suffix.NewSuffixes
     value: 'L;LL;LU;LLU'
   - key: readability-identifier-naming.AbstractClassCase
     value: CamelCase
