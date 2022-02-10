@@ -13,11 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set clang-format version
-        run: |
-          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100
-          sudo update-alternatives --set clang-format /usr/bin/clang-format-12
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
