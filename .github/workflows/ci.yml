@@ -39,6 +39,13 @@ jobs:
               profile: conan/clang-13
             }
           - {
+              name: 'Build: Macos Clang 13',
+              os: macos-latest,
+              cc: clang,
+              cxx: clang++,
+              profile: conan/clang-13
+            }
+          - {
               name: 'Build: Linux GCC 11',
               os: ubuntu-latest,
               cc: gcc-11,
@@ -59,6 +66,12 @@ jobs:
 
       - name: Set environment variables
         run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
+
+      - name: Select LLVM Clang on Macos
+        if: matrix.config.os == 'macos-latest' && matrix.config.profile == 'conan/clang-13'
+        run: |
+          echo CC=$(brew --prefix llvm)/bin/clang >> ${{ github.env }}
+          echo CXX=$(brew --prefix llvm)/bin/clang++ >> ${{ github.env }}
 
       - name: Set up Visual Studio shell
         if: matrix.config.os == 'windows-2022'
@@ -81,13 +94,17 @@ jobs:
           pipenv install --dev
           pipenv run conan profile new default --detect
 
-      - name: Update the default Conan profile on Linux
-        if: matrix.config.os == 'ubuntu-latest'
-        run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
-
       - name: Update the default Conan profile on Windows
         if: matrix.config.os == 'windows-2022' && matrix.config.profile == 'conan/clang-13'
         run: pipenv run conan profile update settings.compiler.libcxx=None default
+
+      - name: Update the default Conan profile on Macos
+        if: matrix.config.os == 'macos-latest'
+        run: pipenv run conan profile update settings.compiler.libcxx=libc++ default
+
+      - name: Update the default Conan profile on Linux
+        if: matrix.config.os == 'ubuntu-latest'
+        run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Cache Conan packages
         uses: actions/cache@v2
