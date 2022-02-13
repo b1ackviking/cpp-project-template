@@ -119,7 +119,7 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -pr:h conan/${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
@@ -199,7 +199,7 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
@@ -247,7 +247,7 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
