@@ -5,6 +5,7 @@ class Example(ConanFile):
   settings = "os", "arch", "compiler", "build_type"
 
   def requirements(self):
+    self.requires("fmt/8.1.1")
     self.requires("gtest/1.11.0")
 
   def generate(self):
