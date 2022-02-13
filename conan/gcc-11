@@ -1,0 +1,3 @@
+[settings]
+compiler=gcc
+compiler.version=11
