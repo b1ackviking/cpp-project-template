@@ -21,6 +21,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
   endif()
 endif()
 
+# Assume that Conan generates FindXXX.cmake files in the binary dir
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -64,54 +68,6 @@ function(assure_out_of_source_builds)
   endif()
 endfunction()
 assure_out_of_source_builds()
-
-if(NOT EXISTS ${CMAKE_BINARY_DIR}/conan.cmake)
-  message(
-    STATUS
-      "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(
-    DOWNLOAD
-    https://raw.githubusercontent.com/conan-io/cmake-conan/0.17.0/conan.cmake
-    ${CMAKE_BINARY_DIR}/conan.cmake
-    EXPECTED_HASH
-      SHA256=3bef79da16c2e031dc429e1dac87a08b9226418b300ce004cc125a82687baeef
-    TLS_VERIFY ON)
-endif()
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-
-function(run_conan)
-  # For multi configuration generators, like VS, XCode, Ninja Multi-Config
-  if(NOT CMAKE_CONFIGURATION_TYPES)
-    message(STATUS "Single configuration build: '${CMAKE_BUILD_TYPE}'")
-    set(LIST_OF_BUILD_TYPES ${CMAKE_BUILD_TYPE})
-  else()
-    message(STATUS "Multi-configuration build: '${CMAKE_CONFIGURATION_TYPES}'")
-    set(LIST_OF_BUILD_TYPES ${CMAKE_CONFIGURATION_TYPES})
-  endif()
-
-  foreach(TYPE ${LIST_OF_BUILD_TYPES})
-    message(STATUS "Running Conan for build type '${TYPE}'")
-    conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
-    conan_cmake_install(
-      PATH_OR_REFERENCE
-      ${CMAKE_SOURCE_DIR}
-      BUILD
-      missing
-      ENV
-      CC=${CMAKE_C_COMPILER}
-      CXX=${CMAKE_CXX_COMPILER}
-      SETTINGS
-      ${settings}
-      PROFILE_BUILD
-      default
-      GENERATOR
-      CMakeDeps)
-  endforeach()
-endfunction()
-run_conan()
 
 if(ENABLE_CPPCHECK)
   find_program(CPPCHECK cppcheck)
