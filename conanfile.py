@@ -10,8 +10,6 @@ class Example(ConanFile):
   def generate(self):
     deps = CMakeDeps(self)
     deps.generate()
-    tc = CMakeToolchain(self)
-    tc.generate()
 
   def build(self):
     cmake = CMake(self)

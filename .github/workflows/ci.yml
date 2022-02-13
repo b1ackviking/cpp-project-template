@@ -8,8 +8,9 @@ on:
   workflow_dispatch:
 
 env:
-  generator: Ninja
-  build-type: Release
+  CONAN_CMAKE_GENERATOR: Ninja
+  CMAKE_GENERATOR: Ninja
+  CMAKE_BUILD_TYPE: Release
   source-dir: ${{ github.workspace }}
   build-dir: ${{ github.workspace }}/build
 
@@ -87,13 +88,13 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -pr:h conan/${{ env.build-type }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -pr:h conan/${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
+        run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
 
   release:
     name: Semantic release
@@ -167,13 +168,13 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.build-type }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
+        run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
@@ -215,17 +216,17 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.build-type }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
         id: run-analysis
         with:
           cmakeBuildDirectory: ${{ env.build-dir }}
-          buildConfiguration: ${{ env.build-type }}
+          buildConfiguration: ${{ env.CMAKE_BUILD_TYPE }}
           ruleset: NativeRecommendedRules.ruleset
 
       - name: Upload SARIF to GitHub
