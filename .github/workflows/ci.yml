@@ -10,31 +10,39 @@ on:
 env:
   generator: Ninja
   build-type: Release
+  source-dir: ${{ github.workspace }}
+  build-dir: ${{ github.workspace }}/build
 
 jobs:
   build:
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
     env:
-      build-dir: ${{ github.workspace }}/build
-      source-dir: ${{ github.workspace }}
+      CC: ${{ matrix.config.cc }}
+      CXX: ${{ matrix.config.cxx }}
     strategy:
       matrix:
         config:
           - {
               name: 'Build: Windows MSVC',
-              os: windows-latest,
-              toolchain: cmake/msvc.cmake
+              os: windows-2022,
+              cc: cl,
+              cxx: cl,
+              profile: conan/vs-17-md
             }
           - {
               name: 'Build: Linux GCC 11',
               os: ubuntu-latest,
-              toolchain: cmake/gcc-11.cmake
+              cc: gcc-11,
+              cxx: g++-11,
+              profile: conan/gcc-11
             }
           - {
               name: 'Build: Linux Clang 12',
               os: ubuntu-latest,
-              toolchain: cmake/clang-12.cmake
+              cc: clang-12,
+              cxx: clang++-12,
+              profile: conan/clang-12
             }
 
     steps:
@@ -44,14 +52,15 @@ jobs:
       - name: Set environment variables
         run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
-      - name: Cache Conan packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ matrix.config.toolchain }}-${{ hashFiles('conanfile.txt') }}
-          restore-keys: |
-            conandata-${{ runner.os }}-${{ matrix.config.toolchain }}-
-            conandata-${{ runner.os }}-
+      - name: Set up Visual Studio shell
+        if: matrix.config.os == 'windows-2022'
+        uses: egor-tensin/vs-shell@v2
+
+      - name: Install dependencies on Linux
+        if: matrix.config.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -68,18 +77,20 @@ jobs:
         if: matrix.config.os == 'ubuntu-latest'
         run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
-      - name: Install dependencies on Linux
-        if: matrix.config.os == 'ubuntu-latest'
-        run: |
-          sudo apt update
-          sudo apt install gcc-11 g++-11 cppcheck iwyu -y # TODO: clang-tidy
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ hashFiles('conanfile.py') }}
+          restore-keys: |
+            conandata-${{ runner.os }}-${{ matrix.config.profile }}-
+            conandata-${{ runner.os }}-
 
-      - name: Set up Visual Studio shell
-        if: matrix.config.os == 'windows-latest'
-        uses: egor-tensin/vs-shell@v2
+      - name: Install Conan packages
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -pr:h conan/${{ env.build-type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ matrix.config.toolchain }} -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
@@ -115,30 +126,21 @@ jobs:
     name: CodeQL
     runs-on: ubuntu-latest
     env:
-      build-dir: ${{ github.workspace }}/build
-      source-dir: ${{ github.workspace }}
-      toolchain: cmake/gcc-11.cmake
+      profile: conan/gcc-11
+      CC: gcc-11
+      CXX: g++-11
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set environment variables
-        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
-
-      - name: Cache Conan packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ env.toolchain }}-${{ hashFiles('conanfile.txt') }}
-          restore-keys: |
-            conandata-${{ runner.os }}-${{ env.toolchain }}-
-            conandata-${{ runner.os }}-
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
           languages: cpp
+
+      - name: Set environment variables
+        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
       - name: Install GCC 11
         run: sudo apt install gcc-11 g++-11 -y
@@ -155,8 +157,20 @@ jobs:
           pipenv run conan profile new default --detect
           pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          key: conandata-${{ runner.os }}-${{ env.profile }}-${{ hashFiles('conanfile.py') }}
+          restore-keys: |
+            conandata-${{ runner.os }}-${{ env.profile }}-
+            conandata-${{ runner.os }}-
+
+      - name: Install Conan packages
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.build-type }}
+
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.build-type }}
@@ -166,11 +180,9 @@ jobs:
 
   analyze:
     name: Analyze
-    runs-on: windows-latest
+    runs-on: windows-2022
     env:
-      build-dir: ${{ github.workspace }}/build
-      source-dir: ${{ github.workspace }}
-      toolchain: cmake/msvc.cmake
+      profile: conan/vs-17-md
 
     steps:
       - name: Checkout repository
@@ -179,14 +191,8 @@ jobs:
       - name: Set environment variables
         run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
-      - name: Cache Conan packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ env.toolchain }}-${{ hashFiles('conanfile.txt') }}
-          restore-keys: |
-            conandata-${{ runner.os }}-${{ env.toolchain }}-
-            conandata-${{ runner.os }}-
+      - name: Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v2
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -199,11 +205,20 @@ jobs:
           pipenv install --dev
           pipenv run conan profile new default --detect
 
-      - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v2
+      - name: Cache Conan packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          key: conandata-${{ runner.os }}-${{ env.profile }}-${{ hashFiles('conanfile.py') }}
+          restore-keys: |
+            conandata-${{ runner.os }}-${{ env.profile }}-
+            conandata-${{ runner.os }}-
+
+      - name: Install Conan packages
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -pr:h conan/${{ env.build-type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.toolchain }} -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -G ${{ env.generator }} -D CMAKE_BUILD_TYPE:STRING=${{ env.build-type }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
