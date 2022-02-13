@@ -32,6 +32,13 @@ jobs:
               profile: conan/vs-17-md
             }
           - {
+              name: 'Build: Windows Clang',
+              os: windows-2022,
+              cc: clang,
+              cxx: clang++,
+              profile: conan/clang-13
+            }
+          - {
               name: 'Build: Linux GCC 11',
               os: ubuntu-latest,
               cc: gcc-11,
@@ -77,6 +84,10 @@ jobs:
       - name: Update the default Conan profile on Linux
         if: matrix.config.os == 'ubuntu-latest'
         run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Update the default Conan profile on Windows
+        if: matrix.config.os == 'windows-2022' && matrix.config.profile == 'conan/clang-13'
+        run: pipenv run conan profile update settings.compiler.libcxx=None default
 
       - name: Cache Conan packages
         uses: actions/cache@v2
