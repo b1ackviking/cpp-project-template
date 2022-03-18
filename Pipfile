@@ -12,6 +12,7 @@ conan = "*"
 ninja = "*"
 cmake = "*"
 clang-format = "*"
+gcovr = "*"
 
 [requires]
 python_version = "3.10"
