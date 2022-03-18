@@ -113,8 +113,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ hashFiles('conanfile.py') }}
+          key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build-type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
+            conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build-type }}-
             conandata-${{ runner.os }}-${{ matrix.config.profile }}-
             conandata-${{ runner.os }}-
 
@@ -206,8 +207,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ env.profile }}-${{ hashFiles('conanfile.py') }}
+          key: conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
+            conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-
             conandata-${{ runner.os }}-${{ env.profile }}-
             conandata-${{ runner.os }}-
 
@@ -254,8 +256,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ env.profile }}-${{ hashFiles('conanfile.py') }}
+          key: conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
+            conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-
             conandata-${{ runner.os }}-${{ env.profile }}-
             conandata-${{ runner.os }}-
 
