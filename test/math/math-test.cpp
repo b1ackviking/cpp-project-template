@@ -58,7 +58,7 @@ TEST(Math, FibonacciWorks) {
 }
 
 // NOLINTNEXTLINE
-TEST(Math, DifferentFibonacciVersionsProduceEqualResults) {
+TEST(Math, DISABLED_DifferentFibonacciVersionsProduceEqualResults) {
   namespace v1 = math::v1;
   namespace v2 = math::v2;
   constexpr auto MAX_ITERATIONS{50U};
