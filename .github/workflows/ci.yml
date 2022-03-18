@@ -124,6 +124,19 @@ jobs:
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
 
+      - name: Run tests
+        if: matrix.config.os != 'windows-2022' || matrix.build-type != 'Debug'
+        run: ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
+
+      - name: Collect test coverage
+        if: matrix.config.os != 'windows-2022' && matrix.build-type == 'Debug'
+        run: pipenv run gcovr
+
+      - name: Test and collect test coverage (windows)
+        if: matrix.config.os == 'windows-2022' && matrix.build-type == 'Debug'
+        run: |
+          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
+
   release:
     name: Semantic release
     runs-on: ubuntu-latest
