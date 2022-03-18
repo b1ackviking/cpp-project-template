@@ -16,44 +16,47 @@ env:
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
+    name: ${{ matrix.config.name }} ${{ matrix.build-type }}
     runs-on: ${{ matrix.config.os }}
     env:
       CC: ${{ matrix.config.cc }}
       CXX: ${{ matrix.config.cxx }}
     strategy:
       matrix:
+        build-type:
+          - Debug
+          - RelWithDebInfo
         config:
           - {
-              name: 'Build: Windows MSVC',
+              name: 'Windows MSVC',
               os: windows-2022,
               cc: cl,
               cxx: cl,
               profile: conan/vs-17-md
             }
           - {
-              name: 'Build: Windows Clang',
+              name: 'Windows Clang 13',
               os: windows-2022,
               cc: clang,
               cxx: clang++,
               profile: conan/clang-13
             }
           - {
-              name: 'Build: Macos Clang 13',
+              name: 'Macos Clang 13',
               os: macos-latest,
               cc: clang,
               cxx: clang++,
               profile: conan/clang-13
             }
           - {
-              name: 'Build: Linux GCC 11',
+              name: 'Linux GCC 11',
               os: ubuntu-latest,
               cc: gcc-11,
               cxx: g++-11,
               profile: conan/gcc-11
             }
           - {
-              name: 'Build: Linux Clang 12',
+              name: 'Linux Clang 12',
               os: ubuntu-latest,
               cc: clang-12,
               cxx: clang++-12,
@@ -116,13 +119,13 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=FALSE -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=${{ matrix.config.os == 'ubuntu-latest' }}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
+        run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }}
 
       - name: Run tests
         if: matrix.config.os != 'windows-2022' || matrix.build-type != 'Debug'
