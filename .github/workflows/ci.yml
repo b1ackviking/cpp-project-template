@@ -27,16 +27,15 @@ jobs:
     steps:
       - run: apk update
       - run: apk add gcc g++ cmake ninja git py3-pip llvm clang clang-extra-tools cppcheck include-what-you-use nodejs-current
-      - run: pip install pipenv
       - uses: actions/checkout@v2
-      - run: pipenv install --dev
-      - run: pipenv run conan profile new --detect default
-      - run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
-      - run: pipenv run conan install -if build -pr:b default -pr:h default -s build_type=Debug -b missing .
-      - run: pipenv run cmake -B build -S . --toolchain build/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=Debug
-      - run: pipenv run cmake --build build --target all --config Debug
-      - run: pipenv run ctest --test-dir build
-      - run: pipenv run gcovr
+      - run: pip install -r requirements.txt
+      - run: conan profile new --detect default
+      - run: conan profile update settings.compiler.libcxx=libstdc++11 default
+      - run: conan install -if build -pr:b default -pr:h default -s build_type=Debug -b missing .
+      - run: cmake -B build -S . --toolchain build/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=Debug
+      - run: cmake --build build --target all --config Debug
+      - run: ctest --test-dir build
+      - run: gcovr
 
   build:
     name: ${{ matrix.config.name }} ${{ matrix.build-type }}
