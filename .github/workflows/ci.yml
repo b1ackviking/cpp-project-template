@@ -165,6 +165,15 @@ jobs:
         run: |
           & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
 
+      - name: Publish test coverage to codecov
+        if: matrix.build-type == 'Debug'
+        uses: codecov/codecov-action@v2
+        with:
+          flags: ${{ matrix.config.name }}
+          name: ${{ matrix.config.name }}
+          files: coverage.xml
+          fail_ci_if_error: true
+
   release:
     name: Semantic release
     runs-on: ubuntu-latest
