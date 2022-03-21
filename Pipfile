@@ -9,9 +9,9 @@ name = "pypi"
 pre-commit = "*"
 cmakelang = "*"
 conan = "*"
-ninja = "*"
-cmake = "*"
-clang-format = "*"
+# ninja = "*"
+# cmake = "*"
+# clang-format = "*"
 gcovr = "*"
 
 [requires]
