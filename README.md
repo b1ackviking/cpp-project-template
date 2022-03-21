@@ -1,5 +1,9 @@
 # cpp-project-template
 
+[![codecov](https://codecov.io/gh/b1ackviking/cpp-project-template/branch/main/graph/badge.svg?token=FSWI6GZ1J9)](https://codecov.io/gh/b1ackviking/cpp-project-template)
+
+## About cpp-project-template
+
 This is a template of a cross-platform CMake-based C++ project.
 
 - Run [Cppcheck](http://cppcheck.net/),
