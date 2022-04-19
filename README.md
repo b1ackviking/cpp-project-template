@@ -24,25 +24,80 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
 - [Git](https://git-scm.com/)
 - [CMake](https://cmake.org/)
 - [Ninja](https://ninja-build.org/)
-- [Clang tools](https://releases.llvm.org/)
+- [LLVM](https://releases.llvm.org/)
 - [Python](https://www.python.org/)
   - [pip](https://pypi.org/project/pip/)
+  - [pipenv](https://pypi.org/project/pipenv/)
   - [pre-commit](https://pypi.org/project/pre-commit/)
   - [cmakelang](https://pypi.org/project/cmakelang/)
   - [conan](https://pypi.org/project/conan/)
 - [Node.js](https://nodejs.dev/download/)
+- [Chocolatey (Windows)](https://chocolatey.org/)
+  - [OpenCppCoverage](https://community.chocolatey.org/packages/opencppcoverage)
 
 Run the following commands in the root of the repository after cloning:
 
 ```bash
-pre-commit install
-pre-commit install --hook-type commit-msg
+pipenv install --dev
+pipenv run pre-commit install
+pipenv run pre-commit install --hook-type commit-msg
+pipenv run conan profile new default --detect
+```
+
+## Building the project
+
+```bash
+pipenv shell
+
+export CMAKE_GENERATOR=Ninja
+export CMAKE_EXPORT_COMPILE_COMMANDS=TRUE
+export CONAN_CMAKE_GENERATOR=Ninja
+export BUILD_TYPE=<Debug|RelWithDebInfo|Release|MinSizeRel>
+
+export CC=<C compiler executable>
+export CXX=<C++ compiler executable>
+export GCOV=<gcov for GCC, "llvm-cov gcov" for Clang>
+
+# install libraries
+conan install -if build -pr:b default -pr:h default -pr:h conan/<profile matching the compiler in use> -s build_type=$BUILD_TYPE -b missing .
+
+# configure
+cmake -B build -S . --toolchain build/conan_toolchain.cmake \
+  -D CMAKE_BUILD_TYPE=$BUILD_TYPE `# must match the value passed to conan` \
+  -D WARNINGS_AS_ERRORS=<bool> `# treat compiler warnings as errors, default true` \
+  -D BUILD_TESTING=<bool> `# build unit tests, default true` \
+  -D ENABLE_CPPCHECK=<bool> `# use cppcheck for static analysis, default false` \
+  -D ENABLE_CLANG_TIDY=<bool> `# use clang-tidy for static analysis, default false` \
+  -D ENABLE_INCLUDE_WHAT_YOU_USE=<bool> `# run iwyu during the build, default false` \
+  -D ENABLE_IPO=<bool> `# use inter-procedural optimization, default false` \
+  -D ENABLE_CACHE=<bool> `# use caching for faster recompilation, default false` \
+  -D CACHE_OPTION=<ccache or sccache> `# compilation cache driver, default ccache` \
+  -D ENABLE_DOXYGEN=<bool> `# generate documentation during the build, default false` \
+  -D ENABLE_COVERAGE=<bool> `# collect code coverage (for unit tests), default false` \
+  -D ENABLE_SANITIZER_ADDRESS=<bool> `# default false`\
+  -D ENABLE_SANITIZER_LEAK=<bool> `# Clang and GCC only, default false` \
+  -D ENABLE_SANITIZER_UNDEFINED_BEHAVIOR=<bool> `# Clang and GCC only, default false` \
+  -D ENABLE_SANITIZER_THREAD=<bool> `# Clang and GCC only, default false` \
+  -D ENABLE_SANITIZER_MEMORY=<bool> `# Clang only, default false`
+
+
+# build
+cmake --build build --target all --config $BUILD_TYPE --parallel
+
+# run tests
+ctest --test-dir build -C $BUILD_TYPE --output-on-failure
+
+# collect test coverage if ENABLE_COVERAGE == TRUE
+gcovr
+
+# run tests and collect test coverage (Windows)
+OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest -C $BUILD_TYPE --test-dir build --output-on-failure
 ```
 
 ## Customization checklist
 
 - [ ] Change the LICENSE file
-- [ ] Write a README.md
+- [ ] Write a README.md and edit CONTRIBUTING.md and CODE_OF_CONDUCT.md
 - [ ] Create an ADMIN_TOKEN for CI
 - [ ] `git add . && git commit --amend` your changes as `chore: initial commit`
 - [ ] Create a tag `0.0.0` on the first commit
