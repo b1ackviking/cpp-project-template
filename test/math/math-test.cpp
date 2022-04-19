@@ -61,8 +61,8 @@ TEST(Math, FibonacciWorks) {
 TEST(Math, DISABLED_DifferentFibonacciVersionsProduceEqualResults) {
   namespace v1 = math::v1;
   namespace v2 = math::v2;
-  constexpr auto MAX_ITERATIONS{50U};
-  for (unsigned i{}; i < MAX_ITERATIONS; ++i) {
+  constexpr auto iterations{50U};
+  for (unsigned i{}; i < iterations; ++i) {
     EXPECT_EQ(v1::fib(i), v2::fib(i));
   }
 }

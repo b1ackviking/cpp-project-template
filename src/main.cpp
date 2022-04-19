@@ -5,8 +5,8 @@
 #include <numeric>
 
 int main(int, char**) {
-  constexpr std::array INDICES{3, 4, 5, 7};
-  constexpr auto RESULT = std::transform_reduce(
-    INDICES.cbegin(), INDICES.cend(), 0ULL, std::plus{}, math::fib);
-  fmt::print("Hello from C++{}\n", RESULT);
+  constexpr std::array indices{3, 4, 5, 7};
+  constexpr auto result = std::transform_reduce(
+    indices.cbegin(), indices.cend(), 0ULL, std::plus{}, math::fib);
+  fmt::print("Hello from C++{}\n", result);
 }
