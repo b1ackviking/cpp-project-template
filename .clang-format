@@ -61,7 +61,7 @@ IncludeCategories: # the order of declaration matters!
   - Regex:           '".*"'
     Priority:        1
 IncludeIsMainRegex: '(Test|-test|_test)?$'
-IncludeIsMainSourceRegex: '(Impl\.hpp)$'
+IncludeIsMainSourceRegex: '(_impl\.hpp)$'
 IndentAccessModifiers: false
 IndentCaseBlocks: false
 IndentCaseLabels: false

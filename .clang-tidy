@@ -27,130 +27,42 @@ CheckOptions:
     value: 'true'
   - key: readability-uppercase-literal-suffix.NewSuffixes
     value: 'L;LL;LU;LLU'
-  - key: readability-identifier-naming.AbstractClassCase
-    value: CamelCase
-  - key: readability-identifier-naming.AbstractClassPrefix
-    value: 'I'
   - key: readability-identifier-naming.AggressiveDependentMemberLookup
     value: 'true'
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
   - key: readability-identifier-naming.ClassCase
-    value: CamelCase
-  - key: readability-identifier-naming.ClassConstantCase
-    value: camelBack
-  - key: readability-identifier-naming.ClassMemberCase
-    value: camelBack
-  - key: readability-identifier-naming.ClassMethodCase
-    value: CamelCase
-  - key: readability-identifier-naming.ConstantCase
-    value: camelBack
-  - key: readability-identifier-naming.ConstantMemberCase
-    value: camelBack
-  - key: readability-identifier-naming.ConstantParameterCase
-    value: camelBack
-  - key: readability-identifier-naming.ConstantPointerParameterCase
-    value: camelBack
-  - key: readability-identifier-naming.ConstantPointerParameterPrefix
-    value: ''
-  - key: readability-identifier-naming.ConstexprFunctionCase
-    value: CamelCase
-  - key: readability-identifier-naming.ConstexprMethodCase
-    value: CamelCase
-  - key: readability-identifier-naming.ConstexprVariableCase
-    value: camelBack
-  - key: readability-identifier-naming.EnumCase
-    value: CamelCase
-  - key: readability-identifier-naming.EnumConstantCase
-    value: CamelCase
-  - key: readability-identifier-naming.EnumConstantPrefix
-    value: 'e'
-  - key: readability-identifier-naming.FunctionCase
-    value: CamelCase
-  - key: readability-identifier-naming.GlobalConstantCase
-    value: camelBack
-  - key: readability-identifier-naming.GlobalConstantPointerCase
-    value: camelBack
-  - key: readability-identifier-naming.GlobalFunctionCase
-    value: CamelCase
-  - key: readability-identifier-naming.GlobalPointerCase
-    value: camelBack
-  - key: readability-identifier-naming.GlobalPointerPrefix
-    value: ''
-  - key: readability-identifier-naming.GlobalVariableCase
-    value: camelBack
-  - key: readability-identifier-naming.LocalConstantCase
-    value: camelBack
-  - key: readability-identifier-naming.LocalConstantPointerCase
-    value: camelBack
-  - key: readability-identifier-naming.LocalConstantPointerPrefix
-    value: ''
-  - key: readability-identifier-naming.LocalPointerCase
-    value: camelBack
-  - key: readability-identifier-naming.LocalPointerPrefix
-    value: ''
-  - key: readability-identifier-naming.LocalVariableCase
-    value: camelBack
-  - key: readability-identifier-naming.MacroDefinitionCase
-    value: UPPER_CASE
-  - key: readability-identifier-naming.MemberCase
-    value: camelBack
-  - key: readability-identifier-naming.MethodCase
-    value: CamelCase
-  - key: readability-identifier-naming.ParameterCase
-    value: camelBack
-  - key: readability-identifier-naming.ParameterPackCase
-    value: camelBack
-  - key: readability-identifier-naming.PointerParameterCase
-    value: camelBack
-  - key: readability-identifier-naming.PointerParameterPrefix
-    value: ''
-  - key: readability-identifier-naming.PrivateMemberCase
-    value: camelBack
-  - key: readability-identifier-naming.PrivateMemberPrefix
-    value: 'm_'
-  - key: readability-identifier-naming.PrivateMethodCase
-    value: CamelCase
-  - key: readability-identifier-naming.PrivateMethodPrefix
-    value: 'm_'
-  - key: readability-identifier-naming.ProtectedMemberCase
-    value: camelBack
-  - key: readability-identifier-naming.ProtectedMemberPrefix
-    value: 'm_'
-  - key: readability-identifier-naming.ProtectedMethodCase
-    value: CamelCase
-  - key: readability-identifier-naming.ProtectedMethodPrefix
-    value: 'm_'
-  - key: readability-identifier-naming.PublicMemberCase
-    value: camelBack
-  - key: readability-identifier-naming.PublicMethodCase
-    value: CamelCase
-  - key: readability-identifier-naming.ScopedEnumConstantCase
-    value: CamelCase
-  - key: readability-identifier-naming.ScopedEnumConstantPrefix
-    value: 'e'
-  - key: readability-identifier-naming.StaticConstantCase
-    value: camelBack
-  - key: readability-identifier-naming.StaticVariableCase
-    value: camelBack
+    value: lower_case
   - key: readability-identifier-naming.StructCase
-    value: CamelCase
+    value: lower_case
+  - key: readability-identifier-naming.UnionCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumConstantCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.ProtectedMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.ProtectedMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
   - key: readability-identifier-naming.TemplateParameterCase
     value: CamelCase
-  - key: readability-identifier-naming.TemplateTemplateParameterCase
-    value: CamelCase
-  - key: readability-identifier-naming.TypeAliasCase
-    value: CamelCase
-  - key: readability-identifier-naming.TypedefCase
-    value: CamelCase
-  - key: readability-identifier-naming.TypeTemplateParameterCase
-    value: CamelCase
-  - key: readability-identifier-naming.UnionCase
-    value: CamelCase
-  - key: readability-identifier-naming.ValueTemplateParameterCase
-    value: camelBack
-  - key: readability-identifier-naming.VariableCase
-    value: camelBack
-  - key: readability-identifier-naming.VirtualMethodCase
-    value: CamelCase
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
   - key: readability-implicit-bool-conversion.AllowIntegerConditions
     value: 'true'
   - key: readability-implicit-bool-conversion.AllowPointerConditions
