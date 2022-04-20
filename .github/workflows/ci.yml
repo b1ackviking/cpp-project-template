@@ -167,7 +167,7 @@ jobs:
 
       - name: Publish test coverage to codecov
         if: matrix.build-type == 'Debug'
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: e12a1d0a-85fa-4971-8897-2a6daf8f9674
           flags: ${{ matrix.config.name }}
