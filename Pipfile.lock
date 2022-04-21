@@ -1,7 +1,7 @@
 {
   "_meta": {
     "hash": {
-      "sha256": "ed61b9da5e3c2e43f5f30d8f3bd0557e26ed04912140c1b0eee3a1e0bb2d1fd4"
+      "sha256": "5a1451b658141e3dd779a1f935c09d854be09a812e71551c0bbb0a845e2b56d8"
     },
     "pipfile-spec": 6,
     "requires": {
@@ -83,14 +83,6 @@
       ],
       "index": "pypi",
       "version": "==3.22.4"
-    },
-    "cmakelang": {
-      "hashes": [
-        "sha256:03982e87b00654d024d73ef972d9d9bb0e5726cdb6b8a424a15661fb6278e67f",
-        "sha256:764b9467195c7c36453d60a829f30229720d26c7dffd41cb516b99bd9c7daf4e"
-      ],
-      "index": "pypi",
-      "version": "==0.6.13"
     },
     "colorama": {
       "hashes": [
