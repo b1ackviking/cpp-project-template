@@ -9,7 +9,6 @@ name = "pypi"
 pre-commit = "*"
 conan = "*"
 ninja = "*"
-cmake = "*"
 clang-format = "*"
 gcovr = "*"
 

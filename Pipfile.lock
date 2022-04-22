@@ -1,7 +1,7 @@
 {
   "_meta": {
     "hash": {
-      "sha256": "5a1451b658141e3dd779a1f935c09d854be09a812e71551c0bbb0a845e2b56d8"
+      "sha256": "1abb40a4e8f51c66c18366e897de59fd67f23632a26894741844e0786553cfc4"
     },
     "pipfile-spec": 6,
     "requires": {
@@ -61,28 +61,6 @@
       ],
       "index": "pypi",
       "version": "==14.0.1"
-    },
-    "cmake": {
-      "hashes": [
-        "sha256:030cdf01bb9277cc7075a2e844a4de3b1247acff78606313eef60fb704feb547",
-        "sha256:052d602432e02cd98221e1f59615132414d5df6567a3bb2296249f9efe2c38eb",
-        "sha256:0c174195f3610e67566e73f2eef509fdd602782c00cf0d487f74b72f979bbace",
-        "sha256:3a49e791f5416efd43bd99b4ac2199c4cd10908f168d565e421262ef0091bc14",
-        "sha256:3d99a80942312ddcca5354e610b6e872af76ad4967b4b99cde72f5cf5e82d654",
-        "sha256:4671e4c4a13de22af1f7685e2d563c4bc820cf1448da5480afe81c4ded092dfa",
-        "sha256:630d93bb89fc3ac23b6e3054080480c2aa5fefa79d32327d771232bcae5f771e",
-        "sha256:876d155edda48ce06e48ba46f17341f16eaa939cf02a42d572ff8d4e4e27aaea",
-        "sha256:a2ba0df7094407f413772746f4e4e1d2f2697b20af8e196e069af586d980bd7c",
-        "sha256:b2ef192d8b62660cc0e64e23f0fb359be1f47df6a1365e6e9d27cad9da003391",
-        "sha256:c0b16af7eab88f1383f44eaf7893384fa119fc5288f3b3cf228cbdc0e50fcda0",
-        "sha256:d408349597bf3b9f3ad0364aaed8c55f50dfa011b396d299a7cabf3c799510af",
-        "sha256:e003cbf6538d40173599f6d9a9a6e15a5708c3558587fa75f8f3a9450e996204",
-        "sha256:e3dcd9387ab4c64cdecbe0352c45ebbb345c25f1804f53353b935767eb889c9b",
-        "sha256:e9c3fd4766875e4cdd8e456b9453fe0dd24a1f3e10a52121a065b9971f47fff2",
-        "sha256:efcce5ea10739e6b7251d9357ded7aa3b3705ab667978cd0cbddecb22fa54fca"
-      ],
-      "index": "pypi",
-      "version": "==3.22.4"
     },
     "colorama": {
       "hashes": [
@@ -159,7 +137,7 @@
         "sha256:539835f51a74a69f41b848a9645dbdc35b4f20a3b601e2d9a7e22947b15ff119",
         "sha256:640bed4bb501cbd17194b3cace1dc2126f5b619cf068a726b98192a0fde74ae9"
       ],
-      "markers": "python_version >= '3.7'",
+      "markers": "python_version >= '3'",
       "version": "==3.1.1"
     },
     "lxml": {
