@@ -97,8 +97,8 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
 ## Customization checklist
 
 - [ ] Change the LICENSE file
-- [ ] Write a README.md and edit CONTRIBUTING.md and CODE_OF_CONDUCT.md
-- [ ] Create an ADMIN_TOKEN for CI
+- [ ] Write a `README.md` and [INSERT CONTACT METHOD] in `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`
+- [ ] Create an `ADMIN_TOKEN` for CI
 - [ ] `git add . && git commit --amend` your changes as `chore: initial commit`
 - [ ] Create a tag `0.0.0` on the first commit
 
