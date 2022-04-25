@@ -158,7 +158,7 @@ jobs:
 
       - name: Collect test coverage
         if: matrix.config.os != 'windows-2022' && matrix.build-type == 'Debug'
-        run: pipenv run gcovr
+        run: pipenv run gcovr --txt
 
       - name: Test and collect test coverage (windows)
         if: matrix.config.os == 'windows-2022' && matrix.build-type == 'Debug'
