@@ -12,6 +12,7 @@ env:
   CONAN_CMAKE_GENERATOR: Ninja
   CMAKE_GENERATOR: Ninja
   CMAKE_BUILD_TYPE: Release
+  CTEST_OUTPUT_ON_FAILURE: TRUE
   source-dir: ${{ github.workspace }}
   build-dir: ${{ github.workspace }}/build
 
@@ -19,10 +20,6 @@ jobs:
   build:
     name: ${{ matrix.config.name }} ${{ matrix.build-type }}
     runs-on: ${{ matrix.config.os }}
-    env:
-      CC: ${{ matrix.config.cc }}
-      CXX: ${{ matrix.config.cxx }}
-      GCOV: ${{ matrix.config.gcov }}
     strategy:
       matrix:
         build-type:
@@ -32,41 +29,31 @@ jobs:
           - {
               name: 'Windows MSVC',
               os: windows-2022,
-              cc: cl,
-              cxx: cl,
-              gcov: opencppcoverage,
+              toolchain: cmake/msvc.cmake,
               profile: conan/vs-17-md
             }
           - {
               name: 'Windows Clang 13',
               os: windows-2022,
-              cc: clang,
-              cxx: clang++,
-              gcov: opencppcoverage,
+              toolchain: cmake/clang.cmake,
               profile: conan/clang-13
             }
           - {
               name: 'Macos Clang 13',
               os: macos-latest,
-              cc: clang,
-              cxx: clang++,
-              gcov: llvm-cov gcov,
+              toolchain: cmake/clang.cmake,
               profile: conan/clang-13
             }
           - {
               name: 'Linux GCC 11',
               os: ubuntu-latest,
-              cc: gcc,
-              cxx: g++,
-              gcov: gcov,
+              toolchain: cmake/gcc-11.cmake,
               profile: conan/gcc-11
             }
           - {
               name: 'Linux Clang 13',
               os: ubuntu-latest,
-              cc: clang,
-              cxx: clang++,
-              gcov: llvm-cov gcov,
+              toolchain: cmake/clang.cmake,
               profile: conan/clang-13
             }
 
@@ -144,17 +131,31 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
+        run: >
+          pipenv run conan install -b missing ${{ env.source-dir }} -if ${{ env.build-dir }} \
+            -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }} \
+            -c:h tools.cmake.cmaketoolchain:user_toolchain=[\"$(pwd)/${{ matrix.config.toolchain }}\"] \
+            -e:h CMAKE_TOOLCHAIN_FILE=$(pwd)/${{ matrix.config.toolchain }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-latest' && matrix.config.profile == 'conan/clang-13' }} -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE
+        run: >
+          pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} \
+            --toolchain ${{ env.build-dir }}/conan_toolchain.cmake \
+            -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} \
+            -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} \
+            -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} \
+            -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-latest' && matrix.config.profile == 'conan/clang-13' }} \
+            -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE \
+            -D ENABLE_SANITIZER_ADDRESS:BOOL=${{ matrix.build-type == 'Debug' }} \
+            -D ENABLE_SANITIZER_LEAK:BOOL=${{ matrix.build-type == 'Debug' && matrix.config.os == 'ubuntu-latest'}} \
+            -D ENABLE_SANITIZER_UNDEFINED_BEHAVIOR:BOOL=${{ matrix.build-type == 'Debug' && matrix.config.os == 'ubuntu-latest'}}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }}
+        run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }} --parallel
 
       - name: Run tests
         if: matrix.config.os != 'windows-2022' || matrix.build-type != 'Debug'
-        run: ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
+        run: ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }}
 
       - name: Collect test coverage
         if: matrix.config.os != 'windows-2022' && matrix.build-type == 'Debug'
@@ -162,8 +163,10 @@ jobs:
 
       - name: Test and collect test coverage (windows)
         if: matrix.config.os == 'windows-2022' && matrix.build-type == 'Debug'
-        run: |
-          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
+        run: >
+          & "C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe" \
+            --export_type cobertura:coverage.xml --cover_children -- \
+            ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }}
 
       - name: Publish test coverage to codecov
         if: matrix.build-type == 'Debug'
@@ -206,9 +209,8 @@ jobs:
     name: CodeQL
     runs-on: ubuntu-latest
     env:
+      toolchain: cmake/gcc-11.cmake
       profile: conan/gcc-11
-      CC: gcc-11
-      CXX: g++-11
 
     steps:
       - name: Checkout repository
@@ -248,10 +250,16 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: >
+          pipenv run conan install -b missing ${{ env.source-dir }} -if ${{ env.build-dir }} \
+            -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }} \
+            -c:h tools.cmake.cmaketoolchain:user_toolchain=[\"$(pwd)/${{ env.toolchain }}\"] \
+            -e:h CMAKE_TOOLCHAIN_FILE=$(pwd)/${{ env.toolchain }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
+        run: >
+          pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} \
+            --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
@@ -263,6 +271,7 @@ jobs:
     name: Analyze
     runs-on: windows-2022
     env:
+      toolchain: cmake/msvc.cmake
       profile: conan/vs-17-md
 
     steps:
@@ -297,10 +306,16 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: >
+          pipenv run conan install -b missing ${{ env.source-dir }} -if ${{ env.build-dir }} \
+            -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }} \
+            -c:h tools.cmake.cmaketoolchain:user_toolchain=[\"$(pwd)/${{ env.toolchain }}\"] \
+            -e:h CMAKE_TOOLCHAIN_FILE=$(pwd)/${{ env.toolchain }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
+        run: >
+          pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} \
+            --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
