@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
 
 project(
   cpp-project-template
@@ -19,7 +19,10 @@ target_compile_features(options INTERFACE cxx_std_23)
 enable_sanitizers(options)
 enable_coverage(options)
 
-add_subdirectory(src)
-if(BUILD_TESTING)
+add_subdirectory(lib)
+
+if(NOT BUILD_TESTING)
+  add_subdirectory(src)
+else()
   add_subdirectory(test)
 endif()
