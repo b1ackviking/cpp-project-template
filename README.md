@@ -50,12 +50,15 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=TRUE
 export CONAN_CMAKE_GENERATOR=Ninja
 export BUILD_TYPE=<Debug|RelWithDebInfo|Release|MinSizeRel>
 
-export CC=<C compiler executable>
-export CXX=<C++ compiler executable>
+export PROFILE=<path to conan profile>
+export TOOLCHAIN=<path to cmake toolchain>
 export GCOV=<gcov for GCC, "llvm-cov gcov" for Clang>
 
 # install libraries
-conan install -if build -pr:b default -pr:h default -pr:h conan/<profile matching the compiler in use> -s build_type=$BUILD_TYPE -b missing .
+conan install -if build -b missing . -pr:b default -pr:h default \
+  -pr:h $PROFILE -s build_type=$BUILD_TYPE \
+  -c:h tools.cmake.cmaketoolchain:user_toolchain=[\"$TOOLCHAIN\"] \
+  -e:h CMAKE_TOOLCHAIN_FILE=$TOOLCHAIN
 
 # configure
 cmake -B build -S . --toolchain build/conan_toolchain.cmake \
@@ -70,15 +73,14 @@ cmake -B build -S . --toolchain build/conan_toolchain.cmake \
   -D CACHE_OPTION=<ccache or sccache> `# compilation cache driver, default ccache` \
   -D ENABLE_DOXYGEN=<bool> `# generate documentation during the build, default false` \
   -D ENABLE_COVERAGE=<bool> `# collect code coverage (for unit tests), default false` \
-  -D ENABLE_SANITIZER_ADDRESS=<bool> `# default false`\
+  -D ENABLE_SANITIZER_ADDRESS=<bool> `# default false` \
   -D ENABLE_SANITIZER_LEAK=<bool> `# Clang and GCC only, default false` \
   -D ENABLE_SANITIZER_UNDEFINED_BEHAVIOR=<bool> `# Clang and GCC only, default false` \
   -D ENABLE_SANITIZER_THREAD=<bool> `# Clang and GCC only, default false` \
   -D ENABLE_SANITIZER_MEMORY=<bool> `# Clang only, default false`
 
-
 # build
-cmake --build build --target all --config $BUILD_TYPE --parallel
+cmake --build build --config $BUILD_TYPE --parallel --target all
 
 # run tests
 ctest --test-dir build -C $BUILD_TYPE --output-on-failure
