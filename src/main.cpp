@@ -1,9 +1,18 @@
 #include <array>
-#include <coro/coro.hpp>
+#include <atomic>
+#include <chrono>
+// #include <coro/coro.hpp>
+#include <coro/io_service.hpp>
+#include <coro/queue.hpp>
+#include <coro/sync_wait.hpp>
+#include <coro/task.hpp>
+#include <coro/when_all_ready.hpp>
+#include <cstddef>
 #include <fmt/core.h>
 #include <functional>
 #include <math/math.hpp>
 #include <numeric>
+#include <thread>
 #include <utility>
 
 coro::task<> bar() {
@@ -18,11 +27,11 @@ coro::task<int> baz() {
   co_return 42;
 }
 
-coro::task<int> foo(coro::io_service& io) {
+coro::task<int> foo(auto& io) {
   fmt::print("foo 1\n");
   fmt::print("foo 2\n");
-  co_await coro::schedule_on(io, bar());
-  co_await io.schedule();
+  // co_await coro::schedule_on(io, bar());
+  co_await io.schedule_after(std::chrono::seconds{1});
   fmt::print("foo 3\n");
   co_return co_await baz();
 }
@@ -44,29 +53,49 @@ void sm() {
 }
 #endif
 
-int main(int, char**) {
-  auto sayHello = coro::on_scope_success([] noexcept {
-    constexpr std::array indices{3, 4, 5, 7};
-    constexpr auto result = std::transform_reduce(
-      indices.cbegin(), indices.cend(), 0ULL, std::plus{}, math::fib);
-    try {
-      fmt::print("Hello from C++{}\n", result);
-    } catch (...) {}
-  });
+coro::task<> run_bar() {
+  co_await bar();
+}
 
-  coro::io_service io;
-  coro::sync_wait(bar());
+coro::task<int> run_foo(auto& io) {
+  co_return co_await foo(io);
+}
+
+coro::task<> worker(auto& io) {
+  while (true) {
+    io.process_schedule();
+    io.process_one();
+  }
+  co_return;
+}
+
+int main(int, char**) {
+  coro::io_service<coro::queue> io;
+
+  struct event_t {
+    std::atomic_flag f;
+    void wait() noexcept { f.wait(false); }
+    void set() noexcept {
+      f.test_and_set();
+      f.notify_all();
+    }
+  } e, e2;
+
+#if 0
+  auto [b1, b2, b3] =
+    coro::sync_wait(coro::when_all_ready(bar(), bar(), baz()), e);
   auto b = bar();
   auto f = foo(io);
+  fmt::print("{}\n", b3.result());
 
-  auto s = coro::schedule_on(io, std::move(b));
-  s.h.resume();
-
-  f.h.resume();
-  while (io.process_one()) {
-    fmt::print("resume\n");
-  }
-  if (f.is_ready()) {
-    fmt::print("f = {}\n", f.h.promise().result());
-  }
+  // auto s = coro::schedule_on(io, std::move(b));
+  // s.h.resume();
+  std::jthread worker{[&io](std::stop_token st) {
+    while (!st.stop_requested()) {
+      io.process_schedule();
+      io.process_one();
+    }
+  }};
+#endif
+  coro::sync_wait(coro::when_all_ready(foo(io), bar(), worker(io)), e2);
 }
