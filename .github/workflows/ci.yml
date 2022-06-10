@@ -134,7 +134,7 @@ jobs:
         run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Cache Conan packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
           key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build-type }}-${{ hashFiles('conanfile.py') }}
@@ -238,7 +238,7 @@ jobs:
           pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Cache Conan packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
           key: conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-${{ hashFiles('conanfile.py') }}
@@ -287,7 +287,7 @@ jobs:
           pipenv run conan profile new default --detect
 
       - name: Cache Conan packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
           key: conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-${{ hashFiles('conanfile.py') }}
