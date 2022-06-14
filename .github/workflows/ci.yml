@@ -111,8 +111,9 @@ jobs:
           echo GCOV=$(brew --prefix llvm)/bin/llvm-cov gcov >> ${{ github.env }}
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
+          python-version: '3.10'
           cache: pipenv
 
       - name: Install Python dependencies
@@ -226,8 +227,9 @@ jobs:
         run: sudo apt install gcc-11 g++-11 -y
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
+          python-version: '3.10'
           cache: pipenv
 
       - name: Install Python dependencies
@@ -276,8 +278,9 @@ jobs:
         uses: egor-tensin/vs-shell@v2
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
+          python-version: '3.10'
           cache: pipenv
 
       - name: Install Python dependencies
