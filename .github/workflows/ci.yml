@@ -47,7 +47,7 @@ jobs:
             }
           - {
               name: 'Macos Clang 13',
-              os: macos-latest,
+              os: macos-12,
               cc: clang,
               cxx: clang++,
               gcov: llvm-cov gcov,
@@ -104,11 +104,11 @@ jobs:
           echo GCOV=$(brew --prefix llvm)/bin/llvm-cov gcov >> ${{ github.env }}
 
       - name: Select LLVM on Macos
-        if: matrix.config.os == 'macos-latest' && matrix.config.profile == 'conan/clang-13'
+        if: matrix.config.os == 'macos-12' && matrix.config.profile == 'conan/clang-13'
         run: |
-          echo CC=$(brew --prefix llvm)/bin/clang >> ${{ github.env }}
-          echo CXX=$(brew --prefix llvm)/bin/clang++ >> ${{ github.env }}
-          echo GCOV=$(brew --prefix llvm)/bin/llvm-cov gcov >> ${{ github.env }}
+          echo CC=$(brew --prefix llvm@13)/bin/clang >> ${{ github.env }}
+          echo CXX=$(brew --prefix llvm@13)/bin/clang++ >> ${{ github.env }}
+          echo GCOV=$(brew --prefix llvm@13)/bin/llvm-cov gcov >> ${{ github.env }}
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -127,7 +127,7 @@ jobs:
         run: pipenv run conan profile update settings.compiler.libcxx=None default
 
       - name: Update the default Conan profile on Macos
-        if: matrix.config.os == 'macos-latest'
+        if: matrix.config.os == 'macos-12'
         run: pipenv run conan profile update settings.compiler.libcxx=libc++ default
 
       - name: Update the default Conan profile on Linux
@@ -148,7 +148,7 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-latest' && matrix.config.profile == 'conan/clang-13' }} -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && matrix.config.profile == 'conan/clang-13' }} -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }}
