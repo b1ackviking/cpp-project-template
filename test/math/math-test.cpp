@@ -58,10 +58,10 @@ TEST(Math, FibonacciWorks) {
 }
 
 // NOLINTNEXTLINE
-TEST(Math, DISABLED_DifferentFibonacciVersionsProduceEqualResults) {
+TEST(Math, DifferentFibonacciVersionsProduceEqualResults) {
   namespace v1 = math::v1;
   namespace v2 = math::v2;
-  constexpr auto iterations{50U};
+  constexpr auto iterations{30U};
   for (unsigned i{}; i < iterations; ++i) {
     EXPECT_EQ(v1::fib(i), v2::fib(i));
   }
