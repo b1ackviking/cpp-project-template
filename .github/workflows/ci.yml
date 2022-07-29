@@ -38,12 +38,12 @@ jobs:
               profile: conan/vs-17-md
             }
           - {
-              name: 'Windows Clang 13',
+              name: 'Windows Clang 14',
               os: windows-2022,
               cc: clang,
               cxx: clang++,
               gcov: opencppcoverage,
-              profile: conan/clang-13
+              profile: conan/clang-14
             }
           - {
               name: 'Macos Clang 14',
@@ -62,12 +62,12 @@ jobs:
               profile: conan/gcc-11
             }
           - {
-              name: 'Linux Clang 13',
+              name: 'Linux Clang 14',
               os: ubuntu-latest,
               cc: clang,
               cxx: clang++,
               gcov: llvm-cov gcov,
-              profile: conan/clang-13
+              profile: conan/clang-14
             }
 
     steps:
@@ -97,7 +97,7 @@ jobs:
           echo GCOV=$(brew --prefix gcc)/bin/gcov-11 >> ${{ github.env }}
 
       - name: Select LLVM on Linux
-        if: matrix.config.os == 'ubuntu-latest' && matrix.config.profile == 'conan/clang-13'
+        if: matrix.config.os == 'ubuntu-latest' && matrix.config.profile == 'conan/clang-14'
         run: |
           echo CC=$(brew --prefix llvm)/bin/clang >> ${{ github.env }}
           echo CXX=$(brew --prefix llvm)/bin/clang++ >> ${{ github.env }}
@@ -123,7 +123,7 @@ jobs:
           pipenv run conan profile new default --detect
 
       - name: Update the default Conan profile on Windows
-        if: matrix.config.os == 'windows-2022' && matrix.config.profile == 'conan/clang-13'
+        if: matrix.config.os == 'windows-2022' && matrix.config.profile == 'conan/clang-14'
         run: pipenv run conan profile update settings.compiler.libcxx=None default
 
       - name: Update the default Conan profile on Macos
