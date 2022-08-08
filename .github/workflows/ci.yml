@@ -171,7 +171,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: e12a1d0a-85fa-4971-8897-2a6daf8f9674
-          flags: ${{ matrix.config.name }}
+          flags: ${{ matrix.config.os }}-${{ matrix.config.cc }}
           name: ${{ matrix.config.name }}
           files: coverage.xml
           fail_ci_if_error: true
