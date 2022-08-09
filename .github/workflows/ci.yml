@@ -110,29 +110,31 @@ jobs:
           echo CXX=$(brew --prefix llvm@14)/bin/clang++ >> ${{ github.env }}
           echo GCOV=$(brew --prefix llvm@14)/bin/llvm-cov gcov >> ${{ github.env }}
 
+      - name: Install poetry
+        run: pipx install poetry
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          cache: pipenv
+          cache: poetry
 
       - name: Install Python dependencies
         run: |
-          pipx install pipenv
-          pipenv install --dev
-          pipenv run conan profile new default --detect
+          poetry install
+          poetry run conan profile new default --detect
 
       - name: Update the default Conan profile on Windows
         if: matrix.config.os == 'windows-2022' && matrix.config.profile == 'conan/clang-14'
-        run: pipenv run conan profile update settings.compiler.libcxx=None default
+        run: poetry run conan profile update settings.compiler.libcxx=None default
 
       - name: Update the default Conan profile on Macos
         if: matrix.config.os == 'macos-12'
-        run: pipenv run conan profile update settings.compiler.libcxx=libc++ default
+        run: poetry run conan profile update settings.compiler.libcxx=libc++ default
 
       - name: Update the default Conan profile on Linux
         if: matrix.config.os == 'ubuntu-latest'
-        run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
+        run: poetry run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Cache Conan packages
         uses: actions/cache@v3
@@ -145,10 +147,10 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }} -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE
+        run: poetry run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }} -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }}
@@ -159,7 +161,7 @@ jobs:
 
       - name: Collect test coverage
         if: matrix.config.os != 'windows-2022' && matrix.build-type == 'Debug'
-        run: pipenv run gcovr --txt
+        run: poetry run gcovr --txt
 
       - name: Test and collect test coverage (windows)
         if: matrix.config.os == 'windows-2022' && matrix.build-type == 'Debug'
@@ -226,18 +228,20 @@ jobs:
       - name: Install GCC 11
         run: sudo apt install gcc-11 g++-11 -y
 
+      - name: Install poetry
+        run: pipx install poetry
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          cache: pipenv
+          cache: poetry
 
       - name: Install Python dependencies
         run: |
-          pipx install pipenv
-          pipenv install --dev
-          pipenv run conan profile new default --detect
-          pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
+          poetry install
+          poetry run conan profile new default --detect
+          poetry run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Cache Conan packages
         uses: actions/cache@v3
@@ -250,10 +254,10 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
+        run: poetry run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
@@ -277,17 +281,19 @@ jobs:
       - name: Set up Visual Studio shell
         uses: egor-tensin/vs-shell@v2
 
+      - name: Install poetry
+        run: pipx install poetry
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          cache: pipenv
+          cache: poetry
 
       - name: Install Python dependencies
         run: |
-          pipx install pipenv
-          pipenv install --dev
-          pipenv run conan profile new default --detect
+          poetry install
+          poetry run conan profile new default --detect
 
       - name: Cache Conan packages
         uses: actions/cache@v3
@@ -300,10 +306,10 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
+        run: poetry run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main

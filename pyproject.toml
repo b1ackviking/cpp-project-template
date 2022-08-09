@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "cpp-project-template"
+version = "0.0.0"
+description = ""
+authors = ["Vladimir Chistyakov <b1ackviking@outlook.com>"]
+license = "Unlicense"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+conan = "*"
+gcovr = "*"
+pre-commit = "*"
+ninja = "*"
+clang-format = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
