@@ -54,16 +54,16 @@ jobs:
               profile: conan/clang-14
             }
           - {
-              name: 'Linux GCC 11',
-              os: ubuntu-latest,
+              name: 'Linux GCC 12',
+              os: ubuntu-22.04,
               cc: gcc,
               cxx: g++,
               gcov: gcov,
-              profile: conan/gcc-11
+              profile: conan/gcc-12
             }
           - {
               name: 'Linux Clang 14',
-              os: ubuntu-latest,
+              os: ubuntu-22.04,
               cc: clang,
               cxx: clang++,
               gcov: llvm-cov gcov,
@@ -86,25 +86,18 @@ jobs:
         run: choco install opencppcoverage
 
       - name: Install dependencies on Linux
-        if: matrix.config.os == 'ubuntu-latest'
-        run: brew install gcc llvm cppcheck include-what-you-use
+        if: matrix.config.os == 'ubuntu-22.04'
+        run: brew install gcc@12 llvm@14 cppcheck
 
       - name: Select GCC on Linux
-        if: matrix.config.os == 'ubuntu-latest' && matrix.config.profile == 'conan/gcc-11'
+        if: matrix.config.os == 'ubuntu-22.04' && matrix.config.profile == 'conan/gcc-12'
         run: |
-          echo CC=$(brew --prefix gcc)/bin/gcc-11 >> ${{ github.env }}
-          echo CXX=$(brew --prefix gcc)/bin/g++-11 >> ${{ github.env }}
-          echo GCOV=$(brew --prefix gcc)/bin/gcov-11 >> ${{ github.env }}
+          echo CC=$(brew --prefix gcc@12)/bin/gcc-12 >> ${{ github.env }}
+          echo CXX=$(brew --prefix gcc@12)/bin/g++-12 >> ${{ github.env }}
+          echo GCOV=$(brew --prefix gcc@12)/bin/gcov-12 >> ${{ github.env }}
 
-      - name: Select LLVM on Linux
-        if: matrix.config.os == 'ubuntu-latest' && matrix.config.profile == 'conan/clang-14'
-        run: |
-          echo CC=$(brew --prefix llvm)/bin/clang >> ${{ github.env }}
-          echo CXX=$(brew --prefix llvm)/bin/clang++ >> ${{ github.env }}
-          echo GCOV=$(brew --prefix llvm)/bin/llvm-cov gcov >> ${{ github.env }}
-
-      - name: Select LLVM on Macos
-        if: matrix.config.os == 'macos-12' && matrix.config.profile == 'conan/clang-14'
+      - name: Select LLVM on Linux and Macos
+        if: (matrix.config.os == 'ubuntu-22.04' || matrix.config.os == 'macos-12') && matrix.config.profile == 'conan/clang-14'
         run: |
           echo CC=$(brew --prefix llvm@14)/bin/clang >> ${{ github.env }}
           echo CXX=$(brew --prefix llvm@14)/bin/clang++ >> ${{ github.env }}
@@ -131,7 +124,7 @@ jobs:
         run: pipenv run conan profile update settings.compiler.libcxx=libc++ default
 
       - name: Update the default Conan profile on Linux
-        if: matrix.config.os == 'ubuntu-latest'
+        if: matrix.config.os == 'ubuntu-22.04'
         run: pipenv run conan profile update settings.compiler.libcxx=libstdc++11 default
 
       - name: Cache Conan packages
@@ -148,7 +141,7 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-latest' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }} -D ENABLE_INCLUDE_WHAT_YOU_USE:BOOL=FALSE
+        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }}
 
       - name: Build
         run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }}
@@ -178,7 +171,7 @@ jobs:
 
   release:
     name: Semantic release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
 
@@ -205,11 +198,11 @@ jobs:
 
   codeql:
     name: CodeQL
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
-      profile: conan/gcc-11
-      CC: gcc-11
-      CXX: g++-11
+      profile: conan/gcc-12
+      CC: gcc-12
+      CXX: g++-12
 
     steps:
       - name: Checkout repository
@@ -220,11 +213,15 @@ jobs:
         with:
           languages: cpp
 
-      - name: Set environment variables
-        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
+      - name: Install GCC 12
+        run: brew install gcc@12
 
-      - name: Install GCC 11
-        run: sudo apt install gcc-11 g++-11 -y
+      - name: Set environment variables
+        run: |
+          echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
+          echo CC=$(brew --prefix gcc@12)/bin/gcc-12 >> ${{ github.env }}
+          echo CXX=$(brew --prefix gcc@12)/bin/g++-12 >> ${{ github.env }}
+          echo GCOV=$(brew --prefix gcc@12)/bin/gcov-12 >> ${{ github.env }}
 
       - name: Setup Python
         uses: actions/setup-python@v4
