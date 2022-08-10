@@ -73,10 +73,10 @@
         },
         "conan": {
             "hashes": [
-                "sha256:2dc8a13e1a38052ee6bdab4f054a1ce91b3bb609673e3e05adb77f688d06ff25"
+                "sha256:95fef899d03b89142ef1dd8675ddeef92ae3215ac9a5d1302f99e1527bdf49b5"
             ],
             "index": "pypi",
-            "version": "==1.51.0"
+            "version": "==1.51.1"
         },
         "distlib": {
             "hashes": [
@@ -103,11 +103,11 @@
         },
         "filelock": {
             "hashes": [
-                "sha256:37def7b658813cda163b56fc564cdc75e86d338246458c4c28ae84cabefa2404",
-                "sha256:3a0fd85166ad9dbab54c9aec96737b744106dc5f15c0b09a6744a445299fcf04"
+                "sha256:55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc",
+                "sha256:617eb4e5eedc82fc5f47b6d61e4d11cb837c56cb4544e39081099fa17ad109d4"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==3.7.1"
+            "version": "==3.8.0"
         },
         "gcovr": {
             "hashes": [
