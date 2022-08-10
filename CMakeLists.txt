@@ -19,10 +19,16 @@ target_compile_features(options INTERFACE cxx_std_23)
 enable_sanitizers(options)
 enable_coverage(options)
 
+# put platform-agnostic code here
 add_subdirectory(lib)
 
-if(NOT BUILD_TESTING)
+# put platform-specific code here and guard it with an option to exclude it from
+# build when building unit tests (e.g. you develop and embedded firmware)
+if(CMAKE_CROSSCOMPILING OR TRUE)
   add_subdirectory(src)
-else()
+endif()
+
+# put unit tests that run on your pc here
+if(NOT CMAKE_CROSSCOMPILING AND BUILD_TESTING)
   add_subdirectory(test)
 endif()

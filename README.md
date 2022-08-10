@@ -78,13 +78,13 @@ cmake -B build -S . --toolchain build/conan_toolchain.cmake \
 
 
 # build
-cmake --build build --target all --config $BUILD_TYPE --parallel
+cmake --build build --parallel --config $BUILD_TYPE --target all
 
 # run tests
 ctest --test-dir build -C $BUILD_TYPE --output-on-failure
 
 # collect test coverage if ENABLE_COVERAGE == TRUE
-gcovr
+gcovr --txt
 
 # run tests and collect test coverage (Windows)
 OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest -C $BUILD_TYPE --test-dir build --output-on-failure
