@@ -1,5 +1,5 @@
 ---
-Checks: '*,-abseil-*,abseil-no-namespace,-altera-struct-pack-align,-altera-unroll-loops,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-readability-todo,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-named-parameter,-hicpp-named-parameter'
+Checks: '*,-abseil-*,abseil-no-namespace,-altera-struct-pack-align,-altera-unroll-loops,-android-cloexec-fopen,-cppcoreguidelines-owning-memory,-darwin-*,-fuchsia-*,fuchsia-statically-constructed-objects,fuchsia-trailing-return,-google-readability-todo,-llvm-header-guard,-llvmlibc-*,-modernize-use-trailing-return-type,-readability-identifier-length,-readability-named-parameter,-hicpp-named-parameter'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
