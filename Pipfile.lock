@@ -73,10 +73,10 @@
         },
         "conan": {
             "hashes": [
-                "sha256:95fef899d03b89142ef1dd8675ddeef92ae3215ac9a5d1302f99e1527bdf49b5"
+                "sha256:a7ebf0909333af5dc43212b501db0e5a8630d33d7e32fa1e3750aa54b0351a21"
             ],
             "index": "pypi",
-            "version": "==1.51.1"
+            "version": "==1.51.2"
         },
         "distlib": {
             "hashes": [
@@ -399,11 +399,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:73bfae4791da7c1c56882ab17577d00f7a37a0347162aeb9360058de0dc25083",
-                "sha256:abcb76aa4decd7a17cbe0e4b31bdf549d106ba7f668e87e0860f5f7b84b9b3fe"
+                "sha256:378dcbfcc78b81432934fbd684ece21a82cd4b135315698732f7c8a4b97f81a9",
+                "sha256:7d9ae33bf128569f460a0745e87072a1996f33c9180316c20cc08b130ce816a6"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==63.4.2"
+            "version": "==64.0.1"
         },
         "six": {
             "hashes": [
