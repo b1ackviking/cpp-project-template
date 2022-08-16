@@ -9,7 +9,6 @@ on:
 
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
-  CONAN_CMAKE_GENERATOR: Ninja
   CMAKE_GENERATOR: Ninja
   CMAKE_BUILD_TYPE: Release
   source-dir: ${{ github.workspace }}
@@ -138,17 +137,17 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
 
       - name: Configure
         run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --config ${{ matrix.build-type }}
+        run: cmake --build ${{ env.build-dir }} --parallel --config ${{ matrix.build-type }} --target all
 
       - name: Run tests
         if: matrix.config.os != 'windows-2022' || matrix.build-type != 'Debug'
-        run: ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
+        run: cmake --build ${{ env.build-dir }} --parallel --config ${{ matrix.build-type }} --target test
 
       - name: Collect test coverage
         if: matrix.config.os != 'windows-2022' && matrix.build-type == 'Debug'
@@ -157,7 +156,7 @@ jobs:
       - name: Test and collect test coverage (windows)
         if: matrix.config.os == 'windows-2022' && matrix.build-type == 'Debug'
         run: |
-          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- ctest -C ${{ matrix.build-type }} --test-dir ${{ env.build-dir }} --output-on-failure
+          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- cmake --build build --parallel --config ${{ matrix.build-type }} --target test
 
       - name: Publish test coverage to codecov
         if: matrix.build-type == 'Debug'
@@ -247,13 +246,13 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
         run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --config ${{ env.CMAKE_BUILD_TYPE }}
+        run: cmake --build ${{ env.build-dir }} --parallel --config ${{ env.CMAKE_BUILD_TYPE }} --target all
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
@@ -297,7 +296,7 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
         run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake

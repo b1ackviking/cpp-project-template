@@ -7,7 +7,6 @@ option(ENABLE_IPO
        OFF)
 option(ENABLE_CACHE "Enable cache if available" OFF)
 option(ENABLE_DOXYGEN "Enable doxygen doc builds of source" OFF)
-option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 option(ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
                                            ".*Clang")
@@ -21,12 +20,17 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
   endif()
 endif()
 
-# Generate compile_commands.json
+# Useful CMake defaults
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# Tell find_package() to try "Config" mode before "Module" mode if no mode was
-# specified.
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
+set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_LINK_WHAT_YOU_USE TRUE)
+set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure --output-junit
+                          junit.xml)
+set(CMAKE_VS_JUST_MY_CODE_DEBUGGING ON)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -40,14 +44,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-  add_compile_options(-fcolor-diagnostics)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  add_compile_options(-fdiagnostics-color=always)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND MSVC_VERSION GREATER 1900)
-  add_compile_options(/diagnostics:column)
-endif()
-
 # This function will prevent in-source builds
 function(assure_out_of_source_builds)
   # make sure the user doesn't play dirty with symlinks
@@ -55,7 +51,7 @@ function(assure_out_of_source_builds)
   get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
 
   # disallow in-source builds
-  if(srcdir STREQUAL bindir)
+  if(srcdir PATH_EQUAL bindir)
     message("######################################################")
     message("Warning: in-source builds are disabled")
     message("Please create a separate build directory and run cmake from there")
@@ -203,10 +199,6 @@ function(set_target_warnings target_name)
       -Wformat=2 # warn on security issues around functions that format output
                  # (ie printf)
   )
-  if(WARNINGS_AS_ERRORS)
-    list(APPEND clang_warnings -Werror)
-    list(APPEND msvc_warnings /WX)
-  endif()
   set(gcc_warnings
       ${clang_warnings}
       -Wmisleading-indentation # warn if indentation implies blocks where blocks

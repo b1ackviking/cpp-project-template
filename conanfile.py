@@ -22,7 +22,7 @@ class Example(ConanFile):
     def generate(self):
         deps = CMakeDeps(self)
         deps.generate()
-        tc = CMakeToolchain(self, "Ninja")
+        tc = CMakeToolchain(self)
         tc.variables["BUILD_TESTING"] = self.options.build_testing
         tc.generate()
 
