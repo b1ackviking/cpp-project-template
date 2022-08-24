@@ -1,13 +1,16 @@
 #pragma once
+#include <cstdint>
 
 namespace math {
 #ifdef RECURSIVE_FIB
 inline
 #endif
   namespace v1 {
-constexpr auto fib(unsigned long long n) {
-  if (n < 2)
+// NOLINTNEXTLINE
+constexpr auto fib(std::uint64_t n) {
+  if (n < 2) {
     return n;
+  }
   return fib(n - 1) + fib(n - 2);
 }
 } // namespace v1
@@ -16,40 +19,42 @@ constexpr auto fib(unsigned long long n) {
 inline
 #endif
   namespace v2 {
-constexpr auto fib(unsigned long long n) {
-  struct V {
-    unsigned long long v[2]{};
+constexpr auto fib(std::uint64_t n) {
+  struct vec {
+    std::uint64_t v[2]{}; // NOLINT
   };
-  struct M {
-    unsigned long long m[2][2]{};
-    constexpr M operator*(const M& r) const noexcept {
-      return M{{
+  struct mat {
+    std::uint64_t m[2][2]{}; // NOLINT
+    constexpr mat operator*(const mat& r) const noexcept {
+      return mat{{
         {m[0][0] * r.m[0][0] + m[0][1] * r.m[1][0],
          m[0][0] * r.m[0][1] + m[0][1] * r.m[1][1]},
         {m[1][0] * r.m[0][0] + m[1][1] * r.m[1][0],
          m[1][0] * r.m[0][1] + m[1][1] * r.m[1][1]},
       }};
     }
-    constexpr M& operator*=(const M& r) noexcept {
+    constexpr mat& operator*=(const mat& r) noexcept {
       *this = *this * r;
       return *this;
     }
-    constexpr V operator*(const V& r) const noexcept {
-      return V{{
+    constexpr vec operator*(const vec& r) const noexcept {
+      return vec{{
         m[0][0] * r.v[0] + m[0][1] * r.v[1],
         m[1][0] * r.v[0] + m[1][1] * r.v[1],
       }};
     }
   };
 
-  V v{{0, 1}};
-  for (M i{{
+  vec v{{0, 1}};
+  for (mat i{{
          {0, 1},
          {1, 1},
        }};
-       n; n >>= 1, i *= i)
-    if (n & 1)
+       n; n >>= 1U, i *= i) {
+    if (n & 1U) {
       v = i * v;
+    }
+  }
   return v.v[0];
 }
 } // namespace v2
