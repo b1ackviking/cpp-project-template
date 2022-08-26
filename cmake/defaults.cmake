@@ -28,7 +28,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_LINK_WHAT_YOU_USE TRUE)
 set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure --output-junit
-                          junit.xml)
+                          junit.xml --parallel 4)
 set(CMAKE_VS_JUST_MY_CODE_DEBUGGING ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 
@@ -65,8 +65,13 @@ if(ENABLE_CPPCHECK)
   find_program(CPPCHECK cppcheck)
   if(CPPCHECK)
     set(CMAKE_CXX_CPPCHECK
-        ${CPPCHECK} --enable=all --inline-suppr --error-exitcode=42
-        --suppress=missingIncludeSystem --suppress=unmatchedSuppression)
+        ${CPPCHECK}
+        -v
+        --enable=all
+        --inline-suppr
+        --error-exitcode=42
+        --suppress=missingIncludeSystem
+        --suppress=unmatchedSuppression)
     set(CMAKE_C_CPPCHECK ${CMAKE_CXX_CPPCHECK})
   else()
     message(SEND_ERROR "Cppcheck requested but executable not found")
