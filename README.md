@@ -53,12 +53,15 @@ export CXX=<C++ compiler executable>
 export GCOV=<gcov for GCC, "llvm-cov gcov" for Clang>
 
 # install libraries
-conan install -if build -pr:b default -pr:h default -c:h tool.cmake.cmaketoolchain:generator=Ninja -pr:h conan/<profile matching the compiler in use> -s build_type=$BUILD_TYPE -b missing .
+conan install -if build -pr:b default -pr:h default \
+  -pr:h conan/<profile matching the compiler in use> \
+  -c:h tools.cmake.cmaketoolchain:generator=Ninja \
+  -c:h tools.build:skip_test=<True|False> \
+  -s build_type=$BUILD_TYPE -b missing .
 
 # configure
 cmake -B build -S . --toolchain build/conan_toolchain.cmake \
   -D CMAKE_BUILD_TYPE=$BUILD_TYPE `# must match the value passed to conan` \
-  -D BUILD_TESTING=<bool> `# build unit tests, default true` \
   -D ENABLE_CPPCHECK=<bool> `# use cppcheck for static analysis, default false` \
   -D ENABLE_CLANG_TIDY=<bool> `# use clang-tidy for static analysis, default false` \
   -D ENABLE_INCLUDE_WHAT_YOU_USE=<bool> `# run iwyu during the build, default false` \
