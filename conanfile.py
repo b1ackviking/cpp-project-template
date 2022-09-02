@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 
 
 class Example(ConanFile):
@@ -8,6 +8,9 @@ class Example(ConanFile):
         "fPIC": [True, False]
     }
     default_options = {"fPIC": True}
+
+    def layout(self):
+        cmake_layout(self)
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -26,11 +29,10 @@ class Example(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        if self.should_configure:
-            cmake.configure()
-        if self.should_build:
-            cmake.build()
-        if self.should_test and not self.conf.get("tools.build:skip_test"):
+        cmake.configure()
+        cmake.build()
+        if not self.conf.get("tools.build:skip_test"):
             cmake.test()
-        if self.should_install:
-            cmake.install()
+
+    def package(self):
+        CMake(self).install()
