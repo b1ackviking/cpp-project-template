@@ -46,7 +46,6 @@ pipenv run conan profile new default --detect
 pipenv shell
 
 export CMAKE_GENERATOR=Ninja
-export BUILD_TYPE=<Debug|RelWithDebInfo|Release|MinSizeRel>
 
 export CC=<C compiler executable>
 export CXX=<C++ compiler executable>
@@ -57,11 +56,10 @@ conan install -if build -pr:b default -pr:h default \
   -pr:h conan/<profile matching the compiler in use> \
   -c:h tools.cmake.cmaketoolchain:generator=Ninja \
   -c:h tools.build:skip_test=<True|False> \
-  -s build_type=$BUILD_TYPE -b missing .
+  -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
 # configure
-cmake -B build -S . --toolchain build/conan_toolchain.cmake \
-  -D CMAKE_BUILD_TYPE=$BUILD_TYPE `# must match the value passed to conan` \
+cmake --preset <preset> \
   -D ENABLE_CPPCHECK=<bool> `# use cppcheck for static analysis, default false` \
   -D ENABLE_CLANG_TIDY=<bool> `# use clang-tidy for static analysis, default false` \
   -D ENABLE_INCLUDE_WHAT_YOU_USE=<bool> `# run iwyu during the build, default false` \
@@ -78,16 +76,16 @@ cmake -B build -S . --toolchain build/conan_toolchain.cmake \
 
 
 # build
-cmake --build build --parallel --config $BUILD_TYPE --target all
+cmake --build --preset <preset> --parallel --target all
 
 # run tests
-cmake --build build --parallel --config $BUILD_TYPE --target test
+cmake --build --preset <preset> --parallel --target test
 
 # collect test coverage if ENABLE_COVERAGE == TRUE
 gcovr --txt
 
 # run tests and collect test coverage (Windows)
-OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cmake --build build --parallel --config $BUILD_TYPE --target test
+OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cmake --build --preset <preset> --parallel --target test
 ```
 
 ## Customization checklist
