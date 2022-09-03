@@ -312,7 +312,7 @@ jobs:
         uses: microsoft/msvc-code-analysis-action@main
         id: run-analysis
         with:
-          cmakeBuildDirectory: ${{ env.build-dir }}
+          cmakeBuildDirectory: ${{ env.build-dir }}/${{ env.CMAKE_BUILD_TYPE }}
           buildConfiguration: ${{ env.CMAKE_BUILD_TYPE }}
           ruleset: NativeRecommendedRules.ruleset
 
