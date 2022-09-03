@@ -11,12 +11,13 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   CMAKE_GENERATOR: Ninja
   CMAKE_BUILD_TYPE: Release
+  CMAKE_BUILD_PRESET: release
   source-dir: ${{ github.workspace }}
   build-dir: ${{ github.workspace }}/build
 
 jobs:
   build:
-    name: ${{ matrix.config.name }} ${{ matrix.build-type }}
+    name: ${{ matrix.config.name }} ${{ matrix.build.type }}
     runs-on: ${{ matrix.config.os }}
     env:
       CC: ${{ matrix.config.cc }}
@@ -24,9 +25,15 @@ jobs:
       GCOV: ${{ matrix.config.gcov }}
     strategy:
       matrix:
-        build-type:
-          - Debug
-          - RelWithDebInfo
+        build:
+          - {
+              type: Debug,
+              preset: debug
+            }
+          - {
+              type: RelWithDebInfo,
+              preset: relwithdebinfo
+            }
         config:
           - {
               name: 'Windows MSVC',
@@ -130,36 +137,36 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_USER_HOME }}/.conan/data
-          key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build-type }}-${{ hashFiles('conanfile.py') }}
+          key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
-            conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build-type }}-
+            conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-
             conandata-${{ runner.os }}-${{ matrix.config.profile }}-
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build-type }}
+        run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake -D CMAKE_BUILD_TYPE=${{ matrix.build-type }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build-type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }}
+        run: pipenv run cmake --preset ${{ matrix.build.preset }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --parallel --config ${{ matrix.build-type }} --target all
+        run: cmake --build --preset ${{ matrix.build.preset }} --parallel --target all
 
       - name: Run tests
-        if: matrix.config.os != 'windows-2022' || matrix.build-type != 'Debug'
-        run: cmake --build ${{ env.build-dir }} --parallel --config ${{ matrix.build-type }} --target test
+        if: matrix.config.os != 'windows-2022' || matrix.build.type != 'Debug'
+        run: cmake --build --preset ${{ matrix.build.preset }} --target test
 
       - name: Collect test coverage
-        if: matrix.config.os != 'windows-2022' && matrix.build-type == 'Debug'
+        if: matrix.config.os != 'windows-2022' && matrix.build.type == 'Debug'
         run: pipenv run gcovr --txt
 
       - name: Test and collect test coverage (windows)
-        if: matrix.config.os == 'windows-2022' && matrix.build-type == 'Debug'
+        if: matrix.config.os == 'windows-2022' && matrix.build.type == 'Debug'
         run: |
-          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- cmake --build build --parallel --config ${{ matrix.build-type }} --target test
+          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- cmake --build --preset ${{ matrix.build.preset }} --target test
 
       - name: Publish test coverage to codecov
-        if: matrix.build-type == 'Debug'
+        if: matrix.build.type == 'Debug'
         uses: codecov/codecov-action@v3
         with:
           token: e12a1d0a-85fa-4971-8897-2a6daf8f9674
@@ -249,10 +256,10 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
+        run: pipenv run cmake --preset ${{ env.CMAKE_BUILD_PRESET }}
 
       - name: Build
-        run: cmake --build ${{ env.build-dir }} --parallel --config ${{ env.CMAKE_BUILD_TYPE }} --target all
+        run: cmake --build --preset ${{ env.CMAKE_BUILD_PRESET }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
@@ -299,13 +306,13 @@ jobs:
         run: pipenv run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
-        run: pipenv run cmake -B ${{ env.build-dir }} -S ${{ env.source-dir }} --toolchain ${{ env.build-dir }}/conan_toolchain.cmake
+        run: pipenv run cmake --preset ${{ env.CMAKE_BUILD_PRESET }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
         id: run-analysis
         with:
-          cmakeBuildDirectory: ${{ env.build-dir }}
+          cmakeBuildDirectory: ${{ env.build-dir }}/${{ env.CMAKE_BUILD_TYPE }}
           buildConfiguration: ${{ env.CMAKE_BUILD_TYPE }}
           ruleset: NativeRecommendedRules.ruleset
 
