@@ -91,6 +91,9 @@ jobs:
         if: matrix.config.os == 'windows-2022'
         run: choco install opencppcoverage
 
+      - name: Add Homebrew to PATH
+        run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
+
       - name: Install dependencies on Linux
         if: matrix.config.os == 'ubuntu-22.04'
         run: brew install gcc@12 llvm@14 cppcheck
@@ -218,6 +221,9 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: cpp
+
+      - name: Add Homebrew to PATH
+        run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
 
       - name: Install GCC 12
         run: brew install gcc@12
