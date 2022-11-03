@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "cpp-project-template"
+version = "0.0.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "The Unlicense"
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+conan = "^1.53.0"
+gcovr = "^5.2"
+ninja = "^1.10.2.4"
+pre-commit = "^2.20.0"
+clang-format = "^14.0.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
