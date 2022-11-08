@@ -26,7 +26,7 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
 - [Ninja](https://ninja-build.org/)
 - [LLVM](https://releases.llvm.org/)
 - [Python](https://www.python.org/)
-  - [pipenv](https://pypi.org/project/pipenv/)
+  - [poetry](https://python-poetry.org/)
 - [Node.js](https://nodejs.dev/download/)
 - [Chocolatey (Windows)](https://chocolatey.org/)
   - [OpenCppCoverage](https://community.chocolatey.org/packages/opencppcoverage)
@@ -34,16 +34,16 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
 Run the following commands in the root of the repository after cloning:
 
 ```bash
-pipenv install --dev
-pipenv run pre-commit install
-pipenv run pre-commit install --hook-type commit-msg
-pipenv run conan profile new default --detect
+poetry install
+poetry run pre-commit install
+poetry run pre-commit install --hook-type commit-msg
+poetry run conan profile new default --detect
 ```
 
 ## Building the project
 
 ```bash
-pipenv shell
+poetry shell
 
 export CMAKE_GENERATOR=Ninja
 
