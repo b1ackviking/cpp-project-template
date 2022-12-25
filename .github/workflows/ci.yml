@@ -62,17 +62,17 @@ jobs:
           - {
               name: 'Linux GCC 12',
               os: ubuntu-22.04,
-              cc: gcc,
-              cxx: g++,
-              gcov: gcov,
+              cc: gcc-12,
+              cxx: g++-12,
+              gcov: gcov-12,
               profile: conan/gcc-12
             }
           - {
               name: 'Linux Clang 14',
               os: ubuntu-22.04,
-              cc: clang,
-              cxx: clang++,
-              gcov: llvm-cov gcov,
+              cc: clang-14,
+              cxx: clang++-14,
+              gcov: llvm-cov-14 gcov,
               profile: conan/clang-14
             }
 
@@ -97,20 +97,6 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install cppcheck
           echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
-
-      - name: Update alternatives on Linux
-        if: matrix.config.os == 'ubuntu-22.04'
-        run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gcov gcov /usr/bin/gcov-12
-          sudo update-alternatives --set gcc /usr/bin/gcc-12
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100
-          sudo update-alternatives --set clang /usr/bin/clang-14
-          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 100
-          sudo update-alternatives --set clang++ /usr/bin/clang++-14
-          sudo update-alternatives --install /usr/bin/llvm-cov llvm-cov /usr/bin/llvm-cov-14 100
-          sudo update-alternatives --set llvm-cov /usr/bin/llvm-cov-14
-          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100
-          sudo update-alternatives --set clang-format /usr/bin/clang-format-14
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
           sudo update-alternatives --set clang-tidy /usr/bin/clang-tidy-14
 
