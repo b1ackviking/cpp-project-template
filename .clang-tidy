@@ -38,52 +38,18 @@ CheckOptions:
     value: 'true'
   - key: cppcoreguidelines-narrowing-conversions.PedanticMode
     value: 'true'
-  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
-    value: 'true'
   - key: google-runtime-int.UnsignedTypePrefix
     value: 'std::uint'
   - key: google-runtime-int.SignedTypePrefix
     value: 'std::int'
   - key: google-runtime-int.TypeSuffix
     value: '_t'
-  - key: hicpp-special-member-functions.AllowSoleDefaultDtor
-    value: 'true'
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value: 'true'
   - key: readability-uppercase-literal-suffix.NewSuffixes
     value: 'L;LL;LU;LLU'
   - key: readability-identifier-naming.AggressiveDependentMemberLookup
     value: 'true'
-  - key: readability-identifier-naming.NamespaceCase
-    value: lower_case
-  - key: readability-identifier-naming.ClassCase
-    value: lower_case
-  - key: readability-identifier-naming.StructCase
-    value: lower_case
-  - key: readability-identifier-naming.UnionCase
-    value: lower_case
-  - key: readability-identifier-naming.EnumCase
-    value: lower_case
-  - key: readability-identifier-naming.EnumConstantCase
-    value: lower_case
-  - key: readability-identifier-naming.VariableCase
-    value: lower_case
-  - key: readability-identifier-naming.MemberCase
-    value: lower_case
-  - key: readability-identifier-naming.PrivateMemberCase
-    value: lower_case
-  - key: readability-identifier-naming.PrivateMemberSuffix
-    value: '_'
-  - key: readability-identifier-naming.ProtectedMemberCase
-    value: lower_case
-  - key: readability-identifier-naming.ProtectedMemberSuffix
-    value: '_'
-  - key: readability-identifier-naming.MethodCase
-    value: lower_case
-  - key: readability-identifier-naming.FunctionCase
-    value: lower_case
-  - key: readability-identifier-naming.ParameterCase
-    value: lower_case
   - key: readability-identifier-naming.TemplateParameterCase
     value: CamelCase
   - key: readability-identifier-naming.MacroDefinitionCase
