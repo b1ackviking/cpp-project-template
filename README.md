@@ -88,6 +88,7 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cma
 - [ ] Change the LICENSE file
 - [ ] Write a `README.md` and [INSERT CONTACT METHOD] in `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`
 - [ ] Create an `ADMIN_TOKEN` for CI
+- [ ] Clean the `.git-blame-ignore-revs` file
 - [ ] `git add . && git commit --amend` your changes as `chore: initial commit`
 - [ ] Create a tag `0.0.0` on the first commit
 
@@ -115,6 +116,11 @@ A way to overcome this limitation is to allow pushes from administrators
 and use an administrator's token with repository access in the CI.
 Go to your account *Settings* -> *Developer settings* -> *Personal access tokens*
 to generate a token and set it in the repository *Settings* -> *Secrets* as an `ADMIN_TOKEN`.
+
+### Clean the `.git-blame-ignore-revs` file
+
+The `.git-blame-ignore-revs` file contains commit SHAs that you may want to skip
+while viewing the git blame on GitHub as if using `git blame --ignore-revs-file=.git-blame-ignore-revs`.
 
 ### Start the project
 
