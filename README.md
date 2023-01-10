@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/b1ackviking/cpp-project-template/actions/workflows/ci.yml/badge.svg)](https://github.com/b1ackviking/cpp-project-template/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/b1ackviking/cpp-project-template/branch/main/graph/badge.svg?token=FSWI6GZ1J9)](https://codecov.io/gh/b1ackviking/cpp-project-template)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com)
 
 ## About cpp-project-template
 
@@ -36,7 +37,6 @@ Run the following commands in the root of the repository after cloning:
 ```bash
 poetry install
 poetry run pre-commit install
-poetry run pre-commit install --hook-type commit-msg
 poetry run conan profile new default --detect
 ```
 
