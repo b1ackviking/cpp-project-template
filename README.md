@@ -89,6 +89,7 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
 - [ ] Write a `README.md` and [INSERT CONTACT METHOD] in `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`
 - [ ] Create an `ADMIN_TOKEN` for CI
 - [ ] Clean the `.git-blame-ignore-revs` file
+- [ ] Configure Dependabot (`.github/dependabot.yml`)
 - [ ] `git add . && git commit --amend` your changes as `chore: initial commit`
 - [ ] Create a tag `0.0.0` on the first commit
 
@@ -107,6 +108,8 @@ If you are not yet sure which one to use,
 Describe your project to the audience.
 People interested in your project don't need to read this text :)
 
+And don't forget to update badge URLs if you decide to keep them.
+
 ### Create an ADMIN_TOKEN
 
 The template uses a CI job to generate and push changelogs to the `main` branch.
@@ -121,6 +124,11 @@ to generate a token and set it in the repository *Settings* -> *Secrets* as an `
 
 The `.git-blame-ignore-revs` file contains commit SHAs that you may want to skip
 while viewing the git blame on GitHub as if using `git blame --ignore-revs-file=.git-blame-ignore-revs`.
+
+### Configure Dependabot
+
+Dependabot is a GitHub bot that helps you keep dependencies up to date.
+Configure dependency scanning in the `.github/dependabot.yml` file.
 
 ### Start the project
 
