@@ -27,10 +27,15 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_LINK_WHAT_YOU_USE TRUE)
-set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure --output-junit
-                          junit.xml --parallel 4)
 set(CMAKE_VS_JUST_MY_CODE_DEBUGGING ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
+set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure --output-junit
+                          junit.xml)
+include(ProcessorCount)
+ProcessorCount(ctest_jobs)
+if(NOT ctest_jobs EQUAL 0)
+  list(APPEND CMAKE_CTEST_ARGUMENTS --parallel ${ctest_jobs})
+endif()
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
