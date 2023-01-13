@@ -49,7 +49,7 @@ poetry shell
 conan install -if build -pr:b default -pr:h default \
   -c:h tools.cmake.cmaketoolchain:generator=Ninja \
   -pr:h conan/<profile matching the compiler in use> \
-  -c:h tools.build:compiler_executables='{"c": <C compiler path>, "cpp": <C++ compiler path>}'
+  -c:h tools.build:compiler_executables='{"c": "<C compiler>", "cpp": "<C++ compiler>"}' \
   -c:h tools.build:skip_test=<True|False> \
   -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
@@ -71,16 +71,16 @@ cmake --preset <preset> \
 
 
 # build
-cmake --build --preset <preset> --parallel --target all
+cmake --build --preset <preset>
 
 # run tests
-cmake --build --preset <preset> --parallel --target test
+ctest --preset <preset>
 
 # collect test coverage if ENABLE_COVERAGE == TRUE
 GCOV=<gcov for GCC, "llvm-cov gcov" for Clang> gcovr --txt
 
 # run tests and collect test coverage (Windows)
-OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cmake --build --preset <preset> --parallel --target test
+OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest --preset <preset>
 ```
 
 ## Customization checklist
