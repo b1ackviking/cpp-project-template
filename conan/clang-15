@@ -1,0 +1,3 @@
+[settings]
+compiler=clang
+compiler.version=15

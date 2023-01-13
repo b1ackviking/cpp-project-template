@@ -44,12 +44,12 @@ jobs:
               profile: conan/vs-17-md
             }
           - {
-              name: 'Windows Clang 14',
+              name: 'Windows Clang 15',
               os: windows-2022,
               cc: clang,
               cxx: clang++,
               gcov: opencppcoverage,
-              profile: conan/clang-14
+              profile: conan/clang-15
             }
           - {
               name: 'Macos Clang 14',
@@ -122,7 +122,7 @@ jobs:
           poetry run conan profile new default --detect
 
       - name: Update the default Conan profile on Windows
-        if: matrix.config.os == 'windows-2022' && matrix.config.profile == 'conan/clang-14'
+        if: matrix.config.os == 'windows-2022' && startsWith(matrix.config.profile, 'conan/clang-')
         run: poetry run conan profile update settings.compiler.libcxx=None default
 
       - name: Update the default Conan profile on Macos
