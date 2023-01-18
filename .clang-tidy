@@ -1,7 +1,4 @@
 ---
-# NOTE:
-# *-braces-around-statements crashes with clang-tidy-14
-# readability-simplify-boolean-expr crashes with clang-tidy-14
 Checks: >
   *,
   -abseil-*,
@@ -14,17 +11,13 @@ Checks: >
   -fuchsia-*,
   fuchsia-statically-constructed-objects,
   fuchsia-trailing-return,
-  -google-readability-braces-around-statements,
   -google-readability-todo,
-  -hicpp-braces-around-statements,
   -hicpp-named-parameter,
   -llvm-header-guard,
   -llvmlibc-*,
   -modernize-use-trailing-return-type,
-  -readability-braces-around-statements,
   -readability-identifier-length,
   -readability-named-parameter,
-  -readability-simplify-boolean-expr,
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
