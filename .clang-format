@@ -4,7 +4,7 @@ BasedOnStyle: LLVM
 Language: Cpp
 AccessModifierOffset: -2
 AlignAfterOpenBracket: Align
-# AlignArrayOfStructures: Right # invokes a bug in clang-format 13
+AlignArrayOfStructures: None
 AlignConsecutiveAssignments: None
 AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: None
@@ -68,9 +68,10 @@ IndentCaseLabels: false
 IndentExternBlock: NoIndent
 IndentGotoLabels: false
 IndentPPDirectives: None
-IndentRequires: true
+IndentRequiresClause: true
 IndentWidth: 2
 IndentWrappedFunctionNames: false
+InsertBraces: true
 InsertTrailingCommas: None
 KeepEmptyLinesAtTheStartOfBlocks: false
 LambdaBodyIndentation: Signature
@@ -80,16 +81,20 @@ MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 NamespaceMacros: []
 PPIndentWidth: 2
+PackConstructorInitializers: Never
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakComment: 300
 PenaltyBreakFirstLessLess: 120
+PenaltyBreakOpenParenthesis: 0
 PenaltyBreakString: 1000
 PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 1000000
 PenaltyIndentedWhitespace: 1
 PenaltyReturnTypeOnItsOwnLine: 1000
 PointerAlignment: Left
+QualifierAlignment: Custom
+QualifierOrder: ['static', 'inline', 'constexpr', 'const', 'volatile', 'restrict', 'type']
 RawStringFormats:
   - Language: Cpp
     Delimiters:
@@ -105,6 +110,9 @@ RawStringFormats:
     BasedOnStyle: google
 ReferenceAlignment: Left
 ReflowComments: true
+RemoveBracesLLVM: false
+RequiresClausePosition: OwnLine
+SeparateDefinitionBlocks: Always
 ShortNamespaceLines: 0
 SortIncludes: true
 SortJavaStaticImport: Before
@@ -123,7 +131,7 @@ SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
-SpacesInAngles: false
+SpacesInAngles: Never
 SpacesInCStyleCastParentheses: false
 SpacesInConditionalStatement: false
 SpacesInContainerLiterals: true
