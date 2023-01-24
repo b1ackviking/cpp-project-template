@@ -1,3 +1,6 @@
+# style: update to clang-format 15
+a395c9a0a323f43cf1b63a9375a9bb4fba0afdac
+
 # style: change naming convention for constexpr vars
 252ec2feb6e823097daf68e1204bb42549e7499e
 
