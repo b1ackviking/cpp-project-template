@@ -52,12 +52,12 @@ jobs:
               profile: conan/clang-15
             }
           - {
-              name: 'Macos Clang 14',
+              name: 'Macos Clang 15',
               os: macos-12,
               cc: clang,
               cxx: clang++,
               gcov: llvm-cov gcov,
-              profile: conan/clang-14
+              profile: conan/clang-15
             }
           - {
               name: 'Linux GCC 12',
@@ -103,9 +103,9 @@ jobs:
       - name: Select LLVM on Macos
         if: matrix.config.os == 'macos-12'
         run: |
-          echo CC=$(brew --prefix llvm@14)/bin/clang >> ${{ github.env }}
-          echo CXX=$(brew --prefix llvm@14)/bin/clang++ >> ${{ github.env }}
-          echo GCOV=$(brew --prefix llvm@14)/bin/llvm-cov gcov >> ${{ github.env }}
+          echo CC=$(brew --prefix llvm@15)/bin/clang >> ${{ github.env }}
+          echo CXX=$(brew --prefix llvm@15)/bin/clang++ >> ${{ github.env }}
+          echo GCOV=$(brew --prefix llvm@15)/bin/llvm-cov gcov >> ${{ github.env }}
 
       - name: Install poetry
         run: pipx install poetry
