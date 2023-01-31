@@ -83,13 +83,13 @@ files = [
 
 [[package]]
 name = "conan"
-version = "1.57.0"
+version = "1.58.0"
 description = "Conan C/C++ package manager"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-1.57.0.tar.gz", hash = "sha256:be2cef73e3aeba7a148a3bddee1c8b1e17fdc8d18fd18b5273d02787954be8cc"},
+    {file = "conan-1.58.0.tar.gz", hash = "sha256:001039c40b523ac3b26bb675eb90887760b06c657a0d10d60157e382ba2f9b73"},
 ]
 
 [package.dependencies]
