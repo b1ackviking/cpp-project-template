@@ -83,10 +83,6 @@ jobs:
       - name: Set environment variables
         run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
-      - name: Set up Visual Studio shell
-        if: matrix.config.os == 'windows-2022'
-        uses: egor-tensin/vs-shell@v2
-
       - name: Install dependencies on Windows
         if: matrix.config.os == 'windows-2022'
         run: choco install opencppcoverage
@@ -144,7 +140,7 @@ jobs:
             conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build.type }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build.type }} -c:h tools.microsoft.msbuild:installation_path="C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
 
       - name: Configure
         run: poetry run cmake --preset ${{ matrix.build.preset }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }}
