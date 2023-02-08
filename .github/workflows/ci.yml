@@ -38,8 +38,6 @@ jobs:
           - {
               name: 'Windows MSVC',
               os: windows-2022,
-              cc: cl,
-              cxx: cl,
               gcov: opencppcoverage,
               profile: conan/vs-17-md
             }
