@@ -41,7 +41,8 @@ jobs:
               cc: cl,
               cxx: cl,
               gcov: opencppcoverage,
-              profile: conan/msvc193-md
+              profile: conan/msvc193-md,
+              libcxx: ''
             }
           - {
               name: 'Windows Clang 15',
@@ -49,7 +50,8 @@ jobs:
               cc: clang,
               cxx: clang++,
               gcov: opencppcoverage,
-              profile: conan/clang15
+              profile: conan/clang15,
+              libcxx: ''
             }
           - {
               name: 'Macos Clang 15',
@@ -57,7 +59,8 @@ jobs:
               cc: clang,
               cxx: clang++,
               gcov: llvm-cov gcov,
-              profile: conan/clang15
+              profile: conan/clang15,
+              libcxx: '-pr:h conan/libc++'
             }
           - {
               name: 'Linux GCC 12',
@@ -65,7 +68,8 @@ jobs:
               cc: gcc-12,
               cxx: g++-12,
               gcov: gcov-12,
-              profile: conan/gcc12
+              profile: conan/gcc12,
+              libcxx: '-pr:h conan/libstdc++'
             }
           - {
               name: 'Linux Clang 14',
@@ -73,7 +77,8 @@ jobs:
               cc: clang-14,
               cxx: clang++-14,
               gcov: llvm-cov-14 gcov,
-              profile: conan/clang14
+              profile: conan/clang14,
+              libcxx: '-pr:h conan/libc++'
             }
 
     steps:
@@ -128,10 +133,19 @@ jobs:
             conandata-${{ runner.os }}-${{ matrix.config.profile }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build.type }}
+        run: >
+          poetry run conan install ${{ env.source-dir }}
+          -b missing -pr:b default -pr:h default
+          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -pr:h ${{ matrix.config.profile }} ${{ matrix.config.libcxx }}
+          -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
-        run: poetry run cmake --preset ${{ matrix.build.preset }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang') }}
+        run: >
+          poetry run cmake --preset ${{ matrix.build.preset }}
+          -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
+          -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }}
+          -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang') }}
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
@@ -197,10 +211,6 @@ jobs:
   codeql:
     name: CodeQL
     runs-on: ubuntu-22.04
-    env:
-      profile: conan/gcc12
-      CC: gcc-12
-      CXX: g++-12
 
     steps:
       - name: Checkout repository
@@ -235,7 +245,13 @@ jobs:
             conandata-${{ runner.os }}-${{ env.profile }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: >
+          poetry run conan install ${{ env.source-dir }}
+          -b missing -pr:b default -pr:h default
+          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -pr:h conan/gcc12 -pr:h conan/libstdc++
+          -c:h tools.build:compiler_executables='{"c": "gcc-12", "cpp": "g++-12"}'
+          -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
         run: poetry run cmake --preset ${{ env.CMAKE_BUILD_PRESET }}
@@ -249,8 +265,6 @@ jobs:
   analyze:
     name: Analyze
     runs-on: windows-2022
-    env:
-      profile: conan/msvc193-md
 
     steps:
       - name: Checkout repository
@@ -283,7 +297,12 @@ jobs:
             conandata-${{ runner.os }}-${{ env.profile }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: >
+          poetry run conan install ${{ env.source-dir }}
+          -b missing -pr:b default -pr:h default
+          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -pr:h conan/msvc193-md
+          -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
         run: poetry run cmake --preset ${{ env.CMAKE_BUILD_PRESET }}
