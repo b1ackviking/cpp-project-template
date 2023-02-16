@@ -37,7 +37,7 @@ Run the following commands in the root of the repository after cloning:
 ```bash
 poetry install
 poetry run pre-commit install
-poetry run conan profile new default --detect
+poetry run conan profile detect
 ```
 
 ## Building the project
@@ -46,8 +46,8 @@ poetry run conan profile new default --detect
 poetry shell
 
 # install libraries
-conan install -if build -pr:b default -pr:h default \
-  -c:h tools.cmake.cmaketoolchain:generator=Ninja \
+conan install -pr:b default -pr:h default \
+  -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -pr:h conan/<profile matching the compiler in use> \
   -c:h tools.build:compiler_executables='{"c": "<C compiler>", "cpp": "<C++ compiler>"}' \
   -c:h tools.build:skip_test=<True|False> \
@@ -77,7 +77,7 @@ cmake --build --preset <preset>
 ctest --preset <preset>
 
 # collect test coverage if ENABLE_COVERAGE == TRUE
-GCOV=<gcov for GCC, "llvm-cov gcov" for Clang> gcovr --txt
+GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr --txt
 
 # run tests and collect test coverage (Windows)
 OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest --preset <preset>
