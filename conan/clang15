@@ -1,3 +1,6 @@
+include(cppstd)
+
 [settings]
 compiler=clang
 compiler.version=15
+compiler.cppstd=23

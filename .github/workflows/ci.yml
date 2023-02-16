@@ -11,7 +11,7 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   CMAKE_GENERATOR: Ninja
   CMAKE_BUILD_TYPE: Release
-  CMAKE_BUILD_PRESET: release
+  CMAKE_BUILD_PRESET: conan-release
   source-dir: ${{ github.workspace }}
   build-dir: ${{ github.workspace }}/build
 
@@ -28,11 +28,11 @@ jobs:
         build:
           - {
               type: Debug,
-              preset: debug
+              preset: conan-debug
             }
           - {
               type: RelWithDebInfo,
-              preset: relwithdebinfo
+              preset: conan-relwithdebinfo
             }
         config:
           - {
@@ -41,7 +41,7 @@ jobs:
               cc: cl,
               cxx: cl,
               gcov: opencppcoverage,
-              profile: conan/vs-17-md
+              profile: conan/msvc193-md
             }
           - {
               name: 'Windows Clang 15',
@@ -49,7 +49,7 @@ jobs:
               cc: clang,
               cxx: clang++,
               gcov: opencppcoverage,
-              profile: conan/clang-15
+              profile: conan/clang15
             }
           - {
               name: 'Macos Clang 15',
@@ -57,7 +57,7 @@ jobs:
               cc: clang,
               cxx: clang++,
               gcov: llvm-cov gcov,
-              profile: conan/clang-15
+              profile: conan/clang15
             }
           - {
               name: 'Linux GCC 12',
@@ -65,7 +65,7 @@ jobs:
               cc: gcc-12,
               cxx: g++-12,
               gcov: gcov-12,
-              profile: conan/gcc-12
+              profile: conan/gcc12
             }
           - {
               name: 'Linux Clang 14',
@@ -73,15 +73,12 @@ jobs:
               cc: clang-14,
               cxx: clang++-14,
               gcov: llvm-cov-14 gcov,
-              profile: conan/clang-14
+              profile: conan/clang14
             }
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set environment variables
-        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
       - name: Set up Visual Studio shell
         if: matrix.config.os == 'windows-2022'
@@ -119,42 +116,29 @@ jobs:
       - name: Install Python dependencies
         run: |
           poetry install
-          poetry run conan profile new default --detect
-
-      - name: Update the default Conan profile on Windows
-        if: matrix.config.os == 'windows-2022' && startsWith(matrix.config.profile, 'conan/clang-')
-        run: poetry run conan profile update settings.compiler.libcxx=None default
-
-      - name: Update the default Conan profile on Macos
-        if: matrix.config.os == 'macos-12'
-        run: poetry run conan profile update settings.compiler.libcxx=libc++ default
-
-      - name: Update the default Conan profile on Linux
-        if: matrix.config.os == 'ubuntu-22.04'
-        run: poetry run conan profile update settings.compiler.libcxx=libstdc++11 default
+          poetry run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v3
         with:
-          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          path: ${{ env.source-dir }}/.conan2/p
           key: conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
             conandata-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-
             conandata-${{ runner.os }}-${{ matrix.config.profile }}-
-            conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build.type }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ matrix.config.profile }} -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
-        run: poetry run cmake --preset ${{ matrix.build.preset }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang-') }}
+        run: poetry run cmake --preset ${{ matrix.build.preset }} -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }} -D ENABLE_CPPCHECK:BOOL=${{ matrix.config.os == 'ubuntu-22.04' }} -D ENABLE_CLANG_TIDY:BOOL=${{ matrix.config.os != 'macos-12' && startsWith(matrix.config.profile, 'conan/clang') }}
 
       - name: Build
-        run: cmake --build --preset ${{ matrix.build.preset }} --parallel --target all
+        run: cmake --build --preset ${{ matrix.build.preset }}
 
       - name: Run tests
         if: matrix.config.os != 'windows-2022' || matrix.build.type != 'Debug'
-        run: cmake --build --preset ${{ matrix.build.preset }} --target test
+        run: ctest --preset ${{ matrix.build.preset }}
 
       - name: Collect test coverage
         if: matrix.config.os != 'windows-2022' && matrix.build.type == 'Debug'
@@ -163,7 +147,7 @@ jobs:
       - name: Test and collect test coverage (windows)
         if: matrix.config.os == 'windows-2022' && matrix.build.type == 'Debug'
         run: |
-          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- cmake --build --preset ${{ matrix.build.preset }} --target test
+          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- ctest --preset ${{ matrix.build.preset }}
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
@@ -214,7 +198,7 @@ jobs:
     name: CodeQL
     runs-on: ubuntu-22.04
     env:
-      profile: conan/gcc-12
+      profile: conan/gcc12
       CC: gcc-12
       CXX: g++-12
 
@@ -226,9 +210,6 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: cpp
-
-      - name: Set environment variables
-        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
       - name: Install poetry
         run: pipx install poetry
@@ -242,21 +223,19 @@ jobs:
       - name: Install Python dependencies
         run: |
           poetry install
-          poetry run conan profile new default --detect
-          poetry run conan profile update settings.compiler.libcxx=libstdc++11 default
+          poetry run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v3
         with:
-          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          path: ${{ env.source-dir }}/.conan2/p
           key: conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
             conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-
             conandata-${{ runner.os }}-${{ env.profile }}-
-            conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
         run: poetry run cmake --preset ${{ env.CMAKE_BUILD_PRESET }}
@@ -271,14 +250,11 @@ jobs:
     name: Analyze
     runs-on: windows-2022
     env:
-      profile: conan/vs-17-md
+      profile: conan/msvc193-md
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set environment variables
-        run: echo CONAN_USER_HOME=${{ runner.temp }} >> ${{ github.env }}
 
       - name: Set up Visual Studio shell
         uses: egor-tensin/vs-shell@v2
@@ -295,20 +271,19 @@ jobs:
       - name: Install Python dependencies
         run: |
           poetry install
-          poetry run conan profile new default --detect
+          poetry run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v3
         with:
-          path: ${{ env.CONAN_USER_HOME }}/.conan/data
+          path: ${{ env.source-dir }}/.conan2/p
           key: conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
             conandata-${{ runner.os }}-${{ env.profile }}-${{ env.CMAKE_BUILD_TYPE }}-
             conandata-${{ runner.os }}-${{ env.profile }}-
-            conandata-${{ runner.os }}-
 
       - name: Install Conan packages
-        run: poetry run conan install ${{ env.source-dir }} -b missing -if ${{ env.build-dir }} -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
+        run: poetry run conan install ${{ env.source-dir }} -b missing -pr:b default -pr:h default -c:h tools.cmake.cmaketoolchain:generator=Ninja -pr:h ${{ env.profile }} -s:h build_type=${{ env.CMAKE_BUILD_TYPE }}
 
       - name: Configure
         run: poetry run cmake --preset ${{ env.CMAKE_BUILD_PRESET }}

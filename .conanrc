@@ -1,0 +1,2 @@
+# store conan cache in the project directory
+conan_home=./.conan2

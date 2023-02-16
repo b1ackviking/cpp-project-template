@@ -11,7 +11,7 @@ packages = []
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-conan = "*"
+conan = "2.0.0-beta10"
 gcovr = "*"
 ninja = "*"
 pre-commit = "*"

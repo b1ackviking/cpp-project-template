@@ -1,4 +1,5 @@
 .cache/
+.conan2/
 .settings/
 .vs/
 .vscode/
