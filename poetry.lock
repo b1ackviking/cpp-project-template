@@ -83,19 +83,19 @@ files = [
 
 [[package]]
 name = "conan"
-version = "1.58.0"
+version = "1.59.0"
 description = "Conan C/C++ package manager"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-1.58.0.tar.gz", hash = "sha256:001039c40b523ac3b26bb675eb90887760b06c657a0d10d60157e382ba2f9b73"},
+    {file = "conan-1.59.0.tar.gz", hash = "sha256:161c8f2d3193c209a1e9525fe7d6c600688da529a9864e6ef557133e93131952"},
 ]
 
 [package.dependencies]
 bottle = ">=0.12.8,<0.13"
 colorama = ">=0.3.3,<0.5.0"
-distro = {version = ">=1.0.2,<=1.7.0", markers = "sys_platform == \"linux\" or sys_platform == \"linux2\""}
+distro = {version = ">=1.0.2,<=1.8.0", markers = "sys_platform == \"linux\" or sys_platform == \"linux2\""}
 fasteners = ">=0.14.1"
 Jinja2 = {version = ">=3.0,<4.0.0", markers = "python_version >= \"3\""}
 node-semver = "0.6.1"
