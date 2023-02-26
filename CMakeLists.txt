@@ -23,7 +23,7 @@ enable_coverage(options)
 add_subdirectory(lib)
 
 # put platform-specific code here and guard it with an option to exclude it from
-# build when building unit tests (e.g. you develop and embedded firmware)
+# build when building unit tests (e.g. you develop an embedded firmware)
 if(CMAKE_CROSSCOMPILING OR TRUE)
   add_subdirectory(src)
 endif()
