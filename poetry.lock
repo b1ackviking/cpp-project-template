@@ -232,14 +232,14 @@ testing = ["covdefaults (>=2.2.2)", "coverage (>=7.0.1)", "pytest (>=7.2)", "pyt
 
 [[package]]
 name = "gcovr"
-version = "5.2"
+version = "6.0"
 description = "Generate C/C++ code coverage reports with gcov"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "gcovr-5.2-py2.py3-none-any.whl", hash = "sha256:16e2dbf67a4259cb17f520be3a251e9af605b94c1007b1419d8b55c5c6cf4c57"},
-    {file = "gcovr-5.2.tar.gz", hash = "sha256:217195085ec94346291a87b7b1e6d9cfdeeee562b3e0f9a32b25c9530b3bce8f"},
+    {file = "gcovr-6.0-py2.py3-none-any.whl", hash = "sha256:2e52019fdb76c6e327f48c2a2d8555fb5e362570b79cc74c5498804d1ce54a60"},
+    {file = "gcovr-6.0.tar.gz", hash = "sha256:8638d5f44def10e38e3166c8a33bef6643ec204687e0ac7d345ce41a98c5750b"},
 ]
 
 [package.dependencies]
@@ -468,6 +468,7 @@ files = [
     {file = "ninja-1.11.1-py2.py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:3b28b595ed580752240ade7821b6cb7a5a4c6a604c865dc474bd38f06e2eb7f5"},
     {file = "ninja-1.11.1-py2.py3-none-win32.whl", hash = "sha256:3329b4b7c1694730772522a3ba0ba40fd15c012476ed3e1c9f0fd9e76190394e"},
     {file = "ninja-1.11.1-py2.py3-none-win_amd64.whl", hash = "sha256:4e547bc759c570773d83d110c41fd5ca9a94c0a9a8388f5a3ea37bdf97d002b0"},
+    {file = "ninja-1.11.1-py2.py3-none-win_arm64.whl", hash = "sha256:8cf96f92ccc851c600cb3e1251c34db06f1dd682de79188ad490c33cddc66981"},
     {file = "ninja-1.11.1.tar.gz", hash = "sha256:c833a47d39b2d1eee3f9ca886fa1581efd5be6068b82734ac229961ee8748f90"},
 ]
 
