@@ -29,6 +29,7 @@ AttributeMacros: []
 BinPackArguments: true
 BinPackParameters: true
 BitFieldColonSpacing: Both
+BreakAfterAttributes: Leave
 BreakAfterJavaFieldAnnotations: true
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Attach
@@ -44,7 +45,6 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2
 Cpp11BracedListStyle: true
-DeriveLineEnding: false
 DerivePointerAlignment: false
 DisableFormat: false
 EmptyLineAfterAccessModifier: Never
@@ -72,9 +72,11 @@ IndentRequiresClause: true
 IndentWidth: 2
 IndentWrappedFunctionNames: false
 InsertBraces: true
+InsertNewlineAtEOF: true
 InsertTrailingCommas: None
 KeepEmptyLinesAtTheStartOfBlocks: false
 LambdaBodyIndentation: Signature
+LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
@@ -111,7 +113,9 @@ RawStringFormats:
 ReferenceAlignment: Left
 ReflowComments: true
 RemoveBracesLLVM: false
+RemoveSemicolon: true
 RequiresClausePosition: OwnLine
+RequiresExpressionIndentation: OuterScope
 SeparateDefinitionBlocks: Always
 ShortNamespaceLines: 0
 SortIncludes: true
@@ -145,7 +149,6 @@ StatementAttributeLikeMacros: []
 StatementMacros: []
 TabWidth: 2
 TypenameMacros: []
-UseCRLF: false
 UseTab: Never
 WhitespaceSensitiveMacros: []
 ---
