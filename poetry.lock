@@ -124,20 +124,26 @@ files = [
 
 [[package]]
 name = "clang-format"
-version = "15.0.7"
+version = "16.0.3"
 description = "Clang-Format is an LLVM-based code formatting tool"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "clang-format-15.0.7.tar.gz", hash = "sha256:60954c571394354200912e72ce10454b96016af879771df39d09d605ceaec035"},
-    {file = "clang_format-15.0.7-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:0983aa108920a84a84358a1a045537311ad77c3fcb60fdec2af0aad71d53bd1d"},
-    {file = "clang_format-15.0.7-py2.py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6bb879288a08cf646e2930f1f69b197bae90003a6c6abacd7beabed340a9752f"},
-    {file = "clang_format-15.0.7-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f5a7815754c48cd9ffb14b2f306690f08b8ad8050cc7735c05c6caba046faee3"},
-    {file = "clang_format-15.0.7-py2.py3-none-musllinux_1_1_i686.whl", hash = "sha256:a81115f042e59a042e6600d034d15a75dbd2830fae98eb806830380054f49fe7"},
-    {file = "clang_format-15.0.7-py2.py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:0343cd5f0cf33c3d552ebacbd2604e1a1342163ed7e5cb750c0a1495aae96340"},
-    {file = "clang_format-15.0.7-py2.py3-none-win32.whl", hash = "sha256:c5fa1420c08f6293c6dfa90ca137e6e7ac5ee8838e151522816da43f375bc93f"},
-    {file = "clang_format-15.0.7-py2.py3-none-win_amd64.whl", hash = "sha256:3a2712fc3a252aec5196958a97642f2cf637fee34058352e6acfe0d2d3be1965"},
+    {file = "clang-format-16.0.3.tar.gz", hash = "sha256:62b9bf91c8ebc6dff32e261e2e1e8483eff58c1cf43607706e235e5cc89c7f3c"},
+    {file = "clang_format-16.0.3-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:0f2937e780f955191fac6786ef36ac8e3a03b455c363fc9af069c90237bbf1ab"},
+    {file = "clang_format-16.0.3-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:57b6e5daefc69d045b28c439b6f301c74f4ef9e93cc0f6a0434a1807e78a0587"},
+    {file = "clang_format-16.0.3-py2.py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:844ed39192d5c5a53aad9a5eb57424fba5a868cfc555e724be5a5083bf747d37"},
+    {file = "clang_format-16.0.3-py2.py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:30317bc91fd51260fd591c3fded0156021c540169e28921dda911bc146f499ee"},
+    {file = "clang_format-16.0.3-py2.py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:f478d47eb6bd6cdc026d8c00979421af51f57d376a8c8355b0e2b673572151f7"},
+    {file = "clang_format-16.0.3-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a6c33233e7c0d3057820e5d02411565953909cf59dc913d9c24b5c08fa561e05"},
+    {file = "clang_format-16.0.3-py2.py3-none-musllinux_1_1_aarch64.whl", hash = "sha256:515f387fb46b2bc54e9f054d953fd90e2efb2db1103dacf05af19eddab84b832"},
+    {file = "clang_format-16.0.3-py2.py3-none-musllinux_1_1_i686.whl", hash = "sha256:f32de5c79874b758fc9cdbb39387c4ceb3c6d3aa7dd9e9bb1f1cc8e8c0039098"},
+    {file = "clang_format-16.0.3-py2.py3-none-musllinux_1_1_ppc64le.whl", hash = "sha256:a0a49622866c259278cc68faa044f59828892b45f90cb27ce560ccf4a69e8aee"},
+    {file = "clang_format-16.0.3-py2.py3-none-musllinux_1_1_s390x.whl", hash = "sha256:49c46fdb8f386a44aa2cd2513687136ebdbbd5526f0da2a39ae77cdcf3785d26"},
+    {file = "clang_format-16.0.3-py2.py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:425058f6d845cfaebf5917d4c9cd7e926f8d9a834c415c89d624c4f0354e30b7"},
+    {file = "clang_format-16.0.3-py2.py3-none-win32.whl", hash = "sha256:a4ab97442293d62e3febe718c3fc716ca9cd4a7e5f1ae6c96e5c8077b9bfb6ec"},
+    {file = "clang_format-16.0.3-py2.py3-none-win_amd64.whl", hash = "sha256:e9594a76b97fdb449b2c9592e88eb3d8008eee452f330082237b4c666589bfec"},
 ]
 
 [[package]]
