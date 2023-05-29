@@ -326,33 +326,6 @@ jobs:
           files: coverage.xml
           fail_ci_if_error: true
 
-  release:
-    name: Semantic release
-    runs-on: ubuntu-22.04
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [build_linux, build_macos, build_windows]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: latest
-          cache: npm
-
-      - name: Install semantic-release
-        run: npm ci
-
-      - name: Run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
-        run: npx semantic-release
-
   codeql:
     name: CodeQL
     runs-on: ubuntu-22.04

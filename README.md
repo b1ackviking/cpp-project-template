@@ -18,7 +18,7 @@ for Clang, GCC, and MSVC.
 - Validate files structure and follow
 the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 specification with [pre-commit](https://pre-commit.com/) hooks.
-- Build, test, and deploy your project with [GitHub Actions](https://github.com/features/actions).
+- Build and test your project with [GitHub Actions](https://github.com/features/actions).
 
 ## Required software
 
@@ -69,7 +69,6 @@ cmake --preset <preset> \
   -D ENABLE_SANITIZER_THREAD=<bool> `# Clang and GCC only, default false` \
   -D ENABLE_SANITIZER_MEMORY=<bool> `# Clang only, default false`
 
-
 # build
 cmake --build --preset <preset>
 
@@ -87,11 +86,8 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
 
 - [ ] Change the LICENSE file
 - [ ] Write a `README.md` and [INSERT CONTACT METHOD] in `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`
-- [ ] Create an `ADMIN_TOKEN` for CI
 - [ ] Clean the `.git-blame-ignore-revs` file
 - [ ] Configure Dependabot (`.github/dependabot.yml`)
-- [ ] `git add . && git commit --amend` your changes as `chore: initial commit`
-- [ ] Create a tag `0.0.0` on the first commit
 
 ### Select an appropriate LICENSE
 
@@ -110,16 +106,6 @@ People interested in your project don't need to read this text :)
 
 And don't forget to update badge URLs if you decide to keep them.
 
-### Create an ADMIN_TOKEN
-
-The template uses a CI job to generate and push changelogs to the `main` branch.
-It is recommended to set up branch protection rules for the main branch.
-However, it will disallow pushing commits from the CI job.
-A way to overcome this limitation is to allow pushes from administrators
-and use an administrator's token with repository access in the CI.
-Go to your account *Settings* -> *Developer settings* -> *Personal access tokens*
-to generate a token and set it in the repository *Settings* -> *Secrets* as an `ADMIN_TOKEN`.
-
 ### Clean the `.git-blame-ignore-revs` file
 
 The `.git-blame-ignore-revs` file contains commit SHAs that you may want to skip
@@ -129,12 +115,3 @@ while viewing the git blame on GitHub as if using `git blame --ignore-revs-file=
 
 Dependabot is a GitHub bot that helps you keep dependencies up to date.
 Configure dependency scanning in the `.github/dependabot.yml` file.
-
-### Start the project
-
-After you have set up everything, you can finally start your project.
-To do that - simply commit everything with an `--amend` option
-to overwrite the first commit.
-You also need to set the first tag in the repository - the initial version.
-By default, the version tags use the `MAJOR.MINOR.PATCH` format.
-You can change it in the `.releaserc.js` file if you want.
