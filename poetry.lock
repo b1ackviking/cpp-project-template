@@ -142,12 +142,12 @@ files = [
 
 [[package]]
 name = "conan"
-version = "2.0.6"
+version = "2.0.7"
 description = "Conan C/C++ package manager"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-2.0.6.tar.gz", hash = "sha256:8cb97c3182ca93ab3c67b070288a313516e40a4af24d676eb080ea2f8a3d7029"},
+    {file = "conan-2.0.7.tar.gz", hash = "sha256:90b4039fb32f86ca4e5d564923421bc873c47b7dbe59390630c58a5878e67b38"},
 ]
 
 [package.dependencies]
@@ -157,7 +157,7 @@ fasteners = ">=0.15"
 Jinja2 = ">=3.0,<4.0.0"
 patch-ng = ">=1.17.4,<1.18"
 python-dateutil = ">=2.8.0,<3"
-PyYAML = ">=5.1,<=6.0"
+PyYAML = ">=6.0,<7.0"
 requests = ">=2.25,<3.0.0"
 urllib3 = ">=1.26.6,<1.27"
 
