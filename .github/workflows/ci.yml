@@ -110,7 +110,7 @@ jobs:
         run: poetry run gcovr --txt
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
+        uses: mikepenz/action-junit-report@v4
         if: ${{ !cancelled() }}
         with:
           report_paths: '**/junit-reports/*.xml'
@@ -203,7 +203,7 @@ jobs:
         run: GCOV="$(brew --prefix llvm@15)/bin/llvm-cov gcov" poetry run gcovr --txt
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
+        uses: mikepenz/action-junit-report@v4
         if: ${{ !cancelled() }}
         with:
           report_paths: '**/junit-reports/*.xml'
@@ -309,7 +309,7 @@ jobs:
           & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage.xml --cover_children -- ctest --preset ${{ matrix.build.preset }}
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
+        uses: mikepenz/action-junit-report@v4
         if: ${{ !cancelled() }}
         with:
           report_paths: '**/junit-reports/*.xml'
