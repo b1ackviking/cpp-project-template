@@ -12,9 +12,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
   option(ENABLE_LSAN "Enable leak sanitizer" OFF)
   option(ENABLE_UBSAN "Enable undefined behavior sanitizer" OFF)
   option(ENABLE_TSAN "Enable thread sanitizer" OFF)
-  if(MAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    option(ENABLE_MSAN "Enable memory sanitizer" OFF)
-  endif()
 endif()
 
 # Useful CMake defaults
@@ -258,20 +255,6 @@ function(enable_sanitizers target_name)
                       "and Leak sanitizer enabled")
     else()
       list(APPEND sanitizers "thread")
-    endif()
-  endif()
-
-  if(ENABLE_MSAN)
-    message(
-      WARNING "Memory sanitizer requires all the code (including libc++)"
-              "to be MSan-instrumented otherwise it reports false positives")
-    if("address" IN_LIST sanitizers
-       OR "thread" IN_LIST sanitizers
-       OR "leak" IN_LIST sanitizers)
-      message(WARNING "Memory sanitizer does not work with Address, "
-                      "Thread and Leak sanitizer enabled")
-    else()
-      list(APPEND sanitizers "memory")
     endif()
   endif()
 

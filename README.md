@@ -66,8 +66,7 @@ cmake --preset <preset> \
   -D ENABLE_ASAN=<bool> \
   -D ENABLE_LSAN=<bool> \
   -D ENABLE_UBSAN=<bool> \
-  -D ENABLE_TSAN=<bool> \
-  -D ENABLE_MSAN=<bool>
+  -D ENABLE_TSAN=<bool>
 
 # build
 cmake --build --preset <preset>
