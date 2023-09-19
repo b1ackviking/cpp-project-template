@@ -76,7 +76,7 @@ cmake --build --preset <preset>
 ctest --preset <preset>
 
 # collect test coverage if ENABLE_COVERAGE == TRUE
-GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr --txt
+GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr
 
 # run tests and collect test coverage (Windows)
 OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest --preset <preset>
