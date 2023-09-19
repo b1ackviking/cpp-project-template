@@ -140,10 +140,10 @@ jobs:
             }
         config:
           - {
-              name: 'Macos Clang 15',
-              cc: $(brew --prefix llvm@15)/bin/clang,
-              cxx: $(brew --prefix llvm@15)/bin/clang++,
-              profile: conan/clang15
+              name: 'Macos Clang 16',
+              cc: $(brew --prefix llvm@16)/bin/clang,
+              cxx: $(brew --prefix llvm@16)/bin/clang++,
+              profile: conan/clang16
             }
     steps:
       - name: Checkout repository
@@ -153,6 +153,7 @@ jobs:
         run: |
           pipx install poetry
           echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
+          brew install llvm@16
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -198,7 +199,7 @@ jobs:
 
       - name: Collect test coverage
         if: matrix.build.type == 'Debug'
-        run: GCOV="$(brew --prefix llvm@15)/bin/llvm-cov gcov" poetry run gcovr
+        run: GCOV="$(brew --prefix llvm@16)/bin/llvm-cov gcov" poetry run gcovr
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
