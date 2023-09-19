@@ -20,7 +20,6 @@ Checks: >
   -readability-named-parameter,
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
 FormatStyle: none
 CheckOptions:
   - key: bugprone-exception-escape.FunctionsThatShouldNotThrow
@@ -28,6 +27,8 @@ CheckOptions:
   - key: bugprone-misplaced-widening-cast.CheckImplicitCasts
     value: 'true'
   - key: bugprone-suspicious-enum-usage.StrictMode
+    value: 'true'
+  - key: cppcoreguidelines-avoid-do-while.IgnoreMacros
     value: 'true'
   - key: cppcoreguidelines-narrowing-conversions.PedanticMode
     value: 'true'
