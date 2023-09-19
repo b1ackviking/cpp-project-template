@@ -56,8 +56,8 @@ jobs:
           brew install cppcheck
           echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> ${{ github.path }}
           echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
-          sudo update-alternatives --set clang-tidy /usr/bin/clang-tidy-14
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
+          sudo update-alternatives --set clang-tidy /usr/bin/clang-tidy-15
           pipx install poetry
 
       - name: Setup Python
