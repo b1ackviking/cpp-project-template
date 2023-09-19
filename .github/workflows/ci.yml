@@ -119,7 +119,6 @@ jobs:
         if: matrix.build.type == 'Debug'
         uses: codecov/codecov-action@v3
         with:
-          token: e12a1d0a-85fa-4971-8897-2a6daf8f9674
           flags: linux-${{ matrix.config.cc }}
           name: ${{ matrix.config.name }}
           files: coverage/cobertura.xml
@@ -213,7 +212,6 @@ jobs:
         if: matrix.build.type == 'Debug'
         uses: codecov/codecov-action@v3
         with:
-          token: e12a1d0a-85fa-4971-8897-2a6daf8f9674
           flags: macos-clang
           name: ${{ matrix.config.name }}
           files: coverage/cobertura.xml
@@ -318,7 +316,6 @@ jobs:
         if: matrix.build.type == 'Debug'
         uses: codecov/codecov-action@v3
         with:
-          token: e12a1d0a-85fa-4971-8897-2a6daf8f9674
           flags: windows-${{ matrix.config.cc }}
           name: ${{ matrix.config.name }}
           files: coverage/cobertura.xml
