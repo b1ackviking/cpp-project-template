@@ -277,9 +277,19 @@ function(enable_sanitizers target_name)
 
   list(JOIN sanitizers "," list_of_sanitizers)
   if(list_of_sanitizers AND NOT list_of_sanitizers STREQUAL "")
-    target_compile_options(${target_name}
-                           INTERFACE -fsanitize=${list_of_sanitizers})
-    target_link_options(${target_name} INTERFACE
-                        -fsanitize=${list_of_sanitizers})
+    if(MSVC)
+      target_compile_options(
+        ${target_name} INTERFACE /fsanitize=${list_of_sanitizers} /Zi
+                                 /INCREMENTAL:NO)
+      target_compile_definitions(
+        ${target_name} INTERFACE _DISABLE_VECTOR_ANNOTATION
+                                 _DISABLE_STRING_ANNOTATION)
+      target_link_options(${target_name} INTERFACE /INCREMENTAL:NO)
+    else()
+      target_compile_options(${target_name}
+                             INTERFACE -fsanitize=${list_of_sanitizers})
+      target_link_options(${target_name} INTERFACE
+                          -fsanitize=${list_of_sanitizers})
+    endif()
   endif()
 endfunction()
