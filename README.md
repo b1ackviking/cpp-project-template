@@ -49,25 +49,25 @@ poetry shell
 conan install -pr:b default -pr:h default \
   -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -pr:h conan/<profile matching the compiler in use> \
-  -c:h tools.build:compiler_executables='{"c": "<C compiler>", "cpp": "<C++ compiler>"}' \
+  -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
   -c:h tools.build:skip_test=<True|False> \
   -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
 # configure
 cmake --preset <preset> \
-  -D ENABLE_CPPCHECK=<bool> `# use cppcheck for static analysis, default false` \
-  -D ENABLE_CLANG_TIDY=<bool> `# use clang-tidy for static analysis, default false` \
-  -D ENABLE_INCLUDE_WHAT_YOU_USE=<bool> `# run iwyu during the build, default false` \
-  -D ENABLE_IPO=<bool> `# use inter-procedural optimization, default false` \
-  -D ENABLE_CACHE=<bool> `# use caching for faster recompilation, default false` \
-  -D CACHE_OPTION=<ccache or sccache> `# compilation cache driver, default ccache` \
-  -D ENABLE_DOXYGEN=<bool> `# generate documentation during the build, default false` \
-  -D ENABLE_COVERAGE=<bool> `# collect code coverage (for unit tests), default false` \
-  -D ENABLE_SANITIZER_ADDRESS=<bool> `# default false`\
-  -D ENABLE_SANITIZER_LEAK=<bool> `# Clang and GCC only, default false` \
-  -D ENABLE_SANITIZER_UNDEFINED_BEHAVIOR=<bool> `# Clang and GCC only, default false` \
-  -D ENABLE_SANITIZER_THREAD=<bool> `# Clang and GCC only, default false` \
-  -D ENABLE_SANITIZER_MEMORY=<bool> `# Clang only, default false`
+  -D ENABLE_CPPCHECK=<bool> \
+  -D ENABLE_CLANG_TIDY=<bool> \
+  -D ENABLE_IWYU=<bool> \
+  -D ENABLE_IPO=<bool> \
+  -D ENABLE_CACHE=<bool> \
+  -D CACHE_OPTION=<ccache or sccache> \
+  -D ENABLE_DOXYGEN=<bool> \
+  -D ENABLE_COVERAGE=<bool> \
+  -D ENABLE_ASAN=<bool> \
+  -D ENABLE_LSAN=<bool> \
+  -D ENABLE_UBSAN=<bool> \
+  -D ENABLE_TSAN=<bool> \
+  -D ENABLE_MSAN=<bool>
 
 # build
 cmake --build --preset <preset>

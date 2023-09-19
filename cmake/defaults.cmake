@@ -1,22 +1,19 @@
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck" OFF)
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy" OFF)
-option(ENABLE_INCLUDE_WHAT_YOU_USE
-       "Enable static analysis with include-what-you-use" OFF)
+option(ENABLE_IWYU "Enable static analysis with include-what-you-use" OFF)
 option(ENABLE_IPO
        "Enable Interprocedural Optimization, aka Link Time Optimization (LTO)"
        OFF)
 option(ENABLE_CACHE "Enable cache if available" OFF)
 option(ENABLE_DOXYGEN "Enable doxygen doc builds of source" OFF)
-option(ENABLE_SANITIZER_ADDRESS "Enable address sanitizer" OFF)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES
-                                           ".*Clang")
+option(ENABLE_ASAN "Enable address sanitizer" OFF)
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
   option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
-  option(ENABLE_SANITIZER_LEAK "Enable leak sanitizer" OFF)
-  option(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-         "Enable undefined behavior sanitizer" OFF)
-  option(ENABLE_SANITIZER_THREAD "Enable thread sanitizer" OFF)
+  option(ENABLE_LSAN "Enable leak sanitizer" OFF)
+  option(ENABLE_UBSAN "Enable undefined behavior sanitizer" OFF)
+  option(ENABLE_TSAN "Enable thread sanitizer" OFF)
   if(MAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-    option(ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
+    option(ENABLE_MSAN "Enable memory sanitizer" OFF)
   endif()
 endif()
 
@@ -94,7 +91,7 @@ if(ENABLE_CLANG_TIDY)
   endif()
 endif()
 
-if(ENABLE_INCLUDE_WHAT_YOU_USE)
+if(ENABLE_IWYU)
   find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
   if(INCLUDE_WHAT_YOU_USE)
     set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE}
@@ -234,8 +231,7 @@ function(set_target_warnings target_name)
 endfunction()
 
 function(enable_coverage target_name)
-  if(ENABLE_COVERAGE AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
-                          OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang"))
+  if(ENABLE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
     target_compile_options(${target_name} INTERFACE --coverage -O0 -g)
     target_link_libraries(${target_name} INTERFACE --coverage)
   endif()
@@ -244,35 +240,35 @@ endfunction()
 function(enable_sanitizers target_name)
   set(sanitizers "")
 
-  if(ENABLE_SANITIZER_ADDRESS)
+  if(ENABLE_ASAN)
     list(APPEND sanitizers "address")
   endif()
 
-  if(ENABLE_SANITIZER_LEAK)
+  if(ENABLE_LSAN)
     list(APPEND sanitizers "leak")
   endif()
 
-  if(ENABLE_SANITIZER_UNDEFINED_BEHAVIOR)
+  if(ENABLE_UBSAN)
     list(APPEND sanitizers "undefined")
   endif()
 
-  if(ENABLE_SANITIZER_THREAD)
+  if(ENABLE_TSAN)
     if("address" IN_LIST sanitizers OR "leak" IN_LIST sanitizers)
-      message(WARNING "Thread sanitizer does not work with Address"
+      message(WARNING "Thread sanitizer does not work with Address "
                       "and Leak sanitizer enabled")
     else()
       list(APPEND sanitizers "thread")
     endif()
   endif()
 
-  if(ENABLE_SANITIZER_MEMORY)
+  if(ENABLE_MSAN)
     message(
       WARNING "Memory sanitizer requires all the code (including libc++)"
               "to be MSan-instrumented otherwise it reports false positives")
     if("address" IN_LIST sanitizers
        OR "thread" IN_LIST sanitizers
        OR "leak" IN_LIST sanitizers)
-      message(WARNING "Memory sanitizer does not work with Address,"
+      message(WARNING "Memory sanitizer does not work with Address, "
                       "Thread and Leak sanitizer enabled")
     else()
       list(APPEND sanitizers "memory")
@@ -280,12 +276,10 @@ function(enable_sanitizers target_name)
   endif()
 
   list(JOIN sanitizers "," list_of_sanitizers)
-  if(list_of_sanitizers)
-    if(NOT list_of_sanitizers STREQUAL "")
-      target_compile_options(${target_name}
-                             INTERFACE -fsanitize=${list_of_sanitizers})
-      target_link_options(${target_name} INTERFACE
-                          -fsanitize=${list_of_sanitizers})
-    endif()
+  if(list_of_sanitizers AND NOT list_of_sanitizers STREQUAL "")
+    target_compile_options(${target_name}
+                           INTERFACE -fsanitize=${list_of_sanitizers})
+    target_link_options(${target_name} INTERFACE
+                        -fsanitize=${list_of_sanitizers})
   endif()
 endfunction()
