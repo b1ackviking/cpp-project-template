@@ -56,8 +56,6 @@ jobs:
           brew install cppcheck
           echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> ${{ github.path }}
           echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
-          sudo update-alternatives --set clang-tidy /usr/bin/clang-tidy-15
           pipx install poetry
 
       - name: Setup Python
@@ -95,7 +93,6 @@ jobs:
           poetry run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_CPPCHECK:BOOL=TRUE
-          -D ENABLE_CLANG_TIDY:BOOL=${{ startsWith(matrix.config.profile, 'conan/clang') }}
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
@@ -294,7 +291,6 @@ jobs:
         run: >
           poetry run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
-          -D ENABLE_CLANG_TIDY:BOOL=${{ startsWith(matrix.config.profile, 'conan/clang') }}
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
