@@ -12,7 +12,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
   option(ENABLE_LSAN "Enable leak sanitizer" OFF)
   option(ENABLE_UBSAN "Enable undefined behavior sanitizer" OFF)
   option(ENABLE_TSAN "Enable thread sanitizer" OFF)
+  option(ENABLE_FORTIFY_SOURCE
+         "Enable -D_FORTIFY_SOURCE=3 (requires optimized build)" OFF)
 endif()
+option(ENABLE_HARDENINGS "Enable hardenings" OFF)
 
 # Useful CMake defaults
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -273,6 +276,55 @@ function(enable_sanitizers target_name)
                              INTERFACE -fsanitize=${list_of_sanitizers})
       target_link_options(${target_name} INTERFACE
                           -fsanitize=${list_of_sanitizers})
+    endif()
+  endif()
+endfunction()
+
+include(CheckCXXCompilerFlag)
+function(enable_hardenings target_name)
+  if(ENABLE_HARDENINGS)
+    if(MSVC)
+      target_compile_options(${target_name} INTERFACE /sdl /guard:cf /GS)
+      target_link_options(
+        ${target_name}
+        INTERFACE
+        /NXCOMPAT
+        /CETCOMPAT
+        /DYNAMICBASE
+        /LARGEADDRESSAWARE
+        /HIGHENTROPYVA)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
+      target_compile_definitions(${target_name} INTERFACE _GLIBCXX_ASSERTIONS)
+      if(ENABLE_FORTIFY_SOURCE)
+        target_compile_options(${target_name} INTERFACE -U_FORTIFY_SOURCE
+                                                        -D_FORTIFY_SOURCE=3)
+      endif()
+      if(LINUX)
+        target_link_options(${target_name} INTERFACE -Wl,-z,noexecstack)
+      endif()
+
+      check_cxx_compiler_flag(-fpie PIE)
+      if(PIE)
+        target_compile_options(${target_name} INTERFACE -fpie)
+        target_link_options(${target_name} INTERFACE -fpie)
+      endif()
+
+      check_cxx_compiler_flag(-fstack-protector-strong STACK_PROTECTOR)
+      if(STACK_PROTECTOR)
+        target_compile_options(${target_name}
+                               INTERFACE -fstack-protector-strong)
+      endif()
+
+      check_cxx_compiler_flag(-fcf-protection CF_PROTECTION)
+      if(CF_PROTECTION)
+        target_compile_options(${target_name} INTERFACE -fcf-protection)
+      endif()
+
+      check_cxx_compiler_flag(-fstack-clash-protection CLASH_PROTECTION)
+      if(CLASH_PROTECTION AND (LINUX OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"))
+        target_compile_options(${target_name}
+                               INTERFACE -fstack-clash-protection)
+      endif()
     endif()
   endif()
 endfunction()

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.27 FATAL_ERROR)
 
 project(
   cpp-project-template
@@ -17,6 +17,7 @@ set_target_warnings(warnings)
 add_library(options INTERFACE)
 target_compile_features(options INTERFACE cxx_std_23)
 enable_sanitizers(options)
+enable_hardenings(options)
 enable_coverage(options)
 
 # put platform-agnostic code here
