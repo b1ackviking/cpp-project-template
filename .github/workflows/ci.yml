@@ -96,6 +96,8 @@ jobs:
           -D ENABLE_UBSAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_LSAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_CPPCHECK:BOOL=TRUE
+          -D ENABLE_HARDENINGS:BOOL=TRUE
+          -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
@@ -194,6 +196,8 @@ jobs:
           -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_UBSAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_LSAN:BOOL=${{ matrix.build.type == 'Debug' }}
+          -D ENABLE_HARDENINGS:BOOL=TRUE
+          -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
@@ -297,6 +301,7 @@ jobs:
           poetry run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' && matrix.config.cc == 'cl' }}
+          -D ENABLE_HARDENINGS:BOOL=TRUE
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
