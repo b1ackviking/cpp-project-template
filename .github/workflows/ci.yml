@@ -296,6 +296,7 @@ jobs:
         run: >
           poetry run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
+          -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' && matrix.config.cc == 'cl' }}
 
       - name: Build
         run: cmake --build --preset ${{ matrix.build.preset }}
