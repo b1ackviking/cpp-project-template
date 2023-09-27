@@ -142,12 +142,12 @@ files = [
 
 [[package]]
 name = "conan"
-version = "2.0.11"
+version = "2.0.12"
 description = "Conan C/C++ package manager"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-2.0.11.tar.gz", hash = "sha256:f9129ae26c4e025c344e7d34e2afaedc924298da6810136a2b7e542143c6638c"},
+    {file = "conan-2.0.12.tar.gz", hash = "sha256:b59a74a8e73c3fe1401f6d1396a45e53621816bccfa2001810053baf737ee51b"},
 ]
 
 [package.dependencies]
