@@ -1,5 +1,0 @@
-include(cppstd)
-
-[settings]
-compiler=clang
-compiler.version=14
