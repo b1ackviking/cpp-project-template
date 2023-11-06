@@ -1,5 +1,0 @@
-include(cppstd)
-
-[settings]
-compiler=gcc
-compiler.version=12

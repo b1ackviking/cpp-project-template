@@ -33,18 +33,18 @@ jobs:
             }
         config:
           - {
-              name: 'Linux GCC 12',
-              cc: gcc-12,
-              cxx: g++-12,
-              gcov: gcov-12,
-              profile: conan/gcc12
+              name: 'Linux GCC',
+              cc: gcc-13,
+              cxx: g++-13,
+              gcov: gcov-13,
+              profiles: '-pr:h conan/gcc13'
             }
           - {
-              name: 'Linux Clang 14',
-              cc: clang-14,
-              cxx: clang++-14,
-              gcov: llvm-cov-14 gcov,
-              profile: conan/clang14
+              name: 'Linux Clang',
+              cc: clang-15,
+              cxx: clang++-15,
+              gcov: llvm-cov-15 gcov,
+              profiles: '-pr:h conan/clang15 -pr:h conan/libc++'
             }
     steps:
       - name: Checkout repository
@@ -73,19 +73,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_HOME }}/p
-          key: conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
+          key: conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-
+            conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-
+            conan-${{ runner.os }}-${{ matrix.config.cc }}-
             conan-${{ runner.os }}-
 
       - name: Install Conan packages
         run: >
           poetry run conan install .
-          -b missing -pr:b default -pr:h default
+          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
-          -pr:h ${{ matrix.config.profile }}
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
@@ -130,7 +129,7 @@ jobs:
 
   build_macos:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
-    runs-on: macos-12
+    runs-on: macos-13
     strategy:
       matrix:
         build:
@@ -144,10 +143,10 @@ jobs:
             }
         config:
           - {
-              name: 'Macos Clang 16',
+              name: 'Macos Clang',
               cc: $(brew --prefix llvm@16)/bin/clang,
               cxx: $(brew --prefix llvm@16)/bin/clang++,
-              profile: conan/clang16
+              profiles: '-pr:h conan/clang16 -pr:h conan/libc++'
             }
     steps:
       - name: Checkout repository
@@ -174,19 +173,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_HOME }}/p
-          key: conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
+          key: conan-${{ runner.os }}-clang-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-
+            conan-${{ runner.os }}-clang-${{ matrix.build.type }}-
+            conan-${{ runner.os }}-clang-
             conan-${{ runner.os }}-
 
       - name: Install Conan packages
         run: >
           poetry run conan install .
-          -b missing -pr:b default -pr:h default
+          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
-          -pr:h ${{ matrix.config.profile }} -pr:h conan/libc++
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
@@ -245,13 +243,13 @@ jobs:
               name: 'Windows MSVC',
               cc: cl,
               cxx: cl,
-              profile: conan/msvc193-md
+              profiles: '-pr:h conan/msvc193-md'
             }
           - {
-              name: 'Windows Clang 15',
+              name: 'Windows Clang',
               cc: clang,
               cxx: clang++,
-              profile: conan/clang15
+              profiles: '-pr:h conan/clang16'
             }
     steps:
       - name: Checkout repository
@@ -281,19 +279,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_HOME }}/p
-          key: conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
+          key: conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-
+            conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-
+            conan-${{ runner.os }}-${{ matrix.config.cc }}-
             conan-${{ runner.os }}-
 
       - name: Install Conan packages
         run: >
           poetry run conan install .
-          -b missing -pr:b default -pr:h default
+          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{'c': '${{ matrix.config.cc }}', 'cpp': '${{ matrix.config.cxx }}'}"
-          -pr:h ${{ matrix.config.profile }}
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
@@ -344,10 +341,9 @@ jobs:
             }
         config:
           - {
-              name: 'Linux GCC 12',
-              cc: gcc-12,
-              cxx: g++-12,
-              profile: conan/gcc12
+              cc: gcc-13,
+              cxx: g++-13,
+              profiles: '-pr:h conan/gcc13'
             }
     steps:
       - name: Checkout repository
@@ -378,19 +374,18 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CONAN_HOME }}/p
-          key: conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
+          key: conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
           restore-keys: |
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-${{ matrix.build.type }}-
-            conan-${{ runner.os }}-${{ matrix.config.profile }}-
+            conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-
+            conan-${{ runner.os }}-${{ matrix.config.cc }}-
             conan-${{ runner.os }}-
 
       - name: Install Conan packages
         run: >
           poetry run conan install .
-          -b missing -pr:b default -pr:h default
+          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
-          -pr:h ${{ matrix.config.profile }}
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
@@ -414,10 +409,9 @@ jobs:
             }
         config:
           - {
-              name: 'Windows MSVC',
               cc: cl,
               cxx: cl,
-              profile: conan/msvc193-md
+              profiles: '-pr:h conan/msvc193-md'
             }
     steps:
       - name: Checkout repository
@@ -452,10 +446,9 @@ jobs:
       - name: Install Conan packages
         run: >
           poetry run conan install .
-          -b missing -pr:b default -pr:h default
+          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{'c': '${{ matrix.config.cc }}', 'cpp': '${{ matrix.config.cxx }}'}"
-          -pr:h ${{ matrix.config.profile }}
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
