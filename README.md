@@ -92,6 +92,7 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
   - [ ] Edit `.github/CODE_OF_CONDUCT.md` and insert contact method.
   - [ ] Edit `.github/SECURITY.md`
 - [ ] Clean the `.git-blame-ignore-revs` file
+- [ ] Configure CODEOWNERS (`.github/CODEOWNERS`)
 - [ ] Configure Dependabot (`.github/dependabot.yml`)
 
 ### Select an appropriate LICENSE
@@ -122,6 +123,12 @@ Please update the contents of these files with the links to your repository and 
 
 The `.git-blame-ignore-revs` file contains commit SHAs that you may want to skip
 while viewing the git blame on GitHub as if using `git blame --ignore-revs-file=.git-blame-ignore-revs`.
+
+### Configure CODEOWNERS
+
+Code owners are automatically requested for review
+when someone opens a pull request that modifies code that they own.
+Code owners are not automatically requested to review draft pull requests.
 
 ### Configure Dependabot
 
