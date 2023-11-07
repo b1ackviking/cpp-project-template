@@ -86,7 +86,11 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
 ## Customization checklist
 
 - [ ] Change the LICENSE file
-- [ ] Write a `README.md` and [INSERT CONTACT METHOD] in `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`
+- [ ] Write a `README.md`
+- [ ] Fill in the community health files
+  - [ ] Edit `.github/CONTRIBUTING.md` (don't forget to update links)
+  - [ ] Edit `.github/CODE_OF_CONDUCT.md` and insert contact method.
+  - [ ] Edit `.github/SECURITY.md`
 - [ ] Clean the `.git-blame-ignore-revs` file
 - [ ] Configure Dependabot (`.github/dependabot.yml`)
 
@@ -106,6 +110,13 @@ Describe your project to the audience.
 People interested in your project don't need to read this text :)
 
 And don't forget to update badge URLs if you decide to keep them.
+
+### Fill in the community health files
+
+Apart from README, there are a number of files in the .github directory
+that help people to interact with your project:
+submit issues and pull requests, security vulnerabilities.
+Please update the contents of these files with the links to your repository and contact methods.
 
 ### Clean the `.git-blame-ignore-revs` file
 
