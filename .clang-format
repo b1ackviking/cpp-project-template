@@ -9,6 +9,11 @@ AlignConsecutiveAssignments: None
 AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: None
 AlignConsecutiveMacros: Consecutive
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCaseColons: false
 AlignEscapedNewlines: Left
 AlignOperands: true
 AlignTrailingComments: true
@@ -79,6 +84,7 @@ IntegerLiteralSeparator:
   Binary: 0
   Decimal: 3
   Hex: -1
+KeepEmptyLinesAtEOF: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 LambdaBodyIndentation: Signature
 LineEnding: LF
@@ -118,6 +124,7 @@ RawStringFormats:
 ReferenceAlignment: Left
 ReflowComments: true
 RemoveBracesLLVM: false
+RemoveParentheses: ReturnStatement
 RemoveSemicolon: true
 RequiresClausePosition: OwnLine
 RequiresExpressionIndentation: OuterScope
@@ -147,7 +154,7 @@ SpacesInContainerLiterals: true
 SpacesInLineCommentPrefix:
   Minimum: 1
   Maximum: 1
-SpacesInParentheses: false
+SpacesInParens: Never
 SpacesInSquareBrackets: false
 Standard: Latest
 StatementAttributeLikeMacros: []
