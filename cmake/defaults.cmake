@@ -28,11 +28,7 @@ set(CMAKE_VS_JUST_MY_CODE_DEBUGGING ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
 set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure)
-include(ProcessorCount)
-ProcessorCount(ctest_jobs)
-if(NOT ctest_jobs EQUAL 0)
-  list(APPEND CMAKE_CTEST_ARGUMENTS --parallel ${ctest_jobs})
-endif()
+list(APPEND CMAKE_CTEST_ARGUMENTS --parallel)
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
