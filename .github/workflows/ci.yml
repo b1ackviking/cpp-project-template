@@ -53,6 +53,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt install libc++-15-dev libc++abi-15-dev
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install cppcheck
           echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> ${{ github.path }}
@@ -96,6 +97,7 @@ jobs:
           -D ENABLE_UBSAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_LSAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_CPPCHECK:BOOL=TRUE
+          -D ENABLE_CLANG_TIDY:BOOL=${{ contains(matrix.config.cc, 'clang') }}
           -D ENABLE_HARDENINGS:BOOL=TRUE
           -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
