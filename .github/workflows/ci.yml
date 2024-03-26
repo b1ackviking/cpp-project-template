@@ -39,19 +39,20 @@ jobs:
               gcov: gcov-13,
               profiles: '-pr:h conan/gcc13'
             }
-            # - {
-            # name: 'Linux Clang',
-            # cc: clang-15,
-            # cxx: clang++-15,
-            # gcov: llvm-cov-15 gcov,
-            # profiles: '-pr:h conan/clang15 -pr:h conan/libc++'
-            # }
+          - {
+              name: 'Linux Clang',
+              cc: clang-15,
+              cxx: clang++-15,
+              gcov: llvm-cov-15 gcov,
+              profiles: '-pr:h conan/clang15 -pr:h conan/libc++'
+            }
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
+          sudo apt install libc++-15-dev libc++abi-15-dev
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install cppcheck
           echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> ${{ github.path }}
