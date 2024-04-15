@@ -6,41 +6,57 @@ default_stages: [commit, merge-commit, manual]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
-    - id: check-added-large-files
-    - id: check-case-conflict
-    - id: check-json
-    - id: check-merge-conflict
-    - id: check-symlinks
-    - id: check-toml
-    - id: check-vcs-permalinks
-    - id: check-xml
-    - id: check-yaml
-      args: [--allow-multiple-documents]
-    - id: destroyed-symlinks
-    - id: detect-private-key
-    - id: end-of-file-fixer
-    - id: fix-byte-order-marker
-    - id: fix-encoding-pragma
-      args: [--remove]
-    - id: mixed-line-ending
-      args: [--fix=lf]
-    - id: pretty-format-json
-      args: [--autofix, --no-sort-keys]
-    - id: requirements-txt-fixer
-    - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-xml
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: pretty-format-json
+        args: [--autofix, --no-sort-keys]
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.13
     hooks:
-    - id: cmake-format
+      - id: cmake-format
   - repo: https://github.com/doublify/pre-commit-clang-format
     rev: 62302476d0da01515660132d76902359bed0f782
     hooks:
-    - id: clang-format
+      - id: clang-format
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.13.0
+    rev: v9.14.0
     hooks:
       - id: commitlint
         stages: [commit-msg]
         additional_dependencies: ['@commitlint/config-conventional']
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.2
+    hooks:
+      - id: pyupgrade
+        args: [--py311-plus]
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-noqa
+      - id: python-check-blanket-type-ignore
+      - id: python-check-mock-methods
+      - id: python-no-eval
+      - id: python-no-log-warn
+      - id: python-use-type-annotations
+      - id: rst-backticks
+      - id: rst-directive-colons
+      - id: rst-inline-touching-normal
+      - id: text-unicode-replacement-char
