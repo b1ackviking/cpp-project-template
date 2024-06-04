@@ -10,8 +10,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
   option(ENABLE_LSAN "Enable leak sanitizer" OFF)
   option(ENABLE_UBSAN "Enable undefined behavior sanitizer" OFF)
   option(ENABLE_TSAN "Enable thread sanitizer" OFF)
-  option(ENABLE_FORTIFY_SOURCE
-         "Enable -D_FORTIFY_SOURCE=3 (requires optimized build)" OFF)
 endif()
 option(ENABLE_HARDENINGS "Enable hardenings" OFF)
 
@@ -262,12 +260,13 @@ function(enable_hardenings target_name)
         /DYNAMICBASE
         /LARGEADDRESSAWARE
         /HIGHENTROPYVA)
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      target_compile_options(${target_name} INTERFACE -fhardened)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
       target_compile_definitions(${target_name} INTERFACE _GLIBCXX_ASSERTIONS)
-      if(ENABLE_FORTIFY_SOURCE)
-        target_compile_options(${target_name} INTERFACE -U_FORTIFY_SOURCE
-                                                        -D_FORTIFY_SOURCE=3)
-      endif()
+      target_compile_options(${target_name} INTERFACE -U_FORTIFY_SOURCE
+                                                      -D_FORTIFY_SOURCE=3)
+
       if(LINUX)
         target_link_options(${target_name} INTERFACE -Wl,-z,noexecstack)
       endif()
