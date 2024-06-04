@@ -71,7 +71,6 @@ cmake --preset <preset> \
   -D CACHE_OPTION=<ccache or sccache> \
   -D ENABLE_COVERAGE=<bool> \
   -D ENABLE_HARDENINGS=<bool> \
-  -D ENABLE_FORTIFY_SOURCE=<bool> \
   -D ENABLE_ASAN=<bool> \
   -D ENABLE_LSAN=<bool> \
   -D ENABLE_UBSAN=<bool> \
