@@ -2,6 +2,7 @@ include(cppstd)
 
 [settings]
 compiler=msvc
-compiler.version=193
+compiler.version=194
+compiler.cstd=17
 compiler.runtime=dynamic
 compiler.runtime_type=Release
