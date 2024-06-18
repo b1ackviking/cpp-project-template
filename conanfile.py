@@ -4,6 +4,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 
 class Example(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
+    languages = "C", "C++"
     options = {
         "fPIC": [True, False]
     }
