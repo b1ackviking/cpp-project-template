@@ -248,13 +248,13 @@ jobs:
               name: 'Windows MSVC',
               cc: cl,
               cxx: cl,
-              profiles: '-pr:h conan/msvc193-md'
+              profiles: '-pr:h conan/msvc194-md'
             }
           - {
               name: 'Windows Clang',
               cc: clang,
               cxx: clang++,
-              profiles: '-pr:h conan/clang16'
+              profiles: '-pr:h conan/clang18'
             }
     steps:
       - name: Checkout repository
@@ -417,7 +417,7 @@ jobs:
           - {
               cc: cl,
               cxx: cl,
-              profiles: '-pr:h conan/msvc193-md'
+              profiles: '-pr:h conan/msvc194-md'
             }
     steps:
       - name: Checkout repository

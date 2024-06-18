@@ -1,2 +1,3 @@
 [settings]
+compiler.cstd=23
 compiler.cppstd=23
