@@ -123,26 +123,26 @@ files = [
 
 [[package]]
 name = "clang-format"
-version = "18.1.7"
+version = "18.1.8"
 description = "Clang-Format is an LLVM-based code formatting tool"
 optional = false
 python-versions = "*"
 files = [
-    {file = "clang_format-18.1.7-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:0b352ec51b291fe04c25a0f0ed15ba1a55b9c9c8eaa7fdf14de3d3585aef4f72"},
-    {file = "clang_format-18.1.7-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:b3a0a09428cdd656ed87074543222a80660bc506407ed21b8e4bcb3d6d3a5a3c"},
-    {file = "clang_format-18.1.7-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:42d0b580ab7a45348155944adebe0bef53d1de9357b925830a59bbc351a25560"},
-    {file = "clang_format-18.1.7-py2.py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:607772cf474c1ebe0de44f44c1324e57a2d5b45a1d96d4aff166645532d99b43"},
-    {file = "clang_format-18.1.7-py2.py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:05c482a854287a5d21f7567186c0bd4b8dbd4a871751e655a45849185f30b931"},
-    {file = "clang_format-18.1.7-py2.py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:a49c44d7cc00431be8285aa120a7a21fa0475786c03c53b04a26882c4e626a43"},
-    {file = "clang_format-18.1.7-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:217526c8189c18fd175e19bb3e4da2d1bdf14a2bf79d97108c9b6a98d9938351"},
-    {file = "clang_format-18.1.7-py2.py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:f4f77ac0f4f9a659213fedda0f2d216886c410132e6e7dd4b13f92b34e925554"},
-    {file = "clang_format-18.1.7-py2.py3-none-musllinux_1_2_i686.whl", hash = "sha256:a914592a51f77c3563563c7a8970f19bc1ed59174ab992f095a78f4e142382ac"},
-    {file = "clang_format-18.1.7-py2.py3-none-musllinux_1_2_ppc64le.whl", hash = "sha256:035204410f65d03f98cb81c9c39d6d193f9987917cc88de9d0dbd01f2aa9c302"},
-    {file = "clang_format-18.1.7-py2.py3-none-musllinux_1_2_s390x.whl", hash = "sha256:a62fca204293893badde0ab004df8b6df1d13eac4d452051554d9684d0a8254e"},
-    {file = "clang_format-18.1.7-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:c151d42e6ac7c3cc03d7fec61bed3211ce8f75528e1efd8fc64bdb33840987b2"},
-    {file = "clang_format-18.1.7-py2.py3-none-win32.whl", hash = "sha256:f935d34152a2e11e55120eb9182862f432bc9789ab819f680c9f6db4edebf9e3"},
-    {file = "clang_format-18.1.7-py2.py3-none-win_amd64.whl", hash = "sha256:d6a2f051124d6ae506ba2a68accfe4ea4c8cb90d13b422c3131bb124413bac32"},
-    {file = "clang_format-18.1.7.tar.gz", hash = "sha256:57090c40a8f0a898e0db8be150a19be2551302d5f5620d2a01de07e7c9220a53"},
+    {file = "clang_format-18.1.8-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:7c41e2521b7e6ba706cc5d1c3e95eed9a41c1522244e23624e1518991f02a604"},
+    {file = "clang_format-18.1.8-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:4be2b5d983a0cc1ef90a224b599f5928d82ce31154ba69accfdcb670aea62f40"},
+    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d2db077523bd4517b41fa6adb2e5ee63fc91bc7b641dc6e28b959fa8050cf41b"},
+    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:310206c21fa8177c019a3871de8c5400e51867376cae630ee3d1610aa6c93816"},
+    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:c11ecdae9cd9068ed010b7cc5fa9d3d2ae08de8bbfa493df865774ad63fd7d76"},
+    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:2a73a50e17c94325712631c15e5b210e374841bbeefb915f12934b902310df7b"},
+    {file = "clang_format-18.1.8-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2de122b8aa78ba49e326f974131caab2c79f4ae877c227cd4e3e5d82a98d21e5"},
+    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:7d71869103d0f27be3c4930bea59dc6325177a259ba321a04663a231432ec343"},
+    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_i686.whl", hash = "sha256:ea103b3ae5b0941152cd29c67eab086aafc98675370ac13581005807680132aa"},
+    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_ppc64le.whl", hash = "sha256:82c5dd546efa80a838bb9fd4cf6f6e37d85301c0bca13cd79ab5749422ca35a1"},
+    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_s390x.whl", hash = "sha256:d3a41b7c7c3e65fa56763f5712f919111b35d7a8e857f8bef4ad5a4cdc1be131"},
+    {file = "clang_format-18.1.8-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:4762e95ea887d522bf664c1411d93d4d41fc9eb059835dd88b9ad54bc3cb08e0"},
+    {file = "clang_format-18.1.8-py2.py3-none-win32.whl", hash = "sha256:03e0a762b4b504750ce4999174fa50a3c4d6b83d7999481e1b6a1b3bc2915121"},
+    {file = "clang_format-18.1.8-py2.py3-none-win_amd64.whl", hash = "sha256:6ca6768270e291495174faa6d8c082aa0181722b29ef8e36558b397069fa4a2d"},
+    {file = "clang_format-18.1.8.tar.gz", hash = "sha256:065ddb7fdd0cb329976115fa03500dd560d9753dd50c25a269776648e6e6bf35"},
 ]
 
 [[package]]
