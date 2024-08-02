@@ -175,17 +175,17 @@ development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
 name = "conan"
-version = "2.5.0"
+version = "2.6.0"
 description = "Conan C/C++ package manager"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-2.5.0.tar.gz", hash = "sha256:b280b4139251c4e232d23ae60f291605f023324de224ab82d2cf60dffcfb8fcb"},
+    {file = "conan-2.6.0.tar.gz", hash = "sha256:042c6255e29076b6a66483b51348238f9ebaaa8efeeaca37e99abc53d92de16c"},
 ]
 
 [package.dependencies]
 colorama = ">=0.4.3,<0.5.0"
-distro = {version = ">=1.4.0,<=1.8.0", markers = "sys_platform == \"linux\" or sys_platform == \"linux2\""}
+distro = {version = ">=1.4.0,<=1.8.0", markers = "platform_system == \"Linux\" or platform_system == \"FreeBSD\""}
 fasteners = ">=0.15"
 Jinja2 = ">=3.0,<4.0.0"
 patch-ng = ">=1.17.4,<1.18"
@@ -195,9 +195,9 @@ requests = ">=2.25,<3.0.0"
 urllib3 = ">=1.26.6,<1.27"
 
 [package.extras]
-dev = ["PyJWT", "WebTest (>=2.0.18,<2.1.0)", "bottle", "docker (>=5.0.0,<6.0.0)", "mock (>=1.3.0,<1.4.0)", "parameterized (>=0.6.3)", "pluginbase", "pytest (>=7,<8.0.0)", "pytest-xdist", "setuptools"]
-runners = ["docker (>=5.0.0,<6.0.0)", "paramiko"]
-test = ["PyJWT", "WebTest (>=2.0.18,<2.1.0)", "bottle", "docker (>=5.0.0,<6.0.0)", "mock (>=1.3.0,<1.4.0)", "parameterized (>=0.6.3)", "pluginbase", "pytest (>=7,<8.0.0)", "pytest-xdist", "setuptools"]
+dev = ["PyJWT", "WebTest (>=2.0.18,<2.1.0)", "bottle", "docker", "mock (>=1.3.0,<1.4.0)", "parameterized (>=0.6.3)", "pluginbase", "pytest (>=7,<8.0.0)", "pytest-xdist", "setuptools"]
+runners = ["docker (>=7.1.0)", "paramiko"]
+test = ["PyJWT", "WebTest (>=2.0.18,<2.1.0)", "bottle", "docker", "mock (>=1.3.0,<1.4.0)", "parameterized (>=0.6.3)", "pluginbase", "pytest (>=7,<8.0.0)", "pytest-xdist", "setuptools"]
 
 [[package]]
 name = "distlib"
