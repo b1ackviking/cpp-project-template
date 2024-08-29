@@ -175,12 +175,12 @@ development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
 name = "conan"
-version = "2.6.0"
+version = "2.7.0"
 description = "Conan C/C++ package manager"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-2.6.0.tar.gz", hash = "sha256:042c6255e29076b6a66483b51348238f9ebaaa8efeeaca37e99abc53d92de16c"},
+    {file = "conan-2.7.0.tar.gz", hash = "sha256:4dde2da2f22d8318f63dba6ddfd914a32e5b44ede07e94ee45a1aed41420f5d7"},
 ]
 
 [package.dependencies]
@@ -188,7 +188,7 @@ colorama = ">=0.4.3,<0.5.0"
 distro = {version = ">=1.4.0,<=1.8.0", markers = "platform_system == \"Linux\" or platform_system == \"FreeBSD\""}
 fasteners = ">=0.15"
 Jinja2 = ">=3.0,<4.0.0"
-patch-ng = ">=1.17.4,<1.18"
+patch-ng = ">=1.18.0,<1.19"
 python-dateutil = ">=2.8.0,<3"
 PyYAML = ">=6.0,<7.0"
 requests = ">=2.25,<3.0.0"
@@ -577,12 +577,12 @@ setuptools = "*"
 
 [[package]]
 name = "patch-ng"
-version = "1.17.4"
+version = "1.18.0"
 description = "Library to parse and apply unified diffs."
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 files = [
-    {file = "patch-ng-1.17.4.tar.gz", hash = "sha256:627abc5bd723c8b481e96849b9734b10065426224d4d22cd44137004ac0d4ace"},
+    {file = "patch-ng-1.18.0.tar.gz", hash = "sha256:da067628d6d5fd9dc5a55eab37951d46bd95661b7219fab364b711366abcc690"},
 ]
 
 [[package]]
