@@ -9,6 +9,15 @@ updates:
       interval: "daily"
     assignees:
       - "b1ackviking"
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      github-actions-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -16,6 +25,15 @@ updates:
       interval: "daily"
     assignees:
       - "b1ackviking"
+    groups:
+      node:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      node-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
 
   - package-ecosystem: "pip"
     directory: "/"
@@ -23,3 +41,12 @@ updates:
       interval: "daily"
     assignees:
       - "b1ackviking"
+    groups:
+      python:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      python-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
