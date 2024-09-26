@@ -133,7 +133,7 @@ jobs:
 
   build_macos:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       matrix:
         build:
