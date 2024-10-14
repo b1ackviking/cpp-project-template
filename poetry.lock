@@ -250,13 +250,13 @@ typing = ["typing-extensions (>=4.8)"]
 
 [[package]]
 name = "gcovr"
-version = "8.0"
+version = "8.2"
 description = "Generate C/C++ code coverage reports with gcov"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "gcovr-8.0-py2.py3-none-any.whl", hash = "sha256:4ab182aecbff0cfc9204d85375557436670428f8bdbc2eb34ddc9bf959a191de"},
-    {file = "gcovr-8.0.tar.gz", hash = "sha256:3d91ef6df6c465bab91a5b12c82c481b0fbe841d64630dcbf76a0faac7e994e8"},
+    {file = "gcovr-8.2-py2.py3-none-any.whl", hash = "sha256:bee23da2198bc1e0b9d0109018b9460df52355372319b5ddf81aca4e54f6bd61"},
+    {file = "gcovr-8.2.tar.gz", hash = "sha256:9a1dddd4585d13ec77555db5d6b6a31ee81587ea6fc604ff9fcd232cb0782df5"},
 ]
 
 [package.dependencies]
