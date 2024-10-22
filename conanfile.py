@@ -18,9 +18,9 @@ class Example(ConanFile):
             del self.options.fPIC
 
     def requirements(self):
-        self.requires("fmt/10.2.1")
+        self.requires("fmt/11.0.2")
         if not self.conf.get("tools.build:skip_test"):
-            self.requires("gtest/1.14.0")
+            self.requires("gtest/1.15.0")
 
     def generate(self):
         deps = CMakeDeps(self)
