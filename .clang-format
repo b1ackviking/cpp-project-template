@@ -12,42 +12,46 @@ AlignConsecutiveMacros: Consecutive
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: false
-  AcrossComments: true
+  AcrossComments: false
+  AlignCaseArrows: false
   AlignCaseColons: false
 AlignEscapedNewlines: Left
 AlignOperands: true
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
+AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseExpressionOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
+AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: Yes
 AttributeMacros: []
 BinPackArguments: true
 BinPackParameters: true
 BitFieldColonSpacing: Both
+BreakAdjacentStringLiterals: false
 BreakAfterAttributes: Leave
 BreakAfterJavaFieldAnnotations: true
+BreakAfterReturnType: Automatic
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Attach
 BreakBeforeConceptDeclarations: true
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
+BreakFunctionDefinitionParameters: false
 BreakInheritanceList: BeforeComma
 BreakStringLiterals: false
+BreakTemplateDeclarations: Yes
 ColumnLimit: 80
 CommentPragmas: '^ IWYU pragma:'
 CompactNamespaces: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2
 Cpp11BracedListStyle: true
@@ -84,12 +88,16 @@ IntegerLiteralSeparator:
   Binary: 0
   Decimal: 3
   Hex: -1
-KeepEmptyLinesAtEOF: false
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: false
+  AtStartOfFile: false
 LambdaBodyIndentation: Signature
 LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
+Macros: []
+MainIncludeChar: Quote
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 NamespaceMacros: []
@@ -130,6 +138,7 @@ RequiresClausePosition: OwnLine
 RequiresExpressionIndentation: OuterScope
 SeparateDefinitionBlocks: Always
 ShortNamespaceLines: 0
+SkipMacroDefinitionBody: false
 SortIncludes: true
 SortJavaStaticImport: Before
 SortUsingDeclarations: true
@@ -145,11 +154,8 @@ SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
-SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
 SpacesInAngles: Never
-SpacesInCStyleCastParentheses: false
-SpacesInConditionalStatement: false
 SpacesInContainerLiterals: true
 SpacesInLineCommentPrefix:
   Minimum: 1
@@ -160,6 +166,7 @@ Standard: Latest
 StatementAttributeLikeMacros: []
 StatementMacros: []
 TabWidth: 2
+TypeNames: []
 TypenameMacros: []
 UseTab: Never
 WhitespaceSensitiveMacros: []
