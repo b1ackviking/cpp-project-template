@@ -123,10 +123,10 @@ jobs:
 
       - name: Publish test coverage to codecov
         if: matrix.build.type == 'Debug'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           flags: linux-${{ matrix.config.cc }}
-          name: ${{ matrix.config.name }}
+          name: "\"${{ matrix.config.name }}\""
           files: coverage/cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
@@ -221,10 +221,10 @@ jobs:
 
       - name: Publish test coverage to codecov
         if: matrix.build.type == 'Debug'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           flags: macos-clang
-          name: ${{ matrix.config.name }}
+          name: "\"${{ matrix.config.name }}\""
           files: coverage/cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
@@ -327,10 +327,10 @@ jobs:
 
       - name: Publish test coverage to codecov
         if: matrix.build.type == 'Debug'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           flags: windows-${{ matrix.config.cc }}
-          name: ${{ matrix.config.name }}
+          name: "\"${{ matrix.config.name }}\""
           files: coverage/cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
