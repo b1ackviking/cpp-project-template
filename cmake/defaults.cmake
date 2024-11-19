@@ -1,11 +1,9 @@
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck" OFF)
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy" OFF)
-option(ENABLE_IWYU "Enable static analysis with include-what-you-use" OFF)
 option(ENABLE_IPO
        "Enable Interprocedural Optimization, aka Link Time Optimization (LTO)"
        OFF)
 option(ENABLE_CACHE "Enable cache if available" OFF)
-option(ENABLE_DOXYGEN "Enable doxygen doc builds of source" OFF)
 option(ENABLE_ASAN "Enable address sanitizer" OFF)
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang|GNU")
   option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
@@ -88,18 +86,6 @@ if(ENABLE_CLANG_TIDY)
   endif()
 endif()
 
-if(ENABLE_IWYU)
-  find_program(INCLUDE_WHAT_YOU_USE include-what-you-use)
-  if(INCLUDE_WHAT_YOU_USE)
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${INCLUDE_WHAT_YOU_USE}
-                                       -Wno-unknown-warning-option)
-    set(CMAKE_C_INCLUDE_WHAT_YOU_USE ${CMAKE_CXX_INCLUDE_WHAT_YOU_USE})
-  else()
-    message(
-      SEND_ERROR "include-what-you-use requested but executable not found")
-  endif()
-endif()
-
 if(ENABLE_IPO)
   include(CheckIPOSupported)
   check_ipo_supported(RESULT result OUTPUT output)
@@ -130,20 +116,6 @@ if(ENABLE_CACHE)
   else()
     message(
       WARNING "${CACHE_OPTION} is enabled but was not found. Not using it")
-  endif()
-endif()
-
-if(ENABLE_DOXYGEN)
-  find_package(Doxygen REQUIRED dot OPTIONAL_COMPONENTS mscgen dia)
-  if(DOXYGEN_FOUND)
-    message(STATUS "Found Doxygen version ${DOXYGEN_VERSION}")
-    set(DOXYGEN_CALLER_GRAPH YES)
-    set(DOXYGEN_CALL_GRAPH YES)
-    set(DOXYGEN_EXTRACT_ALL YES)
-    list(APPEND DOXYGEN_EXCLUDE_PATTERNS .cmake-format.py)
-    doxygen_add_docs(docs ${PROJECT_SOURCE_DIR})
-  else()
-    message(WARNING "Doxygen executable not found")
   endif()
 endif()
 

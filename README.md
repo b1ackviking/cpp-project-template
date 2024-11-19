@@ -7,12 +7,8 @@
 
 This is a template of a cross-platform CMake-based C++ project.
 
-- Run [Cppcheck](http://cppcheck.net/),
-[Clang-Tidy](https://clang.llvm.org/extra/clang-tidy/),
-[IWYU](https://include-what-you-use.org/),
-and [Doxygen](https://www.doxygen.nl/index.html) as a part of your build.
-- Ensure clean and robust code with a pre-configured set of warnings
-for Clang, GCC, and MSVC.
+- Run [Cppcheck](http://cppcheck.net/) and [Clang-Tidy](https://clang.llvm.org/extra/clang-tidy/).
+- Ensure clean and robust code with a pre-configured set of warnings for Clang, GCC, and MSVC.
 - Create sanitizer-instrumented builds by changing a single flag.
 - Validate files structure and follow
 the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
@@ -56,11 +52,9 @@ conan install -pr:b default -pr:h default \
 cmake --preset <preset> \
   -D ENABLE_CPPCHECK=<bool> \
   -D ENABLE_CLANG_TIDY=<bool> \
-  -D ENABLE_IWYU=<bool> \
   -D ENABLE_IPO=<bool> \
   -D ENABLE_CACHE=<bool> \
   -D CACHE_OPTION=<ccache or sccache> \
-  -D ENABLE_DOXYGEN=<bool> \
   -D ENABLE_COVERAGE=<bool> \
   -D ENABLE_HARDENINGS=<bool> \
   -D ENABLE_FORTIFY_SOURCE=<bool> \
