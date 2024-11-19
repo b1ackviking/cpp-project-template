@@ -1,7 +1,6 @@
 # cpp-project-template
 
 [![CI](https://github.com/b1ackviking/cpp-project-template/actions/workflows/ci.yml/badge.svg)](https://github.com/b1ackviking/cpp-project-template/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/b1ackviking/cpp-project-template/branch/main/graph/badge.svg?token=FSWI6GZ1J9)](https://codecov.io/gh/b1ackviking/cpp-project-template)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com)
 
 ## About cpp-project-template
@@ -135,9 +134,3 @@ Code owners are not automatically requested to review draft pull requests.
 
 Dependabot is a GitHub bot that helps you keep dependencies up to date.
 Configure dependency scanning in the `.github/dependabot.yml` file.
-
-### Add a Codecov token
-
-If you want to use [Codecov GitHub Action](https://github.com/codecov/codecov-action/),
-you need to set a `CODECOV_TOKEN` secret from codecov.io.
-Note that it has to be accessible by Dependabot.
