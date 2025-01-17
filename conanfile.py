@@ -18,7 +18,7 @@ class Example(ConanFile):
             del self.options.fPIC
 
     def requirements(self):
-        self.requires("fmt/11.0.2")
+        self.requires("fmt/11.1.1")
         if not self.conf.get("tools.build:skip_test"):
             self.requires("gtest/1.15.0")
 
