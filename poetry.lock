@@ -177,12 +177,12 @@ development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
 name = "conan"
-version = "2.12.0"
+version = "2.12.1"
 description = "Conan C/C++ package manager"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "conan-2.12.0.tar.gz", hash = "sha256:5260849a5eeb2f3082d144b5cde1edeabcbf38055b6b0d98eca91216991ef4c3"},
+    {file = "conan-2.12.1.tar.gz", hash = "sha256:98c2daba94065e9171417e13c2983233092ab1f400bf5afa8a7616f80b801a7b"},
 ]
 
 [package.dependencies]
