@@ -38,7 +38,8 @@ poetry run conan profile detect
 ## Building the project
 
 ```bash
-poetry shell
+eval $(poetry env activate) # in Bash/Zsh or
+Invoke-Expression (poetry env activate) # in PowerShell
 
 # install libraries
 conan install -pr:b default -pr:h default \
