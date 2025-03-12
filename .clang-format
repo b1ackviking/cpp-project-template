@@ -30,6 +30,7 @@ AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
+AllowShortNamespacesOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: false
 AttributeMacros: []
 BinPackArguments: true
@@ -44,6 +45,7 @@ BreakBeforeBraces: Attach
 BreakBeforeConceptDeclarations: true
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTernaryOperators: true
+BreakBinaryOperations: RespectPrecedence
 BreakConstructorInitializers: BeforeComma
 BreakFunctionDefinitionParameters: false
 BreakInheritanceList: BeforeComma
@@ -75,6 +77,7 @@ IncludeIsMainSourceRegex: '(_impl\.hpp)$'
 IndentAccessModifiers: false
 IndentCaseBlocks: false
 IndentCaseLabels: false
+IndentExportBlock: false
 IndentExternBlock: NoIndent
 IndentGotoLabels: false
 IndentPPDirectives: None
@@ -92,6 +95,7 @@ KeepEmptyLines:
   AtEndOfFile: false
   AtStartOfBlock: false
   AtStartOfFile: false
+KeepFormFeed: false
 LambdaBodyIndentation: Signature
 LineEnding: LF
 MacroBlockBegin: ''
@@ -105,6 +109,7 @@ PPIndentWidth: 2
 PackConstructorInitializers: Never
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakBeforeMemberAccess: 0
 PenaltyBreakComment: 300
 PenaltyBreakFirstLessLess: 120
 PenaltyBreakOpenParenthesis: 0
@@ -132,6 +137,7 @@ RawStringFormats:
 ReferenceAlignment: Left
 ReflowComments: true
 RemoveBracesLLVM: false
+RemoveEmptyLinesInUnwrappedLines: true
 RemoveParentheses: ReturnStatement
 RemoveSemicolon: true
 RequiresClausePosition: OwnLine
@@ -166,10 +172,13 @@ Standard: Latest
 StatementAttributeLikeMacros: []
 StatementMacros: []
 TabWidth: 2
+TemplateNames: []
 TypeNames: []
 TypenameMacros: []
 UseTab: Never
+VariableTemplates: []
 WhitespaceSensitiveMacros: []
+WrapNamespaceBodyWithEmptyLines: Leave
 ---
 Language: JavaScript
 SpacesInContainerLiterals: false
