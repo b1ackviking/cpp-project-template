@@ -86,6 +86,7 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
   - [ ] Edit `.github/CODE_OF_CONDUCT.md` and insert contact method.
   - [ ] Edit `.github/SECURITY.md`
 - [ ] Clean the `.git-blame-ignore-revs` file
+- [ ] Configure the `pyproject.toml` file
 - [ ] Configure CODEOWNERS (`.github/CODEOWNERS`)
 - [ ] Configure Dependabot (`.github/dependabot.yml`)
 
@@ -117,6 +118,18 @@ Please update the contents of these files with the links to your repository and 
 
 The `.git-blame-ignore-revs` file contains commit SHAs that you may want to skip
 while viewing the git blame on GitHub as if using `git blame --ignore-revs-file=.git-blame-ignore-revs`.
+
+### Configure the `pyproject.toml` file
+
+The `pyproject.toml` file is a main configuration file for `poetry`.
+This template is not a python project, however, using `poetry` makes it
+very convenient to bring tool dependencies,
+such as recent versions of `conan`, `cmake`, `pre-commit`, etc.
+Also, keeping them contained in a virtual environment does not pollute
+your system and provides a simple way to setup them on a CI pipeline.
+
+Besides specifying tool dependencies, you may want to also update
+the `name`, `version`, `description`, `authors`, and `license` fields.
 
 ### Configure CODEOWNERS
 
