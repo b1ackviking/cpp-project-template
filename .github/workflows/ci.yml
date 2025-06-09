@@ -218,7 +218,7 @@ jobs:
               name: 'Windows Clang',
               cc: clang,
               cxx: clang++,
-              profiles: '-pr:h conan/clang19'
+              profiles: '-pr:h conan/clang20'
             }
     steps:
       - name: Checkout repository
