@@ -83,7 +83,7 @@ OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- cte
 - [ ] Write a `README.md`
 - [ ] Fill in the community health files
   - [ ] Edit `.github/CONTRIBUTING.md` (don't forget to update links)
-  - [ ] Edit `.github/CODE_OF_CONDUCT.md` and insert contact method.
+  - [ ] Edit `.github/CODE_OF_CONDUCT.md`
   - [ ] Edit `.github/SECURITY.md`
 - [ ] Clean the `.git-blame-ignore-revs` file
 - [ ] Configure the `pyproject.toml` file

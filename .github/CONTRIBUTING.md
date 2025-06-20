@@ -7,12 +7,6 @@ from opening an issue, creating a PR, reviewing, and merging the PR.
 
 To get an overview of the project, read the [README](../README.md).
 
-## Code of Conduct
-
-This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md).
-By participating, you are expected to uphold this code.
-Please report unacceptable behavior to [INSERT CONTACT METHOD].
-
 ## Issues
 
 ### Create a new issue
@@ -41,11 +35,12 @@ If you find an issue to work on, you are welcome to open a PR with a fix.
 
 Once your changes are ready, don't forget to self-review to speed up the review process.
 
-- Does the new code conform to the style guide?
-- Does the project compiles without warnings and passes all unit tests?
-- Have you used pre-commit hooks to validate your commits?
-- Are comments and documentation written in clear English, with no spelling or grammar errors?
-- If you're unsure about any of these points, please open the Pull Request anyhow and then ask us for feedback.
+[ ] Does the new code conform to the style guide?
+[ ] Does the project compiles without warnings and passes all unit tests?
+[ ] Have you used pre-commit hooks to validate your commits?
+[ ] Are comments and documentation written in clear English, with no spelling or grammar errors?
+
+If you're unsure about any of these points, please open the Pull Request anyhow and then ask us for feedback.
 
 When you create a pull request, please write a short description
 to help reviewers understand your changes as well as the purpose of your pull request,
@@ -62,16 +57,6 @@ while still allowing coders to use C++ language features productively.
 
 If you are extending, enhancing, or bug fixing already implemented code,
 use the style that is already being used so that the source is uniform and easy to follow.
-
-### Use inclusive language
-
-In all code, including naming and comments, use inclusive language
-and avoid terms that other programmers might find disrespectful or offensive
-(such as "master" and "slave", "blacklist" and "whitelist", or "redline"),
-even if the terms also have an ostensibly neutral meaning.
-Similarly, use gender-neutral language unless you're referring to a specific person (and using their pronouns).
-For example, use "they"/"them"/"their" for people of unspecified gender (even when singular),
-and "it"/"its" for software, computers, and other things that aren't people.
 
 ### C++ language
 
