@@ -224,9 +224,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v2
-
       - name: Install dependencies
         run: |
           choco install opencppcoverage
@@ -259,18 +256,22 @@ jobs:
           poetry run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -c:h tools.env.virtualenv:powershell=pwsh
           -c:h tools.build:compiler_executables="{'c': '${{ matrix.config.cc }}', 'cpp': '${{ matrix.config.cxx }}'}"
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
         run: >
+          build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
           poetry run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' && matrix.config.cc == 'cl' }}
           -D ENABLE_HARDENINGS:BOOL=TRUE
 
       - name: Build
-        run: cmake --build --preset ${{ matrix.build.preset }}
+        run: >
+          build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
+          cmake --build --preset ${{ matrix.build.preset }}
 
       - name: Run tests
         if: matrix.build.type != 'Debug'
@@ -278,7 +279,8 @@ jobs:
 
       - name: Run tests and collect test coverage
         if: matrix.build.type == 'Debug'
-        run: |
+        run: >
+          build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
           & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage/cobertura.xml --cover_children -- ctest --preset ${{ matrix.build.preset }}
 
   codeql:
@@ -369,9 +371,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Visual Studio shell
-        uses: egor-tensin/vs-shell@v2
-
       - name: Install poetry
         run: |
           pipx install poetry
@@ -400,11 +399,14 @@ jobs:
           poetry run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -c:h tools.env.virtualenv:powershell=pwsh
           -c:h tools.build:compiler_executables="{'c': '${{ matrix.config.cc }}', 'cpp': '${{ matrix.config.cxx }}'}"
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
-        run: poetry run cmake --preset ${{ matrix.build.preset }}
+        run: >
+          build/${{ matrix.build.type }}/generators/conanbuild.ps1 &&
+          poetry run cmake --preset ${{ matrix.build.preset }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main

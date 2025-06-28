@@ -44,12 +44,14 @@ Invoke-Expression (poetry env activate) # in PowerShell
 # install libraries
 conan install -pr:b default -pr:h default \
   -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
+  -c:h tools.env.virtualenv=pwsh \
   -pr:h conan/<profile matching the compiler in use> \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
   -c:h tools.build:skip_test=<True|False> \
   -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
 # configure
+build/<type>/generators/conanbuild.ps1 && # on Windows
 cmake --preset <preset> \
   -D ENABLE_CPPCHECK=<bool> \
   -D ENABLE_CLANG_TIDY=<bool> \
