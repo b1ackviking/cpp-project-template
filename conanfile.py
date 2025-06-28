@@ -1,5 +1,6 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.env import VirtualBuildEnv
 
 
 class Example(ConanFile):
@@ -27,6 +28,8 @@ class Example(ConanFile):
         deps.generate()
         tc = CMakeToolchain(self)
         tc.generate()
+        be = VirtualBuildEnv(self)
+        be.generate()
 
     def build(self):
         cmake = CMake(self)
