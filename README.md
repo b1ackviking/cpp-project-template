@@ -17,15 +17,23 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
 
 ## Required software
 
-- [Git](https://git-scm.com/)
-- [CMake](https://cmake.org/)
-- [Ninja](https://ninja-build.org/)
-- [LLVM](https://releases.llvm.org/)
-- [Python](https://www.python.org/)
-  - [poetry](https://python-poetry.org/)
-- [Node.js](https://nodejs.dev/download/)
-- [Chocolatey (Windows)](https://chocolatey.org/)
+- Common
+  - [Git](https://git-scm.com/)
+  - [CMake](https://cmake.org/)
+  - [Ninja](https://ninja-build.org/)
+  - [Python](https://www.python.org/)
+    - [poetry](https://python-poetry.org/)
+  - [LLVM](https://releases.llvm.org/)
+- Windows
+  - [PowerShell](https://github.com/PowerShell/PowerShell)
+  - [Visual Studio Build Tools (Desktop development with C++ workload)](https://visualstudio.microsoft.com/downloads/)
   - [OpenCppCoverage](https://community.chocolatey.org/packages/opencppcoverage)
+    - Install with [Chocolatey](https://chocolatey.org/)
+- Optional
+  - [cppcheck](https://github.com/danmar/cppcheck)
+  - [Node.js](https://nodejs.dev/download/)
+    - [Commitlint](https://commitlint.js.org/)
+    - [Semantic Release](https://github.com/semantic-release/semantic-release)
 
 Run the following commands in the root of the repository after cloning:
 
@@ -37,21 +45,24 @@ poetry run conan profile detect
 
 ## Building the project
 
+<details open>
+<summary>On Linux/Mac</summary>
+
 ```bash
-eval $(poetry env activate) # in Bash/Zsh or
-Invoke-Expression (poetry env activate) # in PowerShell
+eval $(poetry env activate)
 
 # install libraries
 conan install -pr:b default -pr:h default \
   -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
-  -c:h tools.env.virtualenv=pwsh \
   -pr:h conan/<profile matching the compiler in use> \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
   -c:h tools.build:skip_test=<True|False> \
   -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
+# activate build env
+source build/<build_type>/generators/conanbuild.sh
+
 # configure
-build/<type>/generators/conanbuild.ps1 && # on Windows
 cmake --preset <preset> \
   -D ENABLE_CPPCHECK=<bool> \
   -D ENABLE_CLANG_TIDY=<bool> \
@@ -74,10 +85,46 @@ ctest --preset <preset>
 
 # collect test coverage if ENABLE_COVERAGE == TRUE
 GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr
+```
+</details>
+
+<details>
+<summary>On Windows</summary>
+
+```powershell
+Invoke-Expression (poetry env activate)
+
+# install libraries
+conan install -pr:b default -pr:h default \
+  -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
+  -c:h tools.env.virtualenv=pwsh \
+  -pr:h conan/<profile matching the compiler in use> \
+  -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
+  -c:h tools.build:skip_test=<True|False> \
+  -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
+
+# activate build env
+build/<build_type>/generators/conanbuild.ps1
+
+# configure
+cmake --preset <preset> \
+  -D ENABLE_CPPCHECK=<bool> \
+  -D ENABLE_CLANG_TIDY=<bool> \
+  -D ENABLE_IPO=<bool> \
+  -D ENABLE_CACHE=<bool> \
+  -D CACHE_OPTION=<ccache or sccache> \
+  -D ENABLE_COVERAGE=<bool> \
+  -D ENABLE_HARDENINGS=<bool> \
+  -D ENABLE_FORTIFY_SOURCE=<bool> \
+  -D ENABLE_ASAN=<bool>
+
+# build
+cmake --build --preset <preset>
 
 # run tests and collect test coverage (Windows)
 OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest --preset <preset>
 ```
+</details>
 
 ## Customization checklist
 
