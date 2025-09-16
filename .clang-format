@@ -44,6 +44,7 @@ BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Attach
 BreakBeforeConceptDeclarations: true
 BreakBeforeInlineASMColon: OnlyMultiline
+BreakBeforeTemplateCloser: true
 BreakBeforeTernaryOperators: true
 BreakBinaryOperations: RespectPrecedence
 BreakConstructorInitializers: BeforeComma
@@ -61,6 +62,7 @@ DerivePointerAlignment: false
 DisableFormat: false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: LogicalBlock
+EnumTrailingComma: Leave
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 ForEachMacros: []
@@ -101,10 +103,12 @@ LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 Macros: []
+MacrosSkippedByRemoveParentheses: []
 MainIncludeChar: Quote
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 NamespaceMacros: []
+OneLineFormatOffRegex: ''
 PPIndentWidth: 2
 PackConstructorInitializers: Never
 PenaltyBreakAssignment: 2
@@ -150,6 +154,7 @@ SortJavaStaticImport: Before
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
+SpaceAfterOperatorKeyword: false
 SpaceAfterTemplateKeyword: false
 SpaceAroundPointerQualifiers: Default
 SpaceBeforeAssignmentOperators: true
