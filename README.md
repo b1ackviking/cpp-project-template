@@ -52,7 +52,7 @@ poetry run conan profile detect
 eval $(poetry env activate)
 
 # install libraries
-conan install -pr:b default -pr:h default \
+conan install -pr:a default \
   -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -pr:h conan/<profile matching the compiler in use> \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
