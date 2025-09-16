@@ -16,6 +16,7 @@ Checks: >
   -llvm-header-guard,
   -llvmlibc-*,
   -modernize-use-trailing-return-type,
+  -portability-avoid-pragma-once,
   -readability-identifier-length,
   -readability-named-parameter,
 WarningsAsErrors: ''
