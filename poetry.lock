@@ -267,14 +267,14 @@ typing = ["typing-extensions (>=4.12.2) ; python_version < \"3.11\""]
 
 [[package]]
 name = "gcovr"
-version = "8.3"
+version = "8.4"
 description = "Generate C/C++ code coverage reports with gcov"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "gcovr-8.3-py3-none-any.whl", hash = "sha256:d613a90aeea967b4972fbff69587bf8995ee3cd80df2556983b73141f30642d2"},
-    {file = "gcovr-8.3.tar.gz", hash = "sha256:faa371f9c4a7f78c9800da655107d4f99f04b718d1c0d9f48cafdcbef0049079"},
+    {file = "gcovr-8.4-py3-none-any.whl", hash = "sha256:1016d013d6c55225b1f716a4325e16ad5d626ff05b20b8a12d542e2d9a82ac21"},
+    {file = "gcovr-8.4.tar.gz", hash = "sha256:8ea0cf23176b1029f28db679d712ca6477b3807097c3755c135bdc53b51cfa72"},
 ]
 
 [package.dependencies]
@@ -282,6 +282,9 @@ colorlog = "*"
 jinja2 = "*"
 lxml = "*"
 pygments = ">=2.13.0"
+
+[package.extras]
+dev = ["bandit[toml]", "build", "cmake", "coverage", "mypy", "nox", "pre-commit", "pygments (==2.19.2)", "pyinstaller (>=6.11.1,<6.12.0)", "pylint (<4.0.0)", "pytest", "pytest-cov", "pytest-timeout", "pywin32 ; sys_platform == \"win32\"", "requests", "ruff (>=0.12.3,<0.13.0)", "tomli (>=1.1.0) ; python_version < \"3.11\"", "twine", "wheel", "yamllint", "yaxmldiff"]
 
 [[package]]
 name = "identify"
