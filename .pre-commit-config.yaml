@@ -6,7 +6,7 @@ default_stages: [pre-commit, pre-merge-commit, manual]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -60,3 +60,7 @@ repos:
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
       - id: text-unicode-replacement-char
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.4
+    hooks:
+      - id: uv-lock
