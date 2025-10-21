@@ -50,26 +50,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Set environment variables
+        run: |
+          echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> ${{ github.path }}
+          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
       - name: Install dependencies
         run: |
-          sudo apt install libc++-18-dev libc++abi-18-dev
+          sudo apt install libc++-18-dev libc++abi-18-dev libxml2-dev libxslt1-dev
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 100
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install cppcheck
-          echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> ${{ github.path }}
-          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
-          pipx install poetry
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-          cache: poetry
-
-      - name: Install Python dependencies
-        run: |
-          poetry install
-          poetry run conan profile detect
+          uv sync
+          uv run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v4
@@ -83,7 +81,7 @@ jobs:
 
       - name: Install Conan packages
         run: >
-          poetry run conan install .
+          uv run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
@@ -91,7 +89,7 @@ jobs:
 
       - name: Configure
         run: >
-          poetry run cmake --preset ${{ matrix.build.preset }}
+          uv run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_UBSAN:BOOL=${{ matrix.build.type == 'Debug' }}
@@ -102,16 +100,16 @@ jobs:
           -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
       - name: Build
-        run: cmake --build --preset ${{ matrix.build.preset }}
+        run: uv run cmake --build --preset ${{ matrix.build.preset }}
 
       - name: Run tests
-        run: ctest --preset ${{ matrix.build.preset }}
+        run: uv run ctest --preset ${{ matrix.build.preset }}
 
       - name: Collect test coverage
         if: matrix.build.type == 'Debug'
         env:
           GCOV: ${{ matrix.config.gcov }}
-        run: poetry run gcovr
+        run: uv run gcovr
 
   build_macos:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
@@ -138,22 +136,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Set environment variables
+        run: |
+          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
       - name: Install dependencies
         run: |
-          pipx install poetry
-          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
           brew install llvm@21
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-          cache: poetry
-
-      - name: Install Python dependencies
-        run: |
-          poetry install
-          poetry run conan profile detect
+          uv sync
+          uv run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v4
@@ -167,7 +163,7 @@ jobs:
 
       - name: Install Conan packages
         run: >
-          poetry run conan install .
+          uv run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
@@ -175,7 +171,7 @@ jobs:
 
       - name: Configure
         run: >
-          poetry run cmake --preset ${{ matrix.build.preset }}
+          uv run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_UBSAN:BOOL=${{ matrix.build.type == 'Debug' }}
@@ -184,14 +180,14 @@ jobs:
           -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
       - name: Build
-        run: cmake --build --preset ${{ matrix.build.preset }}
+        run: uv run cmake --build --preset ${{ matrix.build.preset }}
 
       - name: Run tests
-        run: ctest --preset ${{ matrix.build.preset }}
+        run: uv run ctest --preset ${{ matrix.build.preset }}
 
       - name: Collect test coverage
         if: matrix.build.type == 'Debug'
-        run: GCOV="$(brew --prefix llvm@21)/bin/llvm-cov gcov" poetry run gcovr
+        run: GCOV="$(brew --prefix llvm@21)/bin/llvm-cov gcov" uv run gcovr
 
   build_windows:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
@@ -224,22 +220,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Set environment variables
+        run: |
+          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
       - name: Install dependencies
         run: |
           choco install opencppcoverage
-          pipx install poetry
-          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-          cache: poetry
-
-      - name: Install Python dependencies
-        run: |
-          poetry install
-          poetry run conan profile detect
+          uv sync
+          uv run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v4
@@ -253,7 +247,7 @@ jobs:
 
       - name: Install Conan packages
         run: >
-          poetry run conan install .
+          uv run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.env.virtualenv:powershell=pwsh
@@ -263,7 +257,7 @@ jobs:
       - name: Configure
         run: >
           build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
-          poetry run cmake --preset ${{ matrix.build.preset }}
+          uv run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
           -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' && matrix.config.cc == 'cl' }}
           -D ENABLE_HARDENINGS:BOOL=TRUE
@@ -271,17 +265,17 @@ jobs:
       - name: Build
         run: >
           build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
-          cmake --build --preset ${{ matrix.build.preset }}
+          uv run cmake --build --preset ${{ matrix.build.preset }}
 
       - name: Run tests
         if: matrix.build.type != 'Debug'
-        run: ctest --preset ${{ matrix.build.preset }}
+        run: uv run ctest --preset ${{ matrix.build.preset }}
 
       - name: Run tests and collect test coverage
         if: matrix.build.type == 'Debug'
         run: >
           build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
-          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage/cobertura.xml --cover_children -- ctest --preset ${{ matrix.build.preset }}
+          & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --export_type cobertura:coverage/cobertura.xml --cover_children -- uv run ctest --preset ${{ matrix.build.preset }}
 
   codeql:
     name: CodeQL
@@ -303,26 +297,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Set environment variables
+        run: |
+          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
           languages: cpp
 
-      - name: Install poetry
-        run: |
-          pipx install poetry
-          echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: '3.x'
-          cache: poetry
+          enable-cache: true
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
-          poetry install
-          poetry run conan profile detect
+          sudo apt install -y libxml2-dev libxslt1-dev
+          uv sync
+          uv run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v4
@@ -336,17 +329,17 @@ jobs:
 
       - name: Install Conan packages
         run: >
-          poetry run conan install .
+          uv run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
           -s:h build_type=${{ matrix.build.type }}
 
       - name: Configure
-        run: poetry run cmake --preset ${{ matrix.build.preset }}
+        run: uv run cmake --preset ${{ matrix.build.preset }}
 
       - name: Build
-        run: cmake --build --preset ${{ matrix.build.preset }}
+        run: uv run cmake --build --preset ${{ matrix.build.preset }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
@@ -371,21 +364,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Install poetry
+      - name: Set environment variables
         run: |
-          pipx install poetry
           echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: '3.x'
-          cache: poetry
+          enable-cache: true
+          activate-environment: true
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
-          poetry install
-          poetry run conan profile detect
+          uv sync
+          uv run conan profile detect
 
       - name: Cache Conan packages
         uses: actions/cache@v4
@@ -396,7 +388,7 @@ jobs:
 
       - name: Install Conan packages
         run: >
-          poetry run conan install .
+          uv run conan install .
           -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
           -c:h tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.env.virtualenv:powershell=pwsh
@@ -406,7 +398,7 @@ jobs:
       - name: Configure
         run: >
           build/${{ matrix.build.type }}/generators/conanbuild.ps1 &&
-          poetry run cmake --preset ${{ matrix.build.preset }}
+          uv run cmake --preset ${{ matrix.build.preset }}
 
       - name: Run MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@main
