@@ -5,23 +5,25 @@ description = ""
 authors = [
   { name = "Your Name", email = "<you@example.com>" },
 ]
-license = "Unlicense" # see https://spdx.org/licenses/
+license = "Unlicense"
 readme = "README.md"
+
+requires-python = ">=3.13"
 dependencies = []
-requires-python = "^3.13"
 
-[tool.poetry]
-packages = []
-package-mode = false
+[dependency-groups]
+dev = [
+    "conan",
+    "gcovr",
+    "ninja",
+    "pre-commit",
+    "clang-format",
+    "cmake>=4.1.0",
+]
 
-
-[tool.poetry.group.dev.dependencies]
-conan = "*"
-gcovr = "*"
-ninja = "*"
-pre-commit = "*"
-clang-format = "*"
+[tool.uv]
+package = false
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
