@@ -13,17 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Install poetry
-        run: pipx install poetry
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: '3.x'
-          cache: poetry
+          enable-cache: true
 
-      - name: Install Python dependencies
-        run: poetry install
+      - name: Install dependencies
+        run: |
+          sudo apt install -y libxml2-dev libxslt1-dev
+          uv sync
 
       - name: Run hooks
-        run: poetry run pre-commit run -a
+        run: uv run pre-commit run -a
