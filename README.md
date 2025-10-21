@@ -21,8 +21,7 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
   - [Git](https://git-scm.com/)
   - [CMake](https://cmake.org/)
   - [Ninja](https://ninja-build.org/)
-  - [Python](https://www.python.org/)
-    - [poetry](https://python-poetry.org/)
+  - [uv](https://github.com/astral-sh/uv)
   - [LLVM](https://releases.llvm.org/)
 - Windows
   - [PowerShell](https://github.com/PowerShell/PowerShell)
@@ -38,9 +37,10 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
 Run the following commands in the root of the repository after cloning:
 
 ```bash
-poetry install
-poetry run pre-commit install
-poetry run conan profile detect
+uv venv
+uv sync
+uv run pre-commit install
+uv run conan profile detect
 ```
 
 ## Building the project
@@ -49,7 +49,7 @@ poetry run conan profile detect
 <summary>On Linux/Mac</summary>
 
 ```bash
-eval $(poetry env activate)
+source .venv/bin/activate
 
 # install libraries
 conan install -pr:a default \
@@ -92,7 +92,7 @@ GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr
 <summary>On Windows</summary>
 
 ```powershell
-Invoke-Expression (poetry env activate)
+.venv\Scripts\activate.ps1
 
 # install libraries
 conan install -pr:b default -pr:h default \
