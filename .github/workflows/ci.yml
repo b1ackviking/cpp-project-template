@@ -62,7 +62,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt install libc++-18-dev libc++abi-18-dev libxml2-dev libxslt1-dev
+          sudo apt install libc++-18-dev libc++abi-18-dev
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 100
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install cppcheck
@@ -313,7 +313,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt install -y libxml2-dev libxslt1-dev
           uv sync
           uv run conan profile detect
 

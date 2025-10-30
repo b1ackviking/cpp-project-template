@@ -18,10 +18,5 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Install dependencies
-        run: |
-          sudo apt install -y libxml2-dev libxslt1-dev
-          uv sync
-
       - name: Run hooks
         run: uv run pre-commit run -a
