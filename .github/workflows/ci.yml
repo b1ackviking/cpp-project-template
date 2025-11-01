@@ -140,6 +140,14 @@ jobs:
         run: |
           echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
 
+      - name: Force clang to use homebrew libc++
+        run: |
+          mkdir ~/.config/clang
+          echo "-I/opt/homebrew/opt/llvm/include" > ~/.config/clang/clang++.cfg
+          echo "-L/opt/homebrew/opt/llvm/lib/c++" >> ~/.config/clang/clang++.cfg
+          echo "-L/opt/homebrew/opt/llvm/lib/unwind" >> ~/.config/clang/clang++.cfg
+          echo "-lunwind" >> ~/.config/clang/clang++.cfg
+
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
         with:
