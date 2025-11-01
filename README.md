@@ -170,8 +170,8 @@ while viewing the git blame on GitHub as if using `git blame --ignore-revs-file=
 
 ### Configure the `pyproject.toml` file
 
-The `pyproject.toml` file is a main configuration file for `poetry`.
-This template is not a python project, however, using `poetry` makes it
+The `pyproject.toml` file is a main configuration file for `uv`.
+This template is not a python project, however, using `uv` makes it
 very convenient to bring tool dependencies,
 such as recent versions of `conan`, `cmake`, `pre-commit`, etc.
 Also, keeping them contained in a virtual environment does not pollute
