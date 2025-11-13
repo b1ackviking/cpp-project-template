@@ -53,11 +53,11 @@ source .venv/bin/activate
 
 # install libraries
 conan install -pr:a default \
-  -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -pr:h conan/<profile matching the compiler in use> \
+  -c:a tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
   -c:h tools.build:skip_test=<True|False> \
-  -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
+  -s:h build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
 # activate build env
 source build/<build_type>/generators/conanbuild.sh
@@ -95,13 +95,13 @@ GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr
 .venv\Scripts\activate.ps1
 
 # install libraries
-conan install -pr:b default -pr:h default \
-  -c:h tools.cmake.cmaketoolchain:generator=<CMake generator> \
-  -c:h tools.env.virtualenv=pwsh \
+conan install -pr:a default \
   -pr:h conan/<profile matching the compiler in use> \
+  -c:a tools.cmake.cmaketoolchain:generator=<CMake generator> \
+  -c:h tools.env.virtualenv:powershell=pwsh \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
   -c:h tools.build:skip_test=<True|False> \
-  -s build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
+  -s:h build_type=<Debug|RelWithDebInfo|Release|MinSizeRel> -b missing .
 
 # activate build env
 build/<build_type>/generators/conanbuild.ps1
