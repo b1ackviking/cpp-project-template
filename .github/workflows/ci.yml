@@ -82,8 +82,8 @@ jobs:
       - name: Install Conan packages
         run: >
           uv run conan install .
-          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
-          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -b missing -pr:a default ${{ matrix.config.profiles }}
+          -c:a tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
           -s:h build_type=${{ matrix.build.type }}
 
@@ -172,8 +172,8 @@ jobs:
       - name: Install Conan packages
         run: >
           uv run conan install .
-          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
-          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -b missing -pr:a default ${{ matrix.config.profiles }}
+          -c:a tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
           -s:h build_type=${{ matrix.build.type }}
 
@@ -256,8 +256,8 @@ jobs:
       - name: Install Conan packages
         run: >
           uv run conan install .
-          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
-          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -b missing -pr:a default ${{ matrix.config.profiles }}
+          -c:a tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.env.virtualenv:powershell=pwsh
           -c:h tools.build:compiler_executables="{'c': '${{ matrix.config.cc }}', 'cpp': '${{ matrix.config.cxx }}'}"
           -s:h build_type=${{ matrix.build.type }}
@@ -337,8 +337,8 @@ jobs:
       - name: Install Conan packages
         run: >
           uv run conan install .
-          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
-          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -b missing -pr:a default ${{ matrix.config.profiles }}
+          -c:a tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.build:compiler_executables="{\"c\": \"${{ matrix.config.cc }}\", \"cpp\": \"${{ matrix.config.cxx }}\"}"
           -s:h build_type=${{ matrix.build.type }}
 
@@ -396,8 +396,8 @@ jobs:
       - name: Install Conan packages
         run: >
           uv run conan install .
-          -b missing -pr:b default -pr:h default ${{ matrix.config.profiles }}
-          -c:h tools.cmake.cmaketoolchain:generator=Ninja
+          -b missing -pr:a default ${{ matrix.config.profiles }}
+          -c:a tools.cmake.cmaketoolchain:generator=Ninja
           -c:h tools.env.virtualenv:powershell=pwsh
           -c:h tools.build:compiler_executables="{'c': '${{ matrix.config.cc }}', 'cpp': '${{ matrix.config.cxx }}'}"
           -s:h build_type=${{ matrix.build.type }}
