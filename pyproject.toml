@@ -18,7 +18,7 @@ dev = [
     "ninja",
     "pre-commit",
     "clang-format",
-    "cmake>=4.1.0",
+    "cmake",
 ]
 
 [tool.uv]
