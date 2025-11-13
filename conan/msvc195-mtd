@@ -1,0 +1,8 @@
+include(cppstd)
+
+[settings]
+compiler=msvc
+compiler.version=195
+compiler.cstd=17
+compiler.runtime=static
+compiler.runtime_type=Debug
