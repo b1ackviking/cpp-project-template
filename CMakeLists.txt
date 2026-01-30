@@ -5,7 +5,8 @@ project(
   VERSION 0.0.1
   DESCRIPTION "Tool configuration template"
   HOMEPAGE_URL https://github.com/b1ackviking/cpp-project-template
-  LANGUAGES CXX)
+  LANGUAGES CXX
+)
 
 include(cmake/defaults.cmake)
 include(FindThreads)
