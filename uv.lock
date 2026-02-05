@@ -119,7 +119,7 @@ wheels = [
 
 [[package]]
 name = "conan"
-version = "2.25.1"
+version = "2.25.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -132,7 +132,7 @@ dependencies = [
     { name = "requests" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/c0/2802a4ece453aeef1a1872e70aa7260b8529d65a7f4b33d0cc2169ff1bbf/conan-2.25.1.tar.gz", hash = "sha256:1d77d2457dfdbe919a68cee9d96bddde2b3411671a7d9e934df49c49faa2335d", size = 562350, upload-time = "2026-01-29T15:34:13.668Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/02/2e/a6539fbf525dafd73e7a43df6a678da7bc456ca1ef0fe646cf5afbe844ed/conan-2.25.2.tar.gz", hash = "sha256:3a5214a095cee5c3d21ed45ea31139705703e49fa9c4bb45c4c73f5ee17a1031", size = 561890, upload-time = "2026-02-04T09:06:43.619Z" }
 
 [[package]]
 name = "cpp-project-template"
