@@ -3,7 +3,7 @@ BasedOnStyle: LLVM
 ---
 Language: Cpp
 AccessModifierOffset: -2
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: true
 AlignArrayOfStructures: None
 AlignConsecutiveAssignments: None
 AlignConsecutiveBitFields: Consecutive
@@ -39,9 +39,19 @@ BitFieldColonSpacing: Both
 BreakAdjacentStringLiterals: false
 BreakAfterAttributes: Leave
 BreakAfterJavaFieldAnnotations: true
+BreakAfterOpenBracketBracedList: false
+BreakAfterOpenBracketFunction: false
+BreakAfterOpenBracketIf: false
+BreakAfterOpenBracketLoop: false
+BreakAfterOpenBracketSwitch: false
 BreakAfterReturnType: Automatic
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Attach
+BreakBeforeCloseBracketBracedList: false
+BreakBeforeCloseBracketFunction: false
+BreakBeforeCloseBracketIf: false
+BreakBeforeCloseBracketLoop: false
+BreakBeforeCloseBracketSwitch: false
 BreakBeforeConceptDeclarations: true
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTemplateCloser: true
@@ -108,6 +118,11 @@ MainIncludeChar: Quote
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 NamespaceMacros: []
+NumericLiteralCase:
+  ExponentLetter: Lower
+  HexDigit: Upper
+  Prefix: Lower
+  Suffix: Upper
 OneLineFormatOffRegex: ''
 PPIndentWidth: 2
 PackConstructorInitializers: Never
@@ -149,7 +164,10 @@ RequiresExpressionIndentation: OuterScope
 SeparateDefinitionBlocks: Always
 ShortNamespaceLines: 0
 SkipMacroDefinitionBody: false
-SortIncludes: true
+SortIncludes:
+  Enabled: true
+  IgnoreCase: true
+  IgnoreExtension: true
 SortJavaStaticImport: Before
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
@@ -164,7 +182,7 @@ SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
-SpaceInEmptyBlock: false
+SpaceInEmptyBraces: Never
 SpacesBeforeTrailingComments: 1
 SpacesInAngles: Never
 SpacesInContainerLiterals: true
