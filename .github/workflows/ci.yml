@@ -128,9 +128,9 @@ jobs:
         config:
           - {
               name: 'Macos Clang',
-              cc: $(brew --prefix llvm@21)/bin/clang,
-              cxx: $(brew --prefix llvm@21)/bin/clang++,
-              profiles: '-pr:h conan/clang21 -pr:h conan/libc++'
+              cc: $(brew --prefix llvm@22)/bin/clang,
+              cxx: $(brew --prefix llvm@22)/bin/clang++,
+              profiles: '-pr:h conan/clang22 -pr:h conan/libc++'
             }
     steps:
       - name: Checkout repository
@@ -155,7 +155,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          brew install llvm@21
+          brew install llvm@22
           uv sync
           uv run conan profile detect
 
@@ -195,7 +195,7 @@ jobs:
 
       - name: Collect test coverage
         if: matrix.build.type == 'Debug'
-        run: GCOV="$(brew --prefix llvm@21)/bin/llvm-cov gcov" uv run gcovr
+        run: GCOV="$(brew --prefix llvm@22)/bin/llvm-cov gcov" uv run gcovr
 
   build_windows:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
