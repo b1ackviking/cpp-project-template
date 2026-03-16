@@ -67,6 +67,8 @@ if(ENABLE_CPPCHECK)
         --enable=all
         --inline-suppr
         --error-exitcode=42
+        --checkers-report=${CMAKE_BINARY_DIR}/cppcheck.report
+        --suppress=checkersReport # see cppcheck.report for details
         --suppress=missingIncludeSystem
         --suppress=unmatchedSuppression)
     set(CMAKE_C_CPPCHECK ${CMAKE_CXX_CPPCHECK})
