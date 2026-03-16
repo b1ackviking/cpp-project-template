@@ -1,5 +1,5 @@
 #include <array>
-#include <fmt/core.h>
+#include <fmt/base.h>
 #include <functional>
 #include <math/math.hpp>
 #include <numeric>
