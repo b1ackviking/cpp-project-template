@@ -1,4 +1,5 @@
 project(math)
 
 add_library(${PROJECT_NAME} INTERFACE)
-target_include_directories(${PROJECT_NAME} INTERFACE include)
+target_sources(${PROJECT_NAME} INTERFACE FILE_SET HEADERS BASE_DIRS include
+                                         FILES include/math/math.hpp)
