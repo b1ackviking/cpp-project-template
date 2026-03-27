@@ -16,18 +16,20 @@ endif()
 option(ENABLE_HARDENINGS "Enable hardenings" OFF)
 
 # Useful CMake defaults
+set(CMAKE_ERROR_DEPRECATED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(CMAKE_C_EXTENSIONS OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+set(CMAKE_VERIFY_INTERFACE_HEADER_SETS ON)
+# TODO: set(CMAKE_VERIFY_PRIVATE_HEADER_SETS ON) with cmake 4.3
 set(CMAKE_LINK_WHAT_YOU_USE TRUE)
 set(CMAKE_VS_JUST_MY_CODE_DEBUGGING ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
-set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure)
-list(APPEND CMAKE_CTEST_ARGUMENTS --parallel)
+set(CMAKE_CTEST_ARGUMENTS --progress --output-on-failure --parallel)
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -65,6 +67,7 @@ if(ENABLE_CPPCHECK)
         ${CPPCHECK}
         -v
         --enable=all
+        --disable=unusedFunction
         --inline-suppr
         --error-exitcode=42
         --checkers-report=${CMAKE_BINARY_DIR}/cppcheck.report

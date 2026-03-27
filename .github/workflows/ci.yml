@@ -100,7 +100,7 @@ jobs:
           -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
       - name: Build
-        run: uv run cmake --build --preset ${{ matrix.build.preset }}
+        run: uv run cmake --build --preset ${{ matrix.build.preset }} --target all all_verify_interface_header_sets
 
       - name: Run tests
         run: uv run ctest --preset ${{ matrix.build.preset }}
@@ -188,7 +188,7 @@ jobs:
           -D ENABLE_FORTIFY_SOURCE:BOOL=${{ matrix.build.type != 'Debug' }}
 
       - name: Build
-        run: uv run cmake --build --preset ${{ matrix.build.preset }}
+        run: uv run cmake --build --preset ${{ matrix.build.preset }} --target all all_verify_interface_header_sets
 
       - name: Run tests
         run: uv run ctest --preset ${{ matrix.build.preset }}
@@ -273,7 +273,7 @@ jobs:
       - name: Build
         run: >
           build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
-          uv run cmake --build --preset ${{ matrix.build.preset }}
+          uv run cmake --build --preset ${{ matrix.build.preset }} --target all all_verify_interface_header_sets
 
       - name: Run tests
         if: matrix.build.type != 'Debug'
@@ -346,7 +346,7 @@ jobs:
         run: uv run cmake --preset ${{ matrix.build.preset }}
 
       - name: Build
-        run: uv run cmake --build --preset ${{ matrix.build.preset }}
+        run: uv run cmake --build --preset ${{ matrix.build.preset }} --target all all_verify_interface_header_sets
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4

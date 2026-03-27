@@ -80,6 +80,9 @@ cmake --preset <preset> \
 # build
 cmake --build --preset <preset>
 
+# to make sure your library headers are self-contained
+cmake --build --preset <preset> --target all_verify_interface_header_sets
+
 # run tests
 ctest --preset <preset>
 
@@ -120,6 +123,9 @@ cmake --preset <preset> \
 
 # build
 cmake --build --preset <preset>
+
+# to make sure your library headers are self-contained
+cmake --build --preset <preset> --target all_verify_interface_header_sets
 
 # run tests and collect test coverage (Windows)
 OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest --preset <preset>
