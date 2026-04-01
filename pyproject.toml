@@ -19,7 +19,7 @@ dev = [
     "pre-commit",
     "clang-format",
 #TODO: remove version after https://github.com/scikit-build/cmake-python-distributions/issues/692
-    "cmake==4.3.0",
+    "cmake==4.3.1",
 ]
 
 [tool.uv]
