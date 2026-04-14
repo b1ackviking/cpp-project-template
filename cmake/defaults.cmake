@@ -197,6 +197,8 @@ function(set_target_warnings target_name)
       -Wnon-virtual-dtor # warn the user if a class with virtual functions has a
                          # non-virtual destructor. This helps catch hard to
                          # track down memory errors
+      -Wimplicit-fallthrough # warn on unannotated fall-through beetween switch
+                             # case statements
       -Wold-style-cast # warn for c-style casts
       -Wcast-align # warn for potential performance problem casts
       -Wunused # warn on anything being unused
