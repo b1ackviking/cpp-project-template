@@ -25,5 +25,5 @@ dev = [
 package = false
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["conan-py-build"]
+build-backend = "conan-py-build.build"
