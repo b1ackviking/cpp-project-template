@@ -268,7 +268,9 @@ jobs:
           build/${{ matrix.build.Type }}/generators/conanbuild.ps1 &&
           uv run cmake --preset ${{ matrix.build.preset }}
           -D ENABLE_COVERAGE:BOOL=${{ matrix.build.type == 'Debug' }}
-          -D ENABLE_ASAN:BOOL=${{ matrix.build.type == 'Debug' && matrix.config.cc == 'cl' }}
+          # see microsoft/STL#6291 and actions/runner-images#7739 for info
+          # TL;DR msvc requires ALL code to be compiled with ASAN, INCLUDING linked 3rd-party libs
+          -D ENABLE_ASAN:BOOL=FALSE # ${{ matrix.build.type == 'Debug' && matrix.config.cc == 'cl' }}
           -D ENABLE_HARDENINGS:BOOL=TRUE
 
       - name: Build
