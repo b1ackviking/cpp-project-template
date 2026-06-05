@@ -10,7 +10,6 @@ Checks:
   - -fuchsia-default-arguments-declarations
   - -fuchsia-overloaded-operator
   - -google-readability-todo
-  - -hicpp-named-parameter
   - -llvm-header-guard
   - -llvm-prefer-static-over-anonymous-namespace
   - -llvm-use-ranges
