@@ -35,11 +35,10 @@ AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
 AllowShortNamespacesOnASingleLine: false
+AllowShortRecordOnASingleLine: Always
 AlwaysBreakBeforeMultilineStrings: false
 AttributeMacros: []
-BinPackArguments: true
 BinPackLongBracedList: false
-BinPackParameters: true
 BitFieldColonSpacing: Both
 BreakAdjacentStringLiterals: false
 BreakAfterAttributes: Leave
@@ -58,10 +57,12 @@ BreakBeforeCloseBracketLoop: false
 BreakBeforeCloseBracketSwitch: false
 BreakBeforeConceptDeclarations: Always
 BreakBeforeInlineASMColon: OnlyMultiline
+BreakBeforeReturnType: None
 BreakBeforeTemplateCloser: true
 BreakBeforeTernaryOperators: true
 BreakBinaryOperations: RespectPrecedence
 BreakConstructorInitializers: BeforeComma
+BreakFunctionDeclarationParameters: false
 BreakFunctionDefinitionParameters: false
 BreakInheritanceList: BeforeComma
 BreakStringLiterals: false
@@ -130,7 +131,11 @@ NumericLiteralCase:
   Suffix: Upper
 OneLineFormatOffRegex: '^// NOLINT'
 PPIndentWidth: 2
+PackArguments:
+  BinPack: BinPack
 PackConstructorInitializers: Never
+PackParameters:
+  BinPack: BinPack
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakBeforeMemberAccess: 0
@@ -184,6 +189,7 @@ SpaceBeforeAssignmentOperators: true
 SpaceBeforeCaseColon: false
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
+SpaceBeforeEnumUnderlyingTypeColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
