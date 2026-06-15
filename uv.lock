@@ -135,7 +135,7 @@ wheels = [
 
 [[package]]
 name = "conan"
-version = "2.29.0"
+version = "2.29.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -148,9 +148,9 @@ dependencies = [
     { name = "requests" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/27/ea/35f166de5d0edf010bc97c36645c2745cb9a1dff2de031d899b20b4c96b6/conan-2.29.0.tar.gz", hash = "sha256:9ead81365d2779eef80c7d772f56a7e12023ac4ee871eb528d4c0f9bf986e908", size = 577942, upload-time = "2026-05-28T16:28:24.672Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/89/4bc94f3736d1b0a0f2d639b152192bb036afb6186af1ed246710b109e6e0/conan-2.29.1.tar.gz", hash = "sha256:3a3bc1bfda462237c537d0dd8baa9dd68f6ac29c3ecc98dbb4a668ccc943ff33", size = 577849, upload-time = "2026-06-12T10:56:25.667Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/6e/a6f5ba0e035522e239a8403e34455705ff4fb6f2d251cc48ae2f649ca36d/conan-2.29.0-py3-none-any.whl", hash = "sha256:f617c057fa76a4d92823fa14f9376f520dba72db73f401499737f4a8313ccbe3", size = 718581, upload-time = "2026-05-28T16:28:23.21Z" },
+    { url = "https://files.pythonhosted.org/packages/fd/f6/305bf22e60b9058f63e56046ebd16d55764c3bdd4c6c6ce4267d1e289bf3/conan-2.29.1-py3-none-any.whl", hash = "sha256:9e5bf69e2782f456019a9ff4ae5282cfa6068159c5139f299c3db441232135dc", size = 718589, upload-time = "2026-06-12T10:56:23.899Z" },
 ]
 
 [[package]]
