@@ -19,7 +19,7 @@ env:
 jobs:
   build_linux:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         build:
@@ -34,17 +34,17 @@ jobs:
         config:
           - {
               name: 'Linux GCC',
-              cc: gcc-14,
-              cxx: g++-14,
-              gcov: gcov-14,
-              profiles: '-pr:h conan/gcc14'
+              cc: gcc-15,
+              cxx: g++-15,
+              gcov: gcov-15,
+              profiles: '-pr:h conan/gcc15'
             }
           - {
               name: 'Linux Clang',
-              cc: clang-18,
-              cxx: clang++-18,
-              gcov: llvm-cov-18 gcov,
-              profiles: '-pr:h conan/clang18 -pr:h conan/libc++'
+              cc: clang-22,
+              cxx: clang++-22,
+              gcov: llvm-cov-22 gcov,
+              profiles: '-pr:h conan/clang22 -pr:h conan/libc++'
             }
     steps:
       - name: Checkout repository
@@ -62,8 +62,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt install libc++-18-dev libc++abi-18-dev
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 100
+          sudo apt install libc++-22-dev libc++abi-22-dev
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-22 100
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install cppcheck
           uv sync
@@ -290,7 +290,7 @@ jobs:
 
   codeql:
     name: CodeQL
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         build:
@@ -300,9 +300,9 @@ jobs:
             }
         config:
           - {
-              cc: gcc-14,
-              cxx: g++-14,
-              profiles: '-pr:h conan/gcc14'
+              cc: gcc-15,
+              cxx: g++-15,
+              profiles: '-pr:h conan/gcc15'
             }
     steps:
       - name: Checkout repository
