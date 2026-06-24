@@ -70,7 +70,7 @@ jobs:
           uv run conan profile detect
 
       - name: Cache Conan packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONAN_HOME }}/p
           key: conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
@@ -161,7 +161,7 @@ jobs:
           uv run conan profile detect
 
       - name: Cache Conan packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONAN_HOME }}/p
           key: conan-${{ runner.os }}-clang-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
@@ -245,7 +245,7 @@ jobs:
           uv run conan profile detect
 
       - name: Cache Conan packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONAN_HOME }}/p
           key: conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
@@ -328,7 +328,7 @@ jobs:
           uv run conan profile detect
 
       - name: Cache Conan packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONAN_HOME }}/p
           key: conan-${{ runner.os }}-${{ matrix.config.cc }}-${{ matrix.build.type }}-${{ hashFiles('conanfile.py') }}
@@ -390,7 +390,7 @@ jobs:
           uv run conan profile detect
 
       - name: Cache Conan packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONAN_HOME }}/p
           key: conan-${{ runner.os }}-${{ hashFiles('conanfile.py') }}
