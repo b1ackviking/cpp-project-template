@@ -53,7 +53,7 @@ source .venv/bin/activate
 
 # install libraries
 conan install -pr:a default \
-  -pr:h conan/<profile matching the compiler in use> \
+  -pr:a conan/<profile matching the compiler in use> \
   -c:a tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
   -c:h tools.build:skip_test=<True|False> \
@@ -99,7 +99,7 @@ GCOV=<"gcov" for GCC, "llvm-cov gcov" for Clang> gcovr
 
 # install libraries
 conan install -pr:a default \
-  -pr:h conan/<profile matching the compiler in use> \
+  -pr:a conan/<profile matching the compiler in use> \
   -c:a tools.cmake.cmaketoolchain:generator=<CMake generator> \
   -c:h tools.env.virtualenv:powershell=pwsh \
   -c:h tools.build:compiler_executables='{"c": "<CC>", "cpp": "<CXX>"}' \
