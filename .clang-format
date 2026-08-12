@@ -118,7 +118,8 @@ LineEnding: LF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 Macros: []
-MacrosSkippedByRemoveParentheses: []
+MacrosSkippedByRemoveParentheses:
+  - MOCK_METHOD
 MainIncludeChar: Quote
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
