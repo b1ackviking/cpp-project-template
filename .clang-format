@@ -15,7 +15,7 @@ AlignConsecutiveShortCaseStatements:
   AcrossComments: false
   AlignCaseArrows: false
   AlignCaseColons: false
-AlignEscapedNewlines: Left
+AlignEscapedNewlines: DontAlign
 AlignOperands: Align
 AlignTrailingComments:
   Kind: Always
