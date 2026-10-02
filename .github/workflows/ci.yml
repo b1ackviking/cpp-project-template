@@ -113,7 +113,7 @@ jobs:
 
   build_macos:
     name: ${{ matrix.config.name }} ${{ matrix.build.type }}
-    runs-on: macos-26
+    runs-on: xcode-27
     strategy:
       matrix:
         build:
@@ -128,10 +128,10 @@ jobs:
         config:
           - {
               name: 'Macos Clang',
-              cc: $(brew --prefix llvm@22)/bin/clang,
-              cxx: $(brew --prefix llvm@22)/bin/clang++,
-              gcov: $(brew --prefix llvm@22)/bin/llvm-cov gcov,
-              profiles: '-pr:h conan/clang22 -pr:h conan/libc++'
+              cc: $(brew --prefix llvm@23)/bin/clang,
+              cxx: $(brew --prefix llvm@23)/bin/clang++,
+              gcov: $(brew --prefix llvm@23)/bin/llvm-cov gcov,
+              profiles: '-pr:h conan/clang23 -pr:h conan/libc++'
             }
     steps:
       - name: Checkout repository
@@ -141,14 +141,6 @@ jobs:
         run: |
           echo "CONAN_HOME=${{ runner.temp }}/.conan2" >> ${{ github.env }}
 
-      - name: Force clang to use homebrew libc++
-        run: |
-          mkdir ~/.config/clang
-          echo "-I$HOMEBREW_PREFIX/opt/llvm/include" > ~/.config/clang/clang++.cfg
-          echo "-L$HOMEBREW_PREFIX/opt/llvm/lib/c++" >> ~/.config/clang/clang++.cfg
-          echo "-L$HOMEBREW_PREFIX/opt/llvm/lib/unwind" >> ~/.config/clang/clang++.cfg
-          echo "-lunwind" >> ~/.config/clang/clang++.cfg
-
       - name: Setup uv
         uses: astral-sh/setup-uv@v7
         with:
@@ -156,7 +148,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          brew install llvm@22
+          brew install llvm@23
           uv sync
           uv run conan profile detect
 
