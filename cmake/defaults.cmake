@@ -60,22 +60,18 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   )
 endif()
 
-# This function will prevent in-source builds
-function(assure_out_of_source_builds)
-  # make sure the user doesn't play dirty with symlinks
-  get_filename_component(srcdir "${CMAKE_SOURCE_DIR}" REALPATH)
-  get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
+# make sure the user doesn't play dirty with symlinks
+get_filename_component(srcdir "${CMAKE_SOURCE_DIR}" REALPATH)
+get_filename_component(bindir "${CMAKE_BINARY_DIR}" REALPATH)
 
-  # disallow in-source builds
-  if(srcdir PATH_EQUAL bindir)
-    message("######################################################")
-    message("Warning: in-source builds are disabled")
-    message("Please create a separate build directory and run cmake from there")
-    message("######################################################")
-    message(FATAL_ERROR "Quitting configuration")
-  endif()
-endfunction()
-assure_out_of_source_builds()
+# disallow in-source builds
+if(srcdir PATH_EQUAL bindir)
+  message("######################################################")
+  message("Warning: in-source builds are disabled")
+  message("Please create a separate build directory and run cmake from there")
+  message("######################################################")
+  message(FATAL_ERROR "Quitting configuration")
+endif()
 
 if(ENABLE_CPPCHECK)
   find_program(CPPCHECK cppcheck)
@@ -188,7 +184,7 @@ function(set_target_warnings target_name)
     # gersemi: on
   )
   set(
-    clang_warnings
+    gnu_warnings
     # gersemi: off
       -Wall
       -Wextra # reasonable and standard
@@ -214,8 +210,17 @@ function(set_target_warnings target_name)
     # gersemi: on
   )
   set(
+    clang_warnings
+    ${gnu_warnings}
+    # gersemi: off
+      -Wfunction-effects # enable function effect analysis (fea), i.e. warn if
+                         # clang::nonallocating and clang::nonblocking attribute
+                         # constrains are violated
+    # gersemi: on
+  )
+  set(
     gcc_warnings
-    ${clang_warnings}
+    ${gnu_warnings}
     # gersemi: off
       -Wmisleading-indentation # warn if indentation implies blocks where blocks
                                # do not exist
