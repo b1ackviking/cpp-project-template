@@ -32,7 +32,6 @@ specification with [pre-commit](https://pre-commit.com/) hooks.
   - [cppcheck](https://github.com/danmar/cppcheck)
   - [Node.js](https://nodejs.dev/download/)
     - [Commitlint](https://commitlint.js.org/)
-    - [Semantic Release](https://github.com/semantic-release/semantic-release)
 
 Run the following commands in the root of the repository after cloning:
 
