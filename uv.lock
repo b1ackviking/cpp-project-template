@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.14"
 
 [[package]]
@@ -188,7 +188,7 @@ wheels = [
 
 [[package]]
 name = "conan"
-version = "2.33.0"
+version = "2.34.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -196,15 +196,14 @@ dependencies = [
     { name = "fasteners" },
     { name = "jinja2" },
     { name = "patch-ng" },
-    { name = "python-dateutil" },
     { name = "pyyaml" },
     { name = "requests" },
     { name = "truststore" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9f/7c/f7cb78bc0a292bb041b8b1e44130afcf8ae798913722a189ecf29783c271/conan-2.33.0.tar.gz", hash = "sha256:2e0f890b736d42049f40ef5b96225bac5866cd71a504ca3eca620b25d8333a72", size = 608134, upload-time = "2026-09-29T15:14:47.79Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/63/d5/d7d5bd89e5870923be85940bf63885fc0b80d2c347ea236325003488a8e1/conan-2.34.0.tar.gz", hash = "sha256:9c65681300550638be20a25908673b8683533e8fc2dbbdac38ea0d9642a8124d", size = 612999, upload-time = "2026-10-28T11:55:47.006Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/38/bb/9a9024f0328171fc0aeb5b2711ffda50abd40c3545091a756ff8b378049d/conan-2.33.0-py3-none-any.whl", hash = "sha256:42da05f6cd12e0404d38463b2fa1f6ae3f809700fbbf8b704d0c597f0175ae87", size = 748195, upload-time = "2026-09-29T15:14:46.367Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/12/c1e94f9c47eda7276a4d6c21e757e46a8c77f64e96f652f7f7849a973cf3/conan-2.34.0-py3-none-any.whl", hash = "sha256:4e268bb9ad38614141c7274a769c7226122e3660e4d5eb545a0c7f7170b53272", size = 750722, upload-time = "2026-10-28T11:55:45.076Z" },
 ]
 
 [[package]]
@@ -272,7 +271,7 @@ wheels = [
 
 [[package]]
 name = "gcovr"
-version = "8.7"
+version = "8.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorlog" },
@@ -280,9 +279,9 @@ dependencies = [
     { name = "lxml" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/09/47/c19e5c16988ef485210825101e78ab9ea05b08c2361aa4e51b40d6c484ac/gcovr-8.7.tar.gz", hash = "sha256:cfb9b2c373cc5be4b1cbe53250a5e4446fe6d4723c6900d3f41aa83540c8ddc8", size = 807848, upload-time = "2026-10-16T21:44:48.951Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/5d/75f6913653852720651790bf611e37355ee53cdd298c7f1561cde8773e02/gcovr-8.8.tar.gz", hash = "sha256:0320230a432c033c1a41f34ba943082f450008c789bee05d414e532f380fd788", size = 808751, upload-time = "2026-10-27T12:52:45.668Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/4d/10b517f35dda7c3cbf30dcadd0461522299ccc1cb648944e2ffea7147c58/gcovr-8.7-py3-none-any.whl", hash = "sha256:2a68612c5981c388537f2e236c231a5d788b8bd9e406d13ced662c97b17e9784", size = 862818, upload-time = "2026-10-16T21:44:46.839Z" },
+    { url = "https://files.pythonhosted.org/packages/53/89/d70fe863ff3549aadd3eabde823796639f8d313912c990fe7dc26cba798d/gcovr-8.8-py3-none-any.whl", hash = "sha256:a5c3e3d4a9c8ab4a95aa8e4b072fcaec7962b1d9fb2add3f10645f649ef29545", size = 863676, upload-time = "2026-10-27T12:52:43.743Z" },
 ]
 
 [[package]]
@@ -555,18 +554,6 @@ wheels = [
 ]
 
 [[package]]
-name = "python-dateutil"
-version = "2.9.0.post0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "six" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
-]
-
-[[package]]
 name = "python-discovery"
 version = "1.6.3"
 source = { registry = "https://pypi.org/simple" }
@@ -617,15 +604,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ac/c3/e2a2b89f2d3e2179abd6d00ebd70bff6273f37fb3e0cc209f48b39d00cbf/requests-2.34.2.tar.gz", hash = "sha256:f288924cae4e29463698d6d60bc6a4da69c89185ad1e0bcc4104f584e960b9ed", size = 142856, upload-time = "2026-05-14T19:25:27.735Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl", hash = "sha256:2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0", size = 73075, upload-time = "2026-05-14T19:25:26.443Z" },
-]
-
-[[package]]
-name = "six"
-version = "1.17.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031, upload-time = "2024-12-04T17:35:28.174Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
 ]
 
 [[package]]
