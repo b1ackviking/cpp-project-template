@@ -43,7 +43,7 @@ repos:
         stages: [commit-msg]
         additional_dependencies: ['@commitlint/config-conventional']
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
+    rev: v3.22.0
     hooks:
       - id: pyupgrade
         args: [--py314-plus]
@@ -61,6 +61,6 @@ repos:
       - id: rst-inline-touching-normal
       - id: text-unicode-replacement-char
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.22
+    rev: 0.13.7
     hooks:
       - id: uv-lock
