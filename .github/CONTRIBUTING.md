@@ -35,10 +35,10 @@ If you find an issue to work on, you are welcome to open a PR with a fix.
 
 Once your changes are ready, don't forget to self-review to speed up the review process.
 
-[ ] Does the new code conform to the style guide?
-[ ] Does the project compiles without warnings and passes all unit tests?
-[ ] Have you used pre-commit hooks to validate your commits?
-[ ] Are comments and documentation written in clear English, with no spelling or grammar errors?
+- [ ] Does the new code conform to the style guide?
+- [ ] Does the project compiles without warnings and passes all unit tests?
+- [ ] Have you used pre-commit hooks to validate your commits?
+- [ ] Are comments and documentation written in clear English, with no spelling or grammar errors?
 
 If you're unsure about any of these points, please open the Pull Request anyhow and then ask us for feedback.
 
